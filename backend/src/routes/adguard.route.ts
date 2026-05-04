@@ -80,7 +80,7 @@ const getCredentials = (req: Request): { username: string; password: string } | 
     if (isEncrypted(username)) {
         username = decrypt(username);
         if (!username) {
-            console.warn('Failed to decrypt AdGuard username. Username may have been encrypted with a different key.');
+            console.warn('Failed to decrypt AdGuard username. 用户名 may have been encrypted with a different key.');
             return null;
         }
     }
@@ -88,7 +88,7 @@ const getCredentials = (req: Request): { username: string; password: string } | 
     if (isEncrypted(password)) {
         password = decrypt(password);
         if (!password) {
-            console.warn('Failed to decrypt AdGuard password. Password may have been encrypted with a different key.');
+            console.warn('Failed to decrypt AdGuard password. 密码 may have been encrypted with a different key.');
             return null;
         }
     }
@@ -148,7 +148,7 @@ async function handleApiWithRetry(
     const MAX_RETRIES = 2;
 
     try {
-        // Add a small delay to prevent overwhelming AdGuard Home with concurrent requests
+        // 添加 a small delay to prevent overwhelming AdGuard Home with concurrent requests
         await addRequestDelay(baseUrl);
 
         // Prepare the request config with Basic Auth
@@ -175,7 +175,7 @@ async function handleApiWithRetry(
     } catch (error: any) {
         // If this is a connection error and we haven't exceeded max retries
         if (isConnectionError(error) && retryAttempt < MAX_RETRIES) {
-            // Add a longer delay before retry to give AdGuard Home time to recover
+            // 添加 a longer delay before retry to give AdGuard Home time to recover
             const retryDelay = Math.min(2000 + (retryAttempt * 1000), 5000); // 2s, 3s, max 5s
             await new Promise(resolve => setTimeout(resolve, retryDelay));
 
@@ -198,7 +198,7 @@ adguardRoute.get('/stats', async (req: Request, res: Response) => {
             res.status(400).json({
                 success: false,
                 code: 'ADGUARD_AUTH_ERROR',
-                error: 'Username and password are required or could not be decrypted',
+                error: '用户名 and password are required or could not be decrypted',
                 requiresReauth: true
             });
             return;
@@ -305,7 +305,7 @@ adguardRoute.get('/stats', async (req: Request, res: Response) => {
         let errorMessage = error.response?.data?.message || error.message || 'Failed to get AdGuard Home statistics';
         let errorCode = 'ADGUARD_API_ERROR';
 
-        // Add specific handling for rate limiting
+        // 添加 specific handling for rate limiting
         if (statusCode === 429) {
             errorCode = 'TOO_MANY_REQUESTS';
             errorMessage = 'Too many requests to AdGuard Home API.';
@@ -330,7 +330,7 @@ adguardRoute.get('/protection-status', async (req: Request, res: Response) => {
             res.status(400).json({
                 success: false,
                 code: 'ADGUARD_AUTH_ERROR',
-                error: 'Username and password are required or could not be decrypted',
+                error: '用户名 and password are required or could not be decrypted',
                 requiresReauth: true
             });
             return;
@@ -411,7 +411,7 @@ adguardRoute.get('/protection-status', async (req: Request, res: Response) => {
         let errorMessage = error.response?.data?.message || error.message || 'Failed to get AdGuard Home protection status';
         let errorCode = 'ADGUARD_API_ERROR';
 
-        // Add specific handling for rate limiting
+        // 添加 specific handling for rate limiting
         if (statusCode === 429) {
             errorCode = 'TOO_MANY_REQUESTS';
             errorMessage = 'Too many requests to AdGuard Home API.';
@@ -432,18 +432,18 @@ adguardRoute.post('/encrypt-username', authenticateToken, async (req: Request, r
         const { username } = req.body;
 
         if (!username) {
-            res.status(400).json({ error: 'Username is required' });
+            res.status(400).json({ error: '用户名 is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(username)) {
-            res.status(200).json({ encryptedUsername: username });
+            res.status(200).json({ encrypted用户名: username });
             return;
         }
 
-        const encryptedUsername = encrypt(username);
-        res.status(200).json({ encryptedUsername });
+        const encrypted用户名 = encrypt(username);
+        res.status(200).json({ encrypted用户名 });
     } catch (error) {
         console.error('AdGuard username encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt username' });
@@ -456,18 +456,18 @@ adguardRoute.post('/encrypt-password', authenticateToken, async (req: Request, r
         const { password } = req.body;
 
         if (!password) {
-            res.status(400).json({ error: 'Password is required' });
+            res.status(400).json({ error: '密码 is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(password)) {
-            res.status(200).json({ encryptedPassword: password });
+            res.status(200).json({ encrypted密码: password });
             return;
         }
 
-        const encryptedPassword = encrypt(password);
-        res.status(200).json({ encryptedPassword });
+        const encrypted密码 = encrypt(password);
+        res.status(200).json({ encrypted密码 });
     } catch (error) {
         console.error('AdGuard password encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt password' });
@@ -485,7 +485,7 @@ adguardRoute.post('/disable', async (req: Request, res: Response) => {
             res.status(400).json({
                 success: false,
                 code: 'ADGUARD_AUTH_ERROR',
-                error: 'Username and password are required or could not be decrypted',
+                error: '用户名 and password are required or could not be decrypted',
                 requiresReauth: true
             });
             return;
@@ -578,7 +578,7 @@ adguardRoute.post('/enable', async (req: Request, res: Response) => {
             res.status(400).json({
                 success: false,
                 code: 'ADGUARD_AUTH_ERROR',
-                error: 'Username and password are required or could not be decrypted',
+                error: '用户名 and password are required or could not be decrypted',
                 requiresReauth: true
             });
             return;

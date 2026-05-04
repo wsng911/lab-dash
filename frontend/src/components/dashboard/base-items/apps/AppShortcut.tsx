@@ -10,7 +10,7 @@ import { PopupManager } from '../../../modals/PopupManager';
 type Props = {
     url?: string;
     name: string;
-    iconName: string;
+    icon名称: string;
     showLabel?: boolean;
     editMode?: boolean;
     config?: any;
@@ -18,7 +18,7 @@ type Props = {
     size?: 'small' | 'medium' | 'large';
 }
 
-export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, isPreview, size = 'medium' }: Props) => {
+export const AppShortcut = ({ url, name, icon名称, showLabel, editMode, config, isPreview, size = 'medium' }: Props) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isWolShortcut = config?.isWol === true;
 
@@ -45,22 +45,22 @@ export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, 
     const handleWakeOnLan = useCallback(async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        if (!isWolShortcut || !config?.macAddress) {
+        if (!isWolShortcut || !config?.mac添加ress) {
             PopupManager.failure('Invalid Wake-on-LAN configuration');
             return;
         }
 
         try {
             // Prepare payload
-            const payload: any = { mac: config.macAddress };
-            if (config.broadcastAddress) payload.ip = config.broadcastAddress;
+            const payload: any = { mac: config.mac添加ress };
+            if (config.broadcast添加ress) payload.ip = config.broadcast添加ress;
             if (config.port) payload.port = parseInt(config.port, 10);
 
             // Send WOL request
             await DashApi.sendWakeOnLan(payload);
 
             // Show success message
-            PopupManager.success(`Wake-on-LAN packet sent to ${config.macAddress}`);
+            PopupManager.success(`Wake-on-LAN packet sent to ${config.mac添加ress}`);
         } catch (error) {
             console.error('Error sending Wake-on-LAN packet:', error);
             PopupManager.failure('Failed to send Wake-on-LAN packet');
@@ -101,7 +101,7 @@ export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, 
                     }}
                 >
                     <img
-                        src={getIconPath(iconName)}
+                        src={getIconPath(icon名称)}
                         alt={name}
                         style={{
                             width: '100%',
@@ -149,26 +149,26 @@ export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, 
     return (
         <>
             {editMode ? (
-                <Box sx={{ ...styles.center, width: '100%', height: '100%' }} className='scale'>
+                <Box sx={{ ...styles.center, width: '100%', height: '100%' }} class名称='scale'>
                     {shortcutContent}
                 </Box>
             ) : isPreview ? (
-                <Box sx={{ ...styles.center, width: '100%', height: '100%' }} className='scale'>
+                <Box sx={{ ...styles.center, width: '100%', height: '100%' }} class名称='scale'>
                     {shortcutContent}
                 </Box>
             ) : isWolShortcut ? (
                 <a href='#' onClick={handleWakeOnLan} style={{ width: '100%', height: '100%' }}>
-                    <Box sx={{ ...styles.center }} className='scale'>
+                    <Box sx={{ ...styles.center }} class名称='scale'>
                         {shortcutContent}
                     </Box>
                 </a>
             ) : !url && config?.healthUrl ? (
-                <Box sx={{ ...styles.center, width: '100%', height: '100%' }} className='scale'>
+                <Box sx={{ ...styles.center, width: '100%', height: '100%' }} class名称='scale'>
                     {shortcutContent}
                 </Box>
             ) : (
                 <a href={url} rel='noopener noreferrer' target='_blank' style={{ width: '100%', height: '100%' }}>
-                    <Box sx={{ ...styles.center }} className='scale'>
+                    <Box sx={{ ...styles.center }} class名称='scale'>
                         {shortcutContent}
                     </Box>
                 </a>

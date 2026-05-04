@@ -11,12 +11,12 @@ type Props = {
     editMode: boolean;
     isOverlay?: boolean;
     config?: any;
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
 };
 
-export const SortablePihole: React.FC<Props> = ({ id, editMode, isOverlay = false, config, onDelete, onEdit, onDuplicate }) => {
+export const SortablePihole: React.FC<Props> = ({ id, editMode, isOverlay = false, config, on删除, on编辑, onDuplicate }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     return (
@@ -32,7 +32,7 @@ export const SortablePihole: React.FC<Props> = ({ id, editMode, isOverlay = fals
                 visibility: isDragging ? 'hidden' : 'visible'
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
+            <WidgetContainer editMode={editMode} id={id} on删除={on删除} on编辑={on编辑} onDuplicate={onDuplicate}>
                 <PiholeWidget config={config} id={id} />
             </WidgetContainer>
         </Grid2>

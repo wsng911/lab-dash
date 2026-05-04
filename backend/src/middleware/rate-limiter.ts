@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 
 // Helper function to log rate limit hits with consistent format
-const logRateLimitHit = (req: Request, limiterName: string) => {
+const logRateLimitHit = (req: Request, limiter名称: string) => {
     const timestamp = new Date().toISOString();
     const ip = req.ip || req.headers['x-forwarded-for'] || 'unknown';
     const method = req.method;
     const path = req.originalUrl || req.url;
 
-    console.error(`Rate limit hit [${limiterName}] at ${timestamp}, Method: ${method}, Path: ${path}`);
+    console.error(`Rate limit hit [${limiter名称}] at ${timestamp}, Method: ${method}, Path: ${path}`);
 };
 
 // General API rate limiter - used as the default
@@ -124,7 +124,7 @@ export const torrentApiLimiter = rateLimit({
 });
 
 // System monitor API limiter
-export const systemMonitorLimiter = rateLimit({
+export const system监控Limiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
     max: 100,
     standardHeaders: true,

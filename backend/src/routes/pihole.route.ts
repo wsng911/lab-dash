@@ -87,7 +87,7 @@ piholeRoute.get('/stats', async (req: Request, res: Response) => {
             throw new Error('Failed to get Pi-hole statistics');
         }
 
-        // Add a call to get the domains on the blocklist (requires auth)
+        // 添加 a call to get the domains on the blocklist (requires auth)
         try {
             const blocklistResponse = await axios.get(`${baseUrl}/api.php`, {
                 params: {
@@ -155,18 +155,18 @@ piholeRoute.post('/encrypt-password', authenticateToken, async (req: Request, re
         const { password } = req.body;
 
         if (!password) {
-            res.status(400).json({ error: 'Password is required' });
+            res.status(400).json({ error: '密码 is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(password)) {
-            res.status(200).json({ encryptedPassword: password });
+            res.status(200).json({ encrypted密码: password });
             return;
         }
 
-        const encryptedPassword = encrypt(password);
-        res.status(200).json({ encryptedPassword });
+        const encrypted密码 = encrypt(password);
+        res.status(200).json({ encrypted密码 });
     } catch (error) {
         console.error('Pi-hole password encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt password' });
@@ -315,7 +315,7 @@ piholeRoute.get('/blocking-status', async (req: Request, res: Response) => {
         let errorMessage = error.response?.data || error.message || 'Failed to get Pi-hole blocking status';
         let errorCode = 'PIHOLE_API_ERROR';
 
-        // Add specific handling for rate limiting
+        // 添加 specific handling for rate limiting
         if (statusCode === 429) {
             errorCode = 'TOO_MANY_REQUESTS';
             errorMessage = 'Too many requests to Pi-hole API';

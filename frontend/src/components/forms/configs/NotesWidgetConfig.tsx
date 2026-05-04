@@ -3,7 +3,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { CheckboxElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { FONT_SIZE_SELECT_OPTIONS } from '../../../constants/font-sizes';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface NotesWidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
@@ -14,8 +14,8 @@ export const NotesWidgetConfig = ({ formContext }: NotesWidgetConfigProps) => {
         <Grid container spacing={2} direction='column'>
             <Grid>
                 <TextFieldElement
-                    name='displayName'
-                    label='Display Name'
+                    name='display名称'
+                    label='Display 名称'
                     placeholder='Notes'
                     fullWidth
                     sx={{

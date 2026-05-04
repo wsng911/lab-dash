@@ -62,7 +62,7 @@ interface RadarrQueueItem {
     id: number;
     title: string;
     status: string;
-    trackedDownloadStatus: string;
+    trackedDownload状态: string;
     trackedDownloadState: string;
     statusMessages: Array<{
         title: string;
@@ -109,7 +109,7 @@ interface RadarrQueueItem {
         monitored: boolean;
         minimumAvailability: string;
         isAvailable: boolean;
-        folderName: string;
+        folder名称: string;
         runtime: number;
         cleanTitle: string;
         imdbId: string;
@@ -147,7 +147,7 @@ interface RadarrQueueItem {
             relativePath: string;
             path: string;
             size: number;
-            dateAdded: string;
+            date添加ed: string;
             releaseGroup: string;
             quality: {
                 quality: {
@@ -213,7 +213,7 @@ radarrRoute.get('/queue', async (req: Request, res: Response) => {
 
         // Transform to common format
         const transformedItems = queueItems.map(item => {
-            const finalState = getStateFromStatus(item.status, item.trackedDownloadStatus, item.trackedDownloadState);
+            const finalState = getStateFrom状态(item.status, item.trackedDownload状态, item.trackedDownloadState);
 
             return {
                 id: item.id,
@@ -267,7 +267,7 @@ radarrRoute.get('/queue', async (req: Request, res: Response) => {
     }
 });
 
-// Remove item from Radarr queue
+// 移除 item from Radarr queue
 radarrRoute.delete('/queue/:id', async (req: Request, res: Response) => {
     console.log('Radarr queue delete request');
     try {
@@ -390,7 +390,7 @@ radarrRoute.get('/movies', async (req: Request, res: Response) => {
     }
 });
 
-// Refresh Monitored Downloads endpoint
+// Refresh 监控ed Downloads endpoint
 radarrRoute.post('/refresh-monitored-downloads', async (req: Request, res: Response): Promise<void> => {
     try {
         const baseUrl = getBaseUrl(req);
@@ -404,10 +404,10 @@ radarrRoute.post('/refresh-monitored-downloads', async (req: Request, res: Respo
             return;
         }
 
-        console.log('Sending RefreshMonitoredDownloads command to:', baseUrl);
-        // Send RefreshMonitoredDownloads command to Radarr
+        console.log('Sending Refresh监控edDownloads command to:', baseUrl);
+        // Send Refresh监控edDownloads command to Radarr
         await axios.post(`${baseUrl}/api/v3/command`, {
-            name: 'RefreshMonitoredDownloads'
+            name: 'Refresh监控edDownloads'
         }, {
             headers: {
                 'X-Api-Key': apiKey,
@@ -419,7 +419,7 @@ radarrRoute.post('/refresh-monitored-downloads', async (req: Request, res: Respo
 
         res.json({
             success: true,
-            message: 'RefreshMonitoredDownloads command sent successfully'
+            message: 'Refresh监控edDownloads command sent successfully'
         });
 
     } catch (error: any) {
@@ -432,7 +432,7 @@ radarrRoute.post('/refresh-monitored-downloads', async (req: Request, res: Respo
 });
 
 // Utility functions
-function getStateFromStatus(status: string, trackedDownloadStatus: string, trackedDownloadState: string): string {
+function getStateFrom状态(status: string, trackedDownload状态: string, trackedDownloadState: string): string {
     // Map Radarr statuses to common download states
     // Check status first as it's the most accurate current state
     if (status === 'downloading') {
@@ -457,23 +457,23 @@ function getStateFromStatus(status: string, trackedDownloadStatus: string, track
         return 'stopped';
     }
 
-    // Check trackedDownloadStatus next
-    if (trackedDownloadStatus === 'downloading') {
+    // Check trackedDownload状态 next
+    if (trackedDownload状态 === 'downloading') {
         return 'downloading';
     }
-    if (trackedDownloadStatus === 'paused') {
+    if (trackedDownload状态 === 'paused') {
         return 'paused';
     }
-    if (trackedDownloadStatus === 'queued') {
+    if (trackedDownload状态 === 'queued') {
         return 'queued';
     }
-    if (trackedDownloadStatus === 'completed') {
+    if (trackedDownload状态 === 'completed') {
         return 'completed';
     }
-    if (trackedDownloadStatus === 'failed') {
+    if (trackedDownload状态 === 'failed') {
         return 'error';
     }
-    if (trackedDownloadStatus === 'warning') {
+    if (trackedDownload状态 === 'warning') {
         return 'warning';
     }
 
@@ -493,7 +493,7 @@ function getStateFromStatus(status: string, trackedDownloadStatus: string, track
 
 
 
-    return status || trackedDownloadStatus || trackedDownloadState || 'unknown';
+    return status || trackedDownload状态 || trackedDownloadState || 'unknown';
 }
 
 function parseTimeLeft(timeLeft: string): number | undefined {

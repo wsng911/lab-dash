@@ -1,4 +1,4 @@
-import CloseIcon from '@mui/icons-material/Close';
+import 关闭Icon from '@mui/icons-material/关闭';
 import { Box, Button, FormControlLabel, Radio, RadioGroup, Tab, Tabs, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { CheckboxElement, FormContainer, SelectElement, TextFieldElement, useForm } from 'react-hook-form-mui';
@@ -13,7 +13,7 @@ import { BACKEND_URL } from '../../constants/constants';
 import { useAppContext } from '../../context/useAppContext';
 import { COLORS } from '../../theme/styles';
 import { useThemeColor } from '../../theme/ThemeContext';
-import { Config, SearchProvider } from '../../types';
+import { Config, 搜索Provider } from '../../types';
 import { PopupManager } from '../modals/PopupManager';
 import { ToastManager } from '../toast/ToastManager';
 
@@ -33,7 +33,7 @@ type FormValues = {
     title: string;
     search: boolean;
     searchProviderId: string;
-    searchProvider?: SearchProvider;
+    searchProvider?: 搜索Provider;
     showInternetIndicator: boolean;
     showIP: boolean;
     ipDisplayType: 'wan' | 'lan' | 'both';
@@ -77,9 +77,9 @@ function a11yProps(index: number) {
 }
 
 // Separate component for image preview to handle state properly
-const ImagePreviewCard = ({ image, onDelete, formatFileSize }: {
+const ImagePreviewCard = ({ image, on删除, formatFileSize }: {
     image: any;
-    onDelete: () => void;
+    on删除: () => void;
     formatFileSize: (bytes: number) => string;
 }) => {
     const [imageError, setImageError] = useState(false);
@@ -183,7 +183,7 @@ const ImagePreviewCard = ({ image, onDelete, formatFileSize }: {
                     color='error'
                     size='small'
                     startIcon={<FaTrashCan style={{ fontSize: '0.8rem' }} />}
-                    onClick={onDelete}
+                    onClick={on删除}
                     sx={{
                         mt: 1,
                         fontSize: '0.7rem',
@@ -191,17 +191,17 @@ const ImagePreviewCard = ({ image, onDelete, formatFileSize }: {
                         minHeight: 'unset'
                     }}
                 >
-                    Delete
+                    删除
                 </Button>
             </Box>
         </Box>
     );
 };
 
-export const SettingsForm = () => {
+export const 设置Form = () => {
     const [isCustomProvider, setIsCustomProvider] = useState(false);
     const [hasChanges, setHasChanges] = useState(false);
-    const { config, updateConfig, refreshDashboard, pages } = useAppContext();
+    const { config, updateConfig, refresh仪表盘, pages } = useAppContext();
     const { setThemeColor: updateThemeColor } = useThemeColor();
     const [tabValue, setTabValue] = useState(0);
     const theme = useTheme();
@@ -237,12 +237,12 @@ export const SettingsForm = () => {
             {children}
         </Box>
     );
-    // Add custom styling for menu items
+    // 添加 custom styling for menu items
     useEffect(() => {
-        // Create a style element
+        // 创建 a style element
         const style = document.createElement('style');
 
-        // Add specific styling for menu items in the settings form
+        // 添加 specific styling for menu items in the settings form
         style.innerHTML = `
             .MuiPopover-root .MuiPaper-root .MuiMenuItem-root:hover {
                 background-color: ${COLORS.LIGHT_GRAY_HOVER} !important;
@@ -265,7 +265,7 @@ export const SettingsForm = () => {
     }, []);
 
     // Determine initial search provider ID and properly handle custom provider
-    const getInitialSearchProviderId = (): string => {
+    const getInitial搜索ProviderId = (): string => {
         if (!config?.search || !config?.searchProvider) return 'google';
 
         const { name, url } = config.searchProvider;
@@ -283,7 +283,7 @@ export const SettingsForm = () => {
     };
 
     // Get the initial provider ID before setting up the form
-    const initialProviderId = getInitialSearchProviderId();
+    const initialProviderId = getInitial搜索ProviderId();
 
     const formContext = useForm<FormValues>({
         defaultValues: {
@@ -320,7 +320,7 @@ export const SettingsForm = () => {
     const searchProviderId = formContext.watch('searchProviderId', 'google');
     const searchEnabled = formContext.watch('search', false);
     const title = formContext.watch('title', '');
-    const searchProviderName = formContext.watch('searchProvider.name', '');
+    const searchProvider名称 = formContext.watch('searchProvider.name', '');
     const searchProviderUrl = formContext.watch('searchProvider.url', '');
     const showInternetIndicator = formContext.watch('showInternetIndicator', true);
     const showIP = formContext.watch('showIP', false);
@@ -331,7 +331,7 @@ export const SettingsForm = () => {
 
     // Initialize custom provider flag properly on component mount
     useEffect(() => {
-        const providerId = getInitialSearchProviderId();
+        const providerId = getInitial搜索ProviderId();
         setIsCustomProvider(providerId === 'custom');
 
         // Make sure custom provider fields are populated when provider is custom
@@ -366,7 +366,7 @@ export const SettingsForm = () => {
             // Title change
             if (title !== (config?.title || 'Lab Dash')) return true;
 
-            // Background image change (file or URL)
+            // 返回ground image change (file or URL)
             if (backgroundImageType === 'file' && backgroundFile) return true;
             if (backgroundImageType === 'url') {
                 const currentUrl = (config?.backgroundImage && config.backgroundImage.startsWith('http')) ? config.backgroundImage : '';
@@ -376,7 +376,7 @@ export const SettingsForm = () => {
             // App icon files change
             if (appIconFiles && appIconFiles.length > 0) return true;
 
-            // Search enabled change
+            // 搜索 enabled change
             if (searchEnabled !== (config?.search || false)) return true;
 
             // Internet indicator change
@@ -391,11 +391,11 @@ export const SettingsForm = () => {
             // Theme color change
             if (themeColor !== (config?.themeColor || '#734CDE')) return true;
 
-            // Search provider changes
+            // 搜索 provider changes
             if (searchEnabled) {
                 if (searchProviderId === 'custom') {
                     // Check custom provider
-                    if (searchProviderName !== (config?.searchProvider?.name || '')) return true;
+                    if (searchProvider名称 !== (config?.searchProvider?.name || '')) return true;
                     if (searchProviderUrl !== (config?.searchProvider?.url || '')) return true;
                 } else {
                     // Check predefined provider
@@ -407,7 +407,7 @@ export const SettingsForm = () => {
                         if (selectedProvider.url !== config.searchProvider.url) return true;
                         if (selectedProvider.name !== config.searchProvider.name) return true;
                     } else if (config?.search) {
-                        // Search is enabled but no provider is set
+                        // 搜索 is enabled but no provider is set
                         return true;
                     }
                 }
@@ -431,7 +431,7 @@ export const SettingsForm = () => {
         appIconFiles,
         searchEnabled,
         searchProviderId,
-        searchProviderName,
+        searchProvider名称,
         searchProviderUrl,
         showInternetIndicator,
         showIP,
@@ -444,7 +444,7 @@ export const SettingsForm = () => {
         setTabValue(newValue);
     };
 
-    const handleSubmit = async (data: any) => {
+    const handle提交 = async (data: any) => {
         try {
             // console.log('Form data submitted:', data);
 
@@ -473,7 +473,7 @@ export const SettingsForm = () => {
 
             if (data.showIP !== undefined) {
                 updatedConfig.showIP = data.showIP;
-                // Remove old field name if it exists
+                // 移除 old field name if it exists
                 delete (updatedConfig as any).showPublicIP;
             }
 
@@ -525,7 +525,7 @@ export const SettingsForm = () => {
                                 if (importedConfig && typeof importedConfig === 'object') {
                                     // Use the new import endpoint instead of updateConfig
                                     await DashApi.importConfig(importedConfig);
-                                    await refreshDashboard();
+                                    await refresh仪表盘();
 
                                     // Show success message
                                     PopupManager.success('Configuration restored successfully!', () => navigate('/'));
@@ -568,24 +568,24 @@ export const SettingsForm = () => {
             }
 
             if (Object.keys(updatedConfig).length > 0) {
-                const hasBackgroundImage = data.backgroundFile instanceof File;
+                const has返回groundImage = data.backgroundFile instanceof File;
 
                 await updateConfig(updatedConfig); // Update only the provided fields
 
                 // If a background image was uploaded, refresh the uploaded images list
-                if (hasBackgroundImage) {
+                if (has返回groundImage) {
                     await loadUploadedImages();
                 }
 
                 // Show success message (only if no app icons were uploaded, to avoid duplicate messages)
                 if (!data.appIconFiles || data.appIconFiles.length === 0) {
-                    PopupManager.success('Settings updated successfully!');
+                    PopupManager.success('设置 updated successfully!');
                 }
                 // Refresh the form with new config values (optional)
                 const refreshedConfig = await DashApi.getConfig();
 
                 // Get the correct provider ID based on the saved config
-                const savedSearchProviderId = refreshedConfig?.searchProvider
+                const saved搜索ProviderId = refreshedConfig?.searchProvider
                     ? (() => {
                         const { url } = refreshedConfig.searchProvider;
                         // Check if it matches any predefined provider
@@ -605,7 +605,7 @@ export const SettingsForm = () => {
                     backgroundImageType: (refreshedConfig?.backgroundImage && refreshedConfig.backgroundImage.startsWith('http')) ? 'url' : 'file',
                     title: refreshedConfig?.title || '',
                     search: refreshedConfig?.search || false,
-                    searchProviderId: savedSearchProviderId,
+                    searchProviderId: saved搜索ProviderId,
                     searchProvider: {
                         name: refreshedConfig?.searchProvider?.name || '',
                         url: refreshedConfig?.searchProvider?.url || ''
@@ -629,20 +629,20 @@ export const SettingsForm = () => {
         }
     };
 
-    const resetBackground = async () => {
-        PopupManager.deleteConfirmation({
-            title: 'Reset Background',
+    const reset返回ground = async () => {
+        PopupManager.delete确认ation({
+            title: 'Reset 返回ground',
             text: 'This will restore the default background and remove all uploaded background images.',
             confirmText: 'Yes, Reset',
             confirmAction: async () => {
                 try {
                     // First clean up all background images in the root directory
-                    await DashApi.cleanBackgroundImages();
+                    await DashApi.clean返回groundImages();
 
                     // Then update the config to use the default background
                     await updateConfig({ backgroundImage: '' });
 
-                    PopupManager.success('Background has been reset');
+                    PopupManager.success('返回ground has been reset');
                 } catch (error) {
                     PopupManager.failure('Failed to reset background. Please try again.');
                     console.error('Error resetting background:', error);
@@ -665,11 +665,11 @@ export const SettingsForm = () => {
         }
     };
 
-    // Delete uploaded image
-    const deleteUploadedImage = async (imagePath: string, imageName: string, imageType: string) => {
-        PopupManager.deleteConfirmation({
-            title: 'Delete Image',
-            text: `Are you sure you want to delete "${imageName}"? This action cannot be undone.`,
+    // 删除 uploaded image
+    const deleteUploadedImage = async (imagePath: string, image名称: string, imageType: string) => {
+        PopupManager.delete确认ation({
+            title: '删除 Image',
+            text: `Are you sure you want to delete "${image名称}"? This action cannot be undone.`,
             confirmAction: async () => {
                 try {
                     const success = await DashApi.deleteUploadedImage(imagePath);
@@ -678,13 +678,13 @@ export const SettingsForm = () => {
                         if (imageType === 'background') {
                             try {
                                 await updateConfig({ backgroundImage: '' });
-                                ToastManager.success('Background image deleted and reset to default');
+                                ToastManager.success('返回ground image deleted and reset to default');
                             } catch (configError) {
                                 console.error('Error resetting background config:', configError);
                                 ToastManager.success('Image deleted successfully, but failed to reset background config');
                             }
                         } else {
-                            ToastManager.success(`${imageName} deleted successfully`);
+                            ToastManager.success(`${image名称} deleted successfully`);
                         }
                         await loadUploadedImages(); // Refresh the list
                     } else {
@@ -715,10 +715,10 @@ export const SettingsForm = () => {
     }, [tabValue]);
 
     return (
-        <FormContainer onSuccess={handleSubmit} formContext={formContext}>
+        <FormContainer onSuccess={handle提交} formContext={formContext}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant='h4' sx={{ p: 2 }}>Settings</Typography>
+                    <Typography variant='h4' sx={{ p: 2 }}>设置</Typography>
                     <Box sx={{ p: 2 }}>
                         <Button
                             variant='contained'
@@ -730,7 +730,7 @@ export const SettingsForm = () => {
                                 }
                             }}
                         >
-                            Save Changes
+                            保存 Changes
                         </Button>
                     </Box>
                 </Box>
@@ -745,7 +745,7 @@ export const SettingsForm = () => {
                         variant='scrollable'
                         value={tabValue}
                         onChange={handleTabChange}
-                        aria-label='Settings tabs'
+                        aria-label='设置 tabs'
                         sx={{
                             borderRight: {
                                 xs: 'none',
@@ -773,7 +773,7 @@ export const SettingsForm = () => {
                     >
                         <Tab icon={<FaCog style={{ fontSize: '1.2rem' }} />} label='General' {...a11yProps(0)} />
                         <Tab icon={<FaImage style={{ fontSize: '1.2rem' }} />} label='Appearance' {...a11yProps(1)} />
-                        <Tab icon={<FaClockRotateLeft style={{ fontSize: '1.2rem' }} />} label='Backup' {...a11yProps(2)} />
+                        <Tab icon={<FaClockRotateLeft style={{ fontSize: '1.2rem' }} />} label='返回up' {...a11yProps(2)} />
                         <Tab icon={<FaKeyboard style={{ fontSize: '1.2rem' }} />} label='Hotkeys' {...a11yProps(3)} />
                     </Tabs>
 
@@ -783,7 +783,7 @@ export const SettingsForm = () => {
                             flexDirection: 'column',
                             gap: 3
                         }}>
-                            <Typography variant='h6'>General Settings</Typography>
+                            <Typography variant='h6'>General 设置</Typography>
 
                             <Box sx={{
                                 display: 'grid',
@@ -806,7 +806,7 @@ export const SettingsForm = () => {
                                 <Typography variant='body1' sx={{
                                     alignSelf: 'center',
                                     fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }}>Enable Search</Typography>
+                                }}>Enable 搜索</Typography>
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <CheckboxElement
                                         name='search'
@@ -871,7 +871,7 @@ export const SettingsForm = () => {
                                         <Typography variant='body1' sx={{
                                             alignSelf: 'center',
                                             fontSize: { xs: '0.875rem', sm: '1rem' }
-                                        }}>Search Provider</Typography>
+                                        }}>搜索 Provider</Typography>
                                         <Box>
                                             <SelectElement
                                                 name='searchProviderId'
@@ -901,7 +901,7 @@ export const SettingsForm = () => {
                                                 <Typography variant='body1' sx={{
                                                     alignSelf: 'center',
                                                     fontSize: { xs: '0.875rem', sm: '1rem' }
-                                                }}>Provider Name</Typography>
+                                                }}>Provider 名称</Typography>
                                                 <Box>
                                                     <TextFieldElement
                                                         name='searchProvider.name'
@@ -923,7 +923,7 @@ export const SettingsForm = () => {
                                                 <Box sx={{
                                                     alignSelf: 'center'
                                                 }}>
-                                                    <Typography variant='body1' sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Search URL</Typography>
+                                                    <Typography variant='body1' sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>搜索 URL</Typography>
                                                     <Typography variant='caption' sx={{
                                                         display: 'block',
                                                         fontSize: { xs: '0.7rem', sm: '0.75rem' }
@@ -973,8 +973,8 @@ export const SettingsForm = () => {
                                     variant='contained'
                                     color='error'
                                     onClick={() => {
-                                        PopupManager.deleteConfirmation({
-                                            title: 'Reset All Settings',
+                                        PopupManager.delete确认ation({
+                                            title: 'Reset All 设置',
                                             text: 'Are you sure you want to reset all settings? This cannot be undone.',
                                             confirmAction: async () => {
                                                 await updateConfig({
@@ -984,14 +984,14 @@ export const SettingsForm = () => {
                                                     searchProvider: undefined,
                                                     showInternetIndicator: true
                                                 });
-                                                await refreshDashboard();
+                                                await refresh仪表盘();
                                                 PopupManager.success('All settings have been reset', () => navigate('/'));
                                             }
                                         });
                                     }}
                                     sx={{ minWidth: { xs: 'auto', sm: '200px' } }}
                                 >
-                                        Reset All Settings
+                                        Reset All 设置
                                 </Button>
                             </Box>
 
@@ -1004,7 +1004,7 @@ export const SettingsForm = () => {
                             flexDirection: 'column',
                             gap: 3
                         }}>
-                            <Typography variant='h6'>Appearance Settings</Typography>
+                            <Typography variant='h6'>Appearance 设置</Typography>
 
                             <Box sx={{
                                 display: 'grid',
@@ -1067,7 +1067,7 @@ export const SettingsForm = () => {
                                 <Typography variant='body1' sx={{
                                     alignSelf: 'center',
                                     fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }}>Background Image</Typography>
+                                }}>返回ground Image</Typography>
                                 <Box>
                                     <RadioGroup
                                         name='backgroundImageType'
@@ -1121,7 +1121,7 @@ export const SettingsForm = () => {
                                             />
                                             {backgroundFile && (
                                                 <Tooltip title='Clear'>
-                                                    <CloseIcon
+                                                    <关闭Icon
                                                         onClick={() => formContext.resetField('backgroundFile')}
                                                         sx={{
                                                             position: 'absolute',
@@ -1170,7 +1170,7 @@ export const SettingsForm = () => {
                                     />
                                     {appIconFiles && appIconFiles.length > 0 && (
                                         <Tooltip title='Clear'>
-                                            <CloseIcon
+                                            <关闭Icon
                                                 onClick={() => formContext.resetField('appIconFiles')}
                                                 sx={{
                                                     position: 'absolute',
@@ -1210,8 +1210,8 @@ export const SettingsForm = () => {
                                 >
                                     Clear Icon Cache
                                 </Button>
-                                <Button variant='contained' onClick={resetBackground} color='error'>
-                                        Reset Background
+                                <Button variant='contained' onClick={reset返回ground} color='error'>
+                                        Reset 返回ground
                                 </Button>
                             </Box>
 
@@ -1238,7 +1238,7 @@ export const SettingsForm = () => {
                                             <ImagePreviewCard
                                                 key={index}
                                                 image={image}
-                                                onDelete={() => deleteUploadedImage(image.path, image.name, image.type)}
+                                                on删除={() => deleteUploadedImage(image.path, image.name, image.type)}
                                                 formatFileSize={formatFileSize}
                                             />
                                         ))}
@@ -1254,7 +1254,7 @@ export const SettingsForm = () => {
                             flexDirection: 'column',
                             gap: 3
                         }}>
-                            <Typography variant='h6'>Backup Settings</Typography>
+                            <Typography variant='h6'>返回up 设置</Typography>
 
                             <Box sx={{
                                 display: 'grid',
@@ -1319,7 +1319,7 @@ export const SettingsForm = () => {
                                         size={isMobile ? 'small' : 'medium'}
                                         onClick={async () => {
                                             try {
-                                                PopupManager.deleteConfirmation({
+                                                PopupManager.delete确认ation({
                                                     title: 'Copy Desktop Layout to Mobile',
                                                     text: 'This will overwrite your current mobile layout with your desktop layout. Continue?',
                                                     confirmText: 'Yes, Copy',
@@ -1329,7 +1329,7 @@ export const SettingsForm = () => {
                                                             return;
                                                         }
 
-                                                        // Create updated config with desktop layout copied to mobile
+                                                        // 创建 updated config with desktop layout copied to mobile
                                                         const updatedLayout = {
                                                             layout: {
                                                                 desktop: config.layout.desktop,
@@ -1337,9 +1337,9 @@ export const SettingsForm = () => {
                                                             }
                                                         };
 
-                                                        // Save the updated layout
+                                                        // 保存 the updated layout
                                                         await updateConfig(updatedLayout);
-                                                        await refreshDashboard();
+                                                        await refresh仪表盘();
 
                                                         PopupManager.success('Desktop layout successfully copied to mobile');
                                                     }
@@ -1373,10 +1373,10 @@ export const SettingsForm = () => {
                                 flexDirection: 'column',
                                 gap: 2
                             }}>
-                                {/* Search Hotkeys */}
+                                {/* 搜索 Hotkeys */}
                                 <Box>
                                     <Typography variant='subtitle1' sx={{ mb: 1, fontWeight: 600 }}>
-                                        Search
+                                        搜索
                                     </Typography>
                                     <Box sx={{
                                         display: 'flex',
@@ -1461,7 +1461,7 @@ export const SettingsForm = () => {
                                                 </Box>
                                             </Box>
                                         ))}
-                                        {/* Settings page shortcut */}
+                                        {/* 设置 page shortcut */}
                                         <Box sx={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
@@ -1471,7 +1471,7 @@ export const SettingsForm = () => {
                                             borderRadius: 1,
                                             border: '1px solid rgba(255, 255, 255, 0.12)'
                                         }}>
-                                            <Typography variant='body1'>Go to Settings page</Typography>
+                                            <Typography variant='body1'>Go to 设置 page</Typography>
                                             <Box sx={{
                                                 display: 'flex',
                                                 gap: 0.5,

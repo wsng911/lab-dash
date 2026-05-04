@@ -1,4 +1,4 @@
-import { Add, Delete } from '@mui/icons-material';
+import { 添加, 删除 } from '@mui/icons-material';
 import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid2 as Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
@@ -8,7 +8,7 @@ import { DashApi } from '../../../api/dash-api';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface DiskInfo {
     fs: string;
@@ -22,16 +22,16 @@ interface DiskInfo {
 
 interface DiskSelection {
     mount: string;
-    customName: string;
+    custom名称: string;
     showMountPath?: boolean;
 }
 
-interface DiskMonitorWidgetConfigProps {
+interface Disk监控WidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
-    fieldNamePrefix?: string;
+    field名称Prefix?: string;
 }
 
-export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: DiskMonitorWidgetConfigProps) => {
+export const Disk监控WidgetConfig = ({ formContext, field名称Prefix = '' }: Disk监控WidgetConfigProps) => {
     const isMobile = useIsMobile();
     const [availableDisks, setAvailableDisks] = useState<Array<{id: string, label: string, size: number}>>([]);
     const [selectedDisks, setSelectedDisks] = useState<DiskSelection[]>([]);
@@ -63,12 +63,12 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
     };
 
     // Helper function to get field name with prefix
-    const getFieldName = (baseName: string) => {
-        return fieldNamePrefix ? `${fieldNamePrefix}${baseName}` : baseName;
+    const getField名称 = (base名称: string) => {
+        return field名称Prefix ? `${field名称Prefix}${base名称}` : base名称;
     };
 
     // Helper function to get display name for disk
-    const getDiskDisplayName = (disk: DiskInfo): string => {
+    const getDiskDisplay名称 = (disk: DiskInfo): string => {
         const mount = disk.mount;
         const sizeGB = (disk.size / (1024 ** 3)).toFixed(1);
 
@@ -80,14 +80,14 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
         if (mount === '/boot') return `Boot (${sizeGB} GB)`;
         if (mount.includes('/System/Volumes/Data')) return `System Data (${sizeGB} GB)`;
         if (mount.includes('/Volumes/')) {
-            const volumeName = mount.split('/Volumes/')[1];
-            return `${volumeName || 'Volume'} (${sizeGB} GB)`;
+            const volume名称 = mount.split('/Volumes/')[1];
+            return `${volume名称 || 'Volume'} (${sizeGB} GB)`;
         }
 
         // Extract last part of mount path for display
         const parts = mount.split('/').filter(Boolean);
-        const displayName = parts.length > 0 ? parts[parts.length - 1] : mount;
-        return `${displayName} (${sizeGB} GB)`;
+        const display名称 = parts.length > 0 ? parts[parts.length - 1] : mount;
+        return `${display名称} (${sizeGB} GB)`;
     };
 
     // Fetch available disks
@@ -119,7 +119,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
 
                     const diskOptions = sortedDisks.map((disk: DiskInfo) => ({
                         id: disk.mount,
-                        label: getDiskDisplayName(disk),
+                        label: getDiskDisplay名称(disk),
                         size: disk.size
                     }));
 
@@ -141,20 +141,20 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
     // Initialize from form values
     useEffect(() => {
         if (!isLoading) {
-            const currentSelectedDisks = formContext.getValues(getFieldName('selectedDisks') as any);
+            const currentSelectedDisks = formContext.getValues(getField名称('selectedDisks') as any);
 
             if (currentSelectedDisks && Array.isArray(currentSelectedDisks) && currentSelectedDisks.length > 0) {
                 setSelectedDisks(currentSelectedDisks);
                 updateFormValue(currentSelectedDisks); // Ensure validation is applied
             } else {
                 // Default based on current layout - ensure at least 1 disk if available
-                const currentLayout = formContext.getValues(getFieldName('layout') as any) || '2x2';
+                const currentLayout = formContext.getValues(getField名称('layout') as any) || '2x2';
                 const maxForLayout = getMaxDisksForLayout(currentLayout);
                 const defaultCount = Math.max(1, Math.min(2, maxForLayout)); // Start with at least 1 disk, preferably 2
 
                 const defaultDisks = availableDisks.slice(0, defaultCount).map(disk => ({
                     mount: disk.id,
-                    customName: disk.label.split(' (')[0], // Remove size from default name
+                    custom名称: disk.label.split(' (')[0], // 移除 size from default name
                     showMountPath: false
                 }));
 
@@ -170,29 +170,29 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
             }
 
             // Set default display options if not set
-            const currentShowIcons = formContext.getValues(getFieldName('showIcons') as any);
-            const currentShowName = formContext.getValues(getFieldName('showName') as any);
-            const currentLayout = formContext.getValues(getFieldName('layout') as any);
+            const currentShowIcons = formContext.getValues(getField名称('showIcons') as any);
+            const currentShow名称 = formContext.getValues(getField名称('show名称') as any);
+            const currentLayout = formContext.getValues(getField名称('layout') as any);
 
             if (currentShowIcons === undefined) {
-                formContext.setValue(getFieldName('showIcons') as any, true);
+                formContext.setValue(getField名称('showIcons') as any, true);
             }
-            if (currentShowName === undefined) {
-                formContext.setValue(getFieldName('showName') as any, true);
+            if (currentShow名称 === undefined) {
+                formContext.setValue(getField名称('show名称') as any, true);
             }
             if (currentLayout === undefined) {
-                formContext.setValue(getFieldName('layout') as any, '2x2');
+                formContext.setValue(getField名称('layout') as any, '2x2');
             }
         }
-    }, [isLoading, availableDisks, formContext, fieldNamePrefix]);
+    }, [isLoading, availableDisks, formContext, field名称Prefix]);
 
     // Watch for layout changes and adjust disk selection accordingly
     useEffect(() => {
-        if (!fieldNamePrefix) { // Only for standalone widgets
-            const layoutFieldName = getFieldName('layout');
+        if (!field名称Prefix) { // Only for standalone widgets
+            const layoutField名称 = getField名称('layout');
             const subscription = formContext.watch((value, { name }) => {
-                if (name === layoutFieldName) {
-                    const newLayout = value[layoutFieldName as keyof typeof value] as string;
+                if (name === layoutField名称) {
+                    const newLayout = value[layoutField名称 as keyof typeof value] as string;
                     if (newLayout && typeof newLayout === 'string') {
                         const currentDisks = selectedDisks;
                         const newMaxDisks = getMaxDisksForLayout(newLayout);
@@ -208,7 +208,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
             });
             return () => subscription.unsubscribe();
         }
-    }, [formContext, fieldNamePrefix, selectedDisks]);
+    }, [formContext, field名称Prefix, selectedDisks]);
 
     // Helper function to get max disks for a specific layout
     const getMaxDisksForLayout = (layout: string) => {
@@ -222,31 +222,31 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
 
     // Update form value
     const updateFormValue = (disks: DiskSelection[]) => {
-        formContext.setValue(getFieldName('selectedDisks') as any, disks);
+        formContext.setValue(getField名称('selectedDisks') as any, disks);
 
-        // Add validation - require at least one disk
+        // 添加 validation - require at least one disk
         if (disks.length === 0) {
-            formContext.setError(getFieldName('selectedDisks') as any, {
+            formContext.setError(getField名称('selectedDisks') as any, {
                 type: 'required',
                 message: 'At least one disk must be selected'
             });
         } else {
-            formContext.clearErrors(getFieldName('selectedDisks') as any);
+            formContext.clearErrors(getField名称('selectedDisks') as any);
         }
     };
 
     // Get max disks based on layout
     const getMaxDisks = () => {
         // For dual widgets, always use 2x2 layout (4 disks max)
-        if (fieldNamePrefix) {
+        if (field名称Prefix) {
             return 4;
         }
 
-        const currentLayout = formContext.getValues(getFieldName('layout') as any) || '2x2';
+        const currentLayout = formContext.getValues(getField名称('layout') as any) || '2x2';
         return getMaxDisksForLayout(currentLayout);
     };
 
-    // Add a new disk selection
+    // 添加 a new disk selection
     const addDisk = () => {
         const maxDisks = getMaxDisks();
         if (selectedDisks.length < maxDisks) {
@@ -257,7 +257,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
             if (availableDisk) {
                 const newDisks = [...selectedDisks, {
                     mount: availableDisk.id,
-                    customName: availableDisk.label.split(' (')[0],
+                    custom名称: availableDisk.label.split(' (')[0],
                     showMountPath: false
                 }];
                 setSelectedDisks(newDisks);
@@ -266,7 +266,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
         }
     };
 
-    // Remove a disk selection
+    // 移除 a disk selection
     const removeDisk = (index: number) => {
         const newDisks = selectedDisks.filter((_, i) => i !== index);
         setSelectedDisks(newDisks);
@@ -274,7 +274,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
     };
 
     // Update disk selection
-    const updateDisk = (index: number, field: 'mount' | 'customName' | 'showMountPath', value: string | boolean) => {
+    const updateDisk = (index: number, field: 'mount' | 'custom名称' | 'showMountPath', value: string | boolean) => {
         const newDisks = [...selectedDisks];
         newDisks[index] = { ...newDisks[index], [field]: value };
         setSelectedDisks(newDisks);
@@ -295,11 +295,11 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                 </Typography>
             </Grid>
 
-            {!fieldNamePrefix && (
+            {!field名称Prefix && (
                 <Grid>
                     <SelectElement
                         label='Layout'
-                        name={getFieldName('layout') as any}
+                        name={getField名称('layout') as any}
                         options={[
                             { id: '2x2', label: '2x2 Grid' },
                             { id: '2x4', label: '2x4 Grid' },
@@ -394,9 +394,9 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                             {/* Custom name row */}
                             <Box sx={{ mb: 1 }}>
                                 <TextField
-                                    label='Custom Name'
-                                    value={disk.customName}
-                                    onChange={(e) => updateDisk(index, 'customName', e.target.value)}
+                                    label='Custom 名称'
+                                    value={disk.custom名称}
+                                    onChange={(e) => updateDisk(index, 'custom名称', e.target.value)}
                                     fullWidth
                                     sx={{
                                         '& .MuiOutlinedInput-root': {
@@ -439,7 +439,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                                 />
                             </Box>
 
-                            {/* Remove button row */}
+                            {/* 移除 button row */}
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 <Button
                                     onClick={() => removeDisk(index)}
@@ -454,7 +454,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                                     disabled={selectedDisks.length <= 1}
                                     fullWidth
                                 >
-                                    Remove
+                                    移除
                                 </Button>
                             </Box>
                         </Box>
@@ -463,7 +463,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                     {selectedDisks.length < getMaxDisks() && (
                         <Button
                             onClick={addDisk}
-                            startIcon={<Add />}
+                            startIcon={<添加 />}
                             sx={{
                                 mt: selectedDisks.length > 0 ? 2 : 0
                             }}
@@ -471,7 +471,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                             fullWidth
                             disabled={selectedDisks.length >= availableDisks.length}
                         >
-                            Add Disk ({selectedDisks.length}/{getMaxDisks()})
+                            添加 Disk ({selectedDisks.length}/{getMaxDisks()})
                         </Button>
                     )}
                 </Box>
@@ -479,7 +479,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
             <Box sx={{ width: '100%' }}>
                 <CheckboxElement
                     label='Show Disk Icons'
-                    name={getFieldName('showIcons') as any}
+                    name={getField名称('showIcons') as any}
                     sx={{
                         ml: 1,
                         color: 'white',
@@ -490,8 +490,8 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
 
             <Box sx={{ width: '100%' }}>
                 <CheckboxElement
-                    label='Show Name'
-                    name={getFieldName('showName') as any}
+                    label='Show 名称'
+                    name={getField名称('show名称') as any}
                     sx={{
                         ml: 1,
                         color: 'white',

@@ -7,7 +7,7 @@ import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
 import { DOWNLOAD_CLIENT_TYPE, TORRENT_CLIENT_TYPE } from '../../../types';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 const DOWNLOAD_CLIENT_OPTIONS = [
     { id: DOWNLOAD_CLIENT_TYPE.QBITTORRENT, label: 'qBittorrent' },
@@ -34,38 +34,38 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
     );
 
     // Track if we're editing an existing item with sensitive data
-    const [hasExistingPassword, setHasExistingPassword] = useState(false);
+    const [hasExisting密码, setHasExisting密码] = useState(false);
 
     // Track if user is intentionally clearing the password field
-    const [userClearedPassword, setUserClearedPassword] = useState(false);
+    const [userCleared密码, setUserCleared密码] = useState(false);
 
     // Initialize masked values for existing items
     useEffect(() => {
         // Reset state when existingItem changes
-        setHasExistingPassword(false);
-        setUserClearedPassword(false);
+        setHasExisting密码(false);
+        setUserCleared密码(false);
 
-        // Check if the form already has a masked password value (set by AddEditForm)
+        // Check if the form already has a masked password value (set by 添加编辑Form)
         // This is more reliable than checking existingItem since existingItem is filtered
-        const currentPassword = formContext.getValues('tcPassword');
+        const current密码 = formContext.getValues('tc密码');
 
-        if (currentPassword === MASKED_VALUE) {
-            setHasExistingPassword(true);
+        if (current密码 === MASKED_VALUE) {
+            setHasExisting密码(true);
         } else if (existingItem?.config) {
             // Fallback: check existingItem config for security flag (though it may not be present in filtered data)
             const config = existingItem.config;
 
-            if (config._hasPassword) {
-                setHasExistingPassword(true);
+            if (config._has密码) {
+                setHasExisting密码(true);
 
                 // Ensure the masked value is set if not already present
-                if (!currentPassword || currentPassword === '') {
+                if (!current密码 || current密码 === '') {
                     console.log('DownloadClientWidgetConfig: Setting masked password');
-                    formContext.setValue('tcPassword', MASKED_VALUE, { shouldValidate: false });
+                    formContext.setValue('tc密码', MASKED_VALUE, { shouldValidate: false });
                 }
             }
         }
-    }, [existingItem?.config?._hasPassword, existingItem?.id, formContext]);
+    }, [existingItem?.config?._has密码, existingItem?.id, formContext]);
 
     useEffect(() => {
         if (watchedTorrentClientType) {
@@ -87,28 +87,28 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
 
             // Clear validation errors for username and password when switching to Transmission
             if (watchedTorrentClientType === DOWNLOAD_CLIENT_TYPE.TRANSMISSION) {
-                formContext.clearErrors('tcUsername');
-                formContext.clearErrors('tcPassword');
-                formContext.trigger(['tcUsername', 'tcPassword']);
+                formContext.clearErrors('tc用户名');
+                formContext.clearErrors('tc密码');
+                formContext.trigger(['tc用户名', 'tc密码']);
             }
         }
     }, [watchedTorrentClientType, formContext, existingItem]);
 
     // Watch for password field changes to track user intent
     useEffect(() => {
-        if (hasExistingPassword) {
-            const currentPassword = formContext.watch('tcPassword');
+        if (hasExisting密码) {
+            const current密码 = formContext.watch('tc密码');
 
             // If user clears the masked value, mark it as intentionally cleared
-            if (currentPassword === '' && !userClearedPassword) {
-                setUserClearedPassword(true);
+            if (current密码 === '' && !userCleared密码) {
+                setUserCleared密码(true);
             }
             // If user enters a new value after clearing, reset the flag
-            else if (currentPassword && currentPassword !== MASKED_VALUE && userClearedPassword) {
-                setUserClearedPassword(false);
+            else if (current密码 && current密码 !== MASKED_VALUE && userCleared密码) {
+                setUserCleared密码(false);
             }
         }
-    }, [formContext.watch('tcPassword'), hasExistingPassword, userClearedPassword]);
+    }, [formContext.watch('tc密码'), hasExisting密码, userCleared密码]);
 
     return (
         <>
@@ -211,14 +211,14 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
               torrentClientType === DOWNLOAD_CLIENT_TYPE.NZBGET) && (
                 <Grid>
                     <TextFieldElement
-                        name='tcUsername'
-                        label='Username'
+                        name='tc用户名'
+                        label='用户名'
                         variant='outlined'
                         fullWidth
                         autoComplete='off'
                         required={watchedTorrentClientType !== DOWNLOAD_CLIENT_TYPE.TRANSMISSION}
                         rules={{
-                            required: watchedTorrentClientType !== DOWNLOAD_CLIENT_TYPE.TRANSMISSION ? 'Username is required' : false
+                            required: watchedTorrentClientType !== DOWNLOAD_CLIENT_TYPE.TRANSMISSION ? '用户名 is required' : false
                         }}
                         sx={{
                             width: '100%',
@@ -238,15 +238,15 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
             )}
             <Grid>
                 <TextFieldElement
-                    name='tcPassword'
-                    label={torrentClientType === DOWNLOAD_CLIENT_TYPE.SABNZBD ? 'API Key' : 'Password'}
+                    name='tc密码'
+                    label={torrentClientType === DOWNLOAD_CLIENT_TYPE.SABNZBD ? 'API Key' : '密码'}
                     type='password'
                     variant='outlined'
                     fullWidth
                     autoComplete='off'
-                    required={watchedTorrentClientType !== DOWNLOAD_CLIENT_TYPE.TRANSMISSION && !hasExistingPassword && !userClearedPassword}
+                    required={watchedTorrentClientType !== DOWNLOAD_CLIENT_TYPE.TRANSMISSION && !hasExisting密码 && !userCleared密码}
                     rules={{
-                        required: (watchedTorrentClientType !== DOWNLOAD_CLIENT_TYPE.TRANSMISSION && !hasExistingPassword && !userClearedPassword) ? (torrentClientType === DOWNLOAD_CLIENT_TYPE.SABNZBD ? 'API Key is required' : 'Password is required') : false
+                        required: (watchedTorrentClientType !== DOWNLOAD_CLIENT_TYPE.TRANSMISSION && !hasExisting密码 && !userCleared密码) ? (torrentClientType === DOWNLOAD_CLIENT_TYPE.SABNZBD ? 'API Key is required' : '密码 is required') : false
                     }}
                     sx={{
                         width: '100%',
@@ -277,7 +277,7 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
             </Grid>
             <Grid>
                 <CheckboxElement
-                    label='Show Name'
+                    label='Show 名称'
                     name='showLabel'
                     checked={formContext.watch('showLabel')}
                     sx={{ ml: 1, color: 'white', '& .MuiSvgIcon-root': { fontSize: 30 } }}

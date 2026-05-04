@@ -11,12 +11,12 @@ type Props = {
     id: string;
     url?: string;
     name: string;
-    iconName: string;
+    icon名称: string;
     editMode: boolean;
     isOverlay?: boolean;
     isPreview?: boolean;
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
     showLabel?: boolean;
     config?: any;
@@ -26,12 +26,12 @@ export const SortableAppShortcut: React.FC<Props> = ({
     id,
     url,
     name,
-    iconName,
+    icon名称,
     editMode,
     isOverlay = false,
     isPreview = false,
-    onDelete,
-    onEdit,
+    on删除,
+    on编辑,
     onDuplicate,
     showLabel,
     config
@@ -74,8 +74,8 @@ export const SortableAppShortcut: React.FC<Props> = ({
             <WidgetContainer
                 editMode={editMode}
                 id={id}
-                onDelete={onDelete}
-                onEdit={onEdit}
+                on删除={on删除}
+                on编辑={on编辑}
                 onDuplicate={onDuplicate}
                 appShortcut
                 url={statusUrl}
@@ -85,7 +85,7 @@ export const SortableAppShortcut: React.FC<Props> = ({
                 <AppShortcut
                     url={url}
                     name={isPreview ? `${name} (Drop Here)` : name}
-                    iconName={iconName}
+                    icon名称={icon名称}
                     showLabel={shouldShowLabel}
                     editMode={editMode}
                     config={config}

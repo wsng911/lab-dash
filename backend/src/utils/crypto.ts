@@ -11,10 +11,10 @@ const IV_LENGTH = 16; // For AES, this is always 16 bytes
 export function encrypt(text: string): string {
     if (!text) return '';
 
-    // Create a random initialization vector
+    // 创建 a random initialization vector
     const iv = crypto.randomBytes(IV_LENGTH);
 
-    // Create a cipher using the encryption key and IV
+    // 创建 a cipher using the encryption key and IV
     const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32); // Generate a 32-byte key
     const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
 
@@ -47,7 +47,7 @@ export function decrypt(encryptedText: string): string {
         const iv = Buffer.from(parts[1], 'base64');
         const encryptedData = parts[2];
 
-        // Create a decipher using the encryption key and IV
+        // 创建 a decipher using the encryption key and IV
         const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32); // Generate a 32-byte key
         const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
 

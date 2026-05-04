@@ -21,15 +21,15 @@ type DateTimeWidgetProps = {
 
 export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
     const [dateTime, setDateTime] = useState<Date>(new Date());
-    const [locationName, setLocationName] = useState<string | null>(null);
+    const [location名称, setLocation名称] = useState<string | null>(null);
     const isMobile = useIsMobile();
 
     useEffect(() => {
         // Update location name from config
         if (config?.location?.name) {
-            setLocationName(config.location.name);
+            setLocation名称(config.location.name);
         } else {
-            setLocationName(null);
+            setLocation名称(null);
         }
     }, [config]);
 
@@ -49,11 +49,11 @@ export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
         return () => clearInterval(interval);
     }, []);
 
-    const renderLocationName = () => {
-        if (!locationName) return null;
+    const renderLocation名称 = () => {
+        if (!location名称) return null;
 
         // Parse location parts from the full name
-        const locationParts = locationName.split(',').map(part => part.trim());
+        const locationParts = location名称.split(',').map(part => part.trim());
 
         // Check if the first part is a US zip code (5 digits)
         const isZipCodeFirst = /^\d{5}$/.test(locationParts[0]);
@@ -134,7 +134,7 @@ export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
         );
     };
 
-    // Create formatter functions with the timezone
+    // 创建 formatter functions with the timezone
     const getFormattedTime = () => {
         const use24Hour = config?.use24Hour === true;
 
@@ -226,8 +226,8 @@ export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
 
     return (
         <CardContent sx={{ position: 'relative' }}>
-            {renderLocationName()}
-            <Box height={'100%'} mt={locationName ? (config?.timezone ? 4 : 3) : 0}>
+            {renderLocation名称()}
+            <Box height={'100%'} mt={location名称 ? (config?.timezone ? 4 : 3) : 0}>
                 <Typography fontSize={'3rem'} align={'center'} fontWeight={600}>
                     {getFormattedTime()}
                 </Typography>

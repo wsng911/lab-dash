@@ -5,7 +5,7 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface AdGuardWidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
@@ -18,8 +18,8 @@ export const AdGuardWidgetConfig = ({ formContext, existingItem }: AdGuardWidget
     const isMobile = useIsMobile();
 
     // Track if we're editing an existing item with sensitive data
-    const [hasExistingUsername, setHasExistingUsername] = useState(false);
-    const [hasExistingPassword, setHasExistingPassword] = useState(false);
+    const [hasExisting用户名, setHasExisting用户名] = useState(false);
+    const [hasExisting密码, setHasExisting密码] = useState(false);
 
     const textFieldSx = {
         width: '100%',
@@ -39,35 +39,35 @@ export const AdGuardWidgetConfig = ({ formContext, existingItem }: AdGuardWidget
             const config = existingItem.config;
 
             // Check if existing item has sensitive data using security flags
-            if (config._hasUsername) {
-                setHasExistingUsername(true);
+            if (config._has用户名) {
+                setHasExisting用户名(true);
                 // Set masked value in form if not already set
-                if (!formContext.getValues('adguardUsername')) {
-                    formContext.setValue('adguardUsername', MASKED_VALUE);
+                if (!formContext.getValues('adguard用户名')) {
+                    formContext.setValue('adguard用户名', MASKED_VALUE);
                 }
             }
 
-            if (config._hasPassword) {
-                setHasExistingPassword(true);
+            if (config._has密码) {
+                setHasExisting密码(true);
                 // Set masked value in form if not already set
-                if (!formContext.getValues('adguardPassword')) {
-                    formContext.setValue('adguardPassword', MASKED_VALUE);
+                if (!formContext.getValues('adguard密码')) {
+                    formContext.setValue('adguard密码', MASKED_VALUE);
                 }
             }
         }
     }, [existingItem, formContext]);
 
     // Helper function to determine if field should be required
-    const isUsernameRequired = () => {
-        const password = formContext.watch('adguardPassword');
-        // Username is required if password is provided (both are needed for Basic Auth)
-        return Boolean(password && password !== MASKED_VALUE) || hasExistingPassword;
+    const is用户名Required = () => {
+        const password = formContext.watch('adguard密码');
+        // 用户名 is required if password is provided (both are needed for Basic Auth)
+        return Boolean(password && password !== MASKED_VALUE) || hasExisting密码;
     };
 
-    const isPasswordRequired = () => {
-        const username = formContext.watch('adguardUsername');
-        // Password is required if username is provided (both are needed for Basic Auth)
-        return Boolean(username && username !== MASKED_VALUE) || hasExistingUsername;
+    const is密码Required = () => {
+        const username = formContext.watch('adguard用户名');
+        // 密码 is required if username is provided (both are needed for Basic Auth)
+        return Boolean(username && username !== MASKED_VALUE) || hasExisting用户名;
     };
 
     return (
@@ -103,8 +103,8 @@ export const AdGuardWidgetConfig = ({ formContext, existingItem }: AdGuardWidget
             </Grid>
             <Grid sx={{ width: '100%', mb: 2 }}>
                 <TextFieldElement
-                    name='adguardName'
-                    label='Display Name'
+                    name='adguard名称'
+                    label='Display 名称'
                     variant='outlined'
                     placeholder='AdGuard Home'
                     fullWidth
@@ -116,12 +116,12 @@ export const AdGuardWidgetConfig = ({ formContext, existingItem }: AdGuardWidget
             </Grid>
             <Grid sx={{ width: '100%', mb: 2 }}>
                 <TextFieldElement
-                    name='adguardUsername'
-                    label='Username'
+                    name='adguard用户名'
+                    label='用户名'
                     variant='outlined'
                     fullWidth
                     autoComplete='off'
-                    required={isUsernameRequired()}
+                    required={is用户名Required()}
                     helperText='Enter your AdGuard Home admin username'
                     sx={textFieldSx}
                     slotProps={{
@@ -132,13 +132,13 @@ export const AdGuardWidgetConfig = ({ formContext, existingItem }: AdGuardWidget
             </Grid>
             <Grid sx={{ width: '100%', mb: 2 }}>
                 <TextFieldElement
-                    name='adguardPassword'
-                    label='Password'
+                    name='adguard密码'
+                    label='密码'
                     type='password'
                     variant='outlined'
                     fullWidth
                     autoComplete='off'
-                    required={isPasswordRequired()}
+                    required={is密码Required()}
                     helperText='Enter your AdGuard Home admin password'
                     sx={textFieldSx}
                     slotProps={{
@@ -161,7 +161,7 @@ export const AdGuardWidgetConfig = ({ formContext, existingItem }: AdGuardWidget
             </Grid>
             <Grid sx={{ width: '100%' }}>
                 <CheckboxElement
-                    label='Show Name'
+                    label='Show 名称'
                     name='showLabel'
                     checked={formContext.watch('showLabel')}
                     sx={{

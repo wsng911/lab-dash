@@ -4,28 +4,28 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface QueueManagementWidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
-    serviceName: string; // 'Sonarr' or 'Radarr'
+    service名称: string; // 'Sonarr' or 'Radarr'
     defaultPort: string; // '8989' for Sonarr, '7878' for Radarr
 }
 
 export const QueueManagementWidgetConfig: React.FC<QueueManagementWidgetConfigProps> = ({
     formContext,
-    serviceName,
+    service名称,
     defaultPort
 }) => {
     const isMobile = useIsMobile();
-    const servicePrefix = serviceName.toLowerCase(); // 'sonarr' or 'radarr'
+    const servicePrefix = service名称.toLowerCase(); // 'sonarr' or 'radarr'
 
     return (
         <>
             <Grid>
                 <TextFieldElement
-                    name={`${servicePrefix}Name`}
-                    label='Display Name'
+                    name={`${servicePrefix}名称`}
+                    label='Display 名称'
                     fullWidth
                     sx={{
                         '& .MuiOutlinedInput-root': {
@@ -108,11 +108,11 @@ export const QueueManagementWidgetConfig: React.FC<QueueManagementWidgetConfigPr
                 <TextFieldElement
                     name={`${servicePrefix}ApiKey`}
                     label='API Key'
-                    placeholder={`Enter your ${serviceName} API key`}
+                    placeholder={`Enter your ${service名称} API key`}
                     fullWidth
                     required
                     type='password'
-                    helperText={`Find your API key in ${serviceName}: Settings → General → Security → API Key`}
+                    helperText={`Find your API key in ${service名称}: 设置 → General → Security → API Key`}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {

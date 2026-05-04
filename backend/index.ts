@@ -8,7 +8,7 @@ import { UPLOAD_DIRECTORY } from './src/constants/constants';
 import { errorHandler } from './src/middleware/error-handler';
 import { authLimiter, generalLimiter } from './src/middleware/rate-limiter';
 import routes from './src/routes';
-import { BackupService } from './src/utils/backup.service';
+import { 返回upService } from './src/utils/backup.service';
 
 dotenv.config();
 
@@ -54,7 +54,7 @@ app.listen(PORT, '0.0.0.0', async () => {
 
     // Initialize backup service
     try {
-        const backupService = BackupService.getInstance();
+        const backupService = 返回upService.getInstance();
         await backupService.initialize();
     } catch (error) {
         console.error('Failed to initialize backup service:', error);

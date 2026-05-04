@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Grid2 } from '@mui/material';
 import React from 'react';
 
-import { DiskMonitorWidget } from '../../base-items/widgets/DiskMonitorWidget';
+import { Disk监控Widget } from '../../base-items/widgets/Disk监控Widget';
 import { WidgetContainer } from '../../base-items/widgets/WidgetContainer';
 
 type Props = {
@@ -11,18 +11,18 @@ type Props = {
     editMode: boolean;
     isOverlay?: boolean;
     config?: {
-        selectedDisks?: Array<{ mount: string; customName: string; showMountPath?: boolean }>;
+        selectedDisks?: Array<{ mount: string; custom名称: string; showMountPath?: boolean }>;
         showIcons?: boolean;
         showMountPath?: boolean;
         layout?: '2x2' | '2x4' | '1x5';
         [key: string]: any;
     };
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
 };
 
-export const SortableDiskMonitor: React.FC<Props> = ({ id, editMode, isOverlay = false, config, onDelete, onEdit, onDuplicate }) => {
+export const SortableDisk监控: React.FC<Props> = ({ id, editMode, isOverlay = false, config, on删除, on编辑, onDuplicate }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     // All layouts should use the same width as other widgets
@@ -44,8 +44,8 @@ export const SortableDiskMonitor: React.FC<Props> = ({ id, editMode, isOverlay =
                 visibility: isDragging ? 'hidden' : 'visible'
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
-                <DiskMonitorWidget config={config} editMode={editMode} />
+            <WidgetContainer editMode={editMode} id={id} on删除={on删除} on编辑={on编辑} onDuplicate={onDuplicate}>
+                <Disk监控Widget config={config} editMode={editMode} />
             </WidgetContainer>
         </Grid2>
     );

@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 import { FormValues } from './types';
-import { DashboardItem, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE } from '../../../types';
+import { 仪表盘Item, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE } from '../../../types';
 
 type UseExistingItemProps = {
-    existingItem?: DashboardItem | null;
+    existingItem?: 仪表盘Item | null;
     formContext: UseFormReturn<FormValues>;
     setCustomIconFile: (file: File | null) => void;
 };
@@ -80,7 +80,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
         let bottomWidgetType = '';
         const temperatureUnit = existingItem?.config?.temperatureUnit || 'fahrenheit';
         const location = existingItem?.config?.location || null;
-        const systemMonitorGauges = existingItem?.config?.gauges || ['cpu', 'temp', 'ram'];
+        const system监控Gauges = existingItem?.config?.gauges || ['cpu', 'temp', 'ram'];
         const networkInterface = existingItem?.config?.networkInterface || '';
         const piholeHost = existingItem?.config?.piholeHost || existingItem?.config?.host || '';
         const piholePort = existingItem?.config?.piholePort || existingItem?.config?.port || '';
@@ -89,17 +89,17 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             : existingItem?.config?.ssl || false;
         // Use masked values for sensitive data - actual values are never sent to frontend
         const piholeApiToken = existingItem?.config?._hasApiToken ? '**********' : '';
-        const piholePassword = existingItem?.config?._hasPassword ? '**********' : '';
-        const piholeName = existingItem?.config?.displayName || '';
+        const pihole密码 = existingItem?.config?._has密码 ? '**********' : '';
+        const pihole名称 = existingItem?.config?.display名称 || '';
 
         // AdGuard widget initialization
         const adguardHost = existingItem?.config?.host || '';
         const adguardPort = existingItem?.config?.port !== undefined ? existingItem.config.port : '80'; // AdGuard Home default web interface port
         const adguardSsl = existingItem?.config?.ssl || false;
         // Use masked values for sensitive data - actual values are never sent to frontend
-        const adguardUsername = existingItem?.config?._hasUsername ? '**********' : '';
-        const adguardPassword = existingItem?.config?._hasPassword ? '**********' : '';
-        const adguardName = existingItem?.config?.displayName || '';
+        const adguard用户名 = existingItem?.config?._has用户名 ? '**********' : '';
+        const adguard密码 = existingItem?.config?._has密码 ? '**********' : '';
+        const adguard名称 = existingItem?.config?.display名称 || '';
 
         const healthUrl = existingItem?.config?.healthUrl || '';
 
@@ -129,8 +129,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
 
         // Reset the form with the existing item data
         formContext.reset({
-            shortcutName: existingItem?.label || '',
-            pageName: existingItem?.type === ITEM_TYPE.PAGE ? existingItem?.label || '' : '',
+            shortcut名称: existingItem?.label || '',
+            page名称: existingItem?.type === ITEM_TYPE.PAGE ? existingItem?.label || '' : '',
             itemType: initialItemType,
             url: existingItem?.url || '',
             showLabel: initialShowLabel,
@@ -149,12 +149,12 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             use24Hour: existingItem?.config?.use24Hour || false,
             adminOnly: existingItem?.adminOnly || false,
             isWol: existingItem?.config?.isWol || false,
-            macAddress: existingItem?.config?.macAddress || '',
-            broadcastAddress: existingItem?.config?.broadcastAddress || '',
+            mac添加ress: existingItem?.config?.mac添加ress || '',
+            broadcast添加ress: existingItem?.config?.broadcast添加ress || '',
             port: existingItem?.config?.port || '',
             healthUrl: healthUrl,
             healthCheckType: (existingItem?.config?.healthCheckType || 'http') as 'http' | 'ping',
-            // Add maxItems for group widget
+            // 添加 maxItems for group widget
             maxItems: maxItems,
             // Download client config
             tcHost: existingItem?.config?.host || 'localhost',
@@ -164,37 +164,37 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         : existingItem?.config?.clientType === DOWNLOAD_CLIENT_TYPE.SABNZBD ? '8080'
                             : '8080'),
             tcSsl: existingItem?.config?.ssl || false,
-            tcUsername: existingItem?.config?.username || '',
-            tcPassword: existingItem?.config?._hasPassword ? '**********' : '',
+            tc用户名: existingItem?.config?.username || '',
+            tc密码: existingItem?.config?._has密码 ? '**********' : '',
             piholeHost: piholeHost,
             piholePort: piholePort,
             piholeSsl: piholeSsl,
             piholeApiToken: piholeApiToken,
-            piholePassword: piholePassword,
-            piholeName: piholeName,
+            pihole密码: pihole密码,
+            pihole名称: pihole名称,
             // AdGuard widget values
             adguardHost: adguardHost,
             adguardPort: adguardPort,
             adguardSsl: adguardSsl,
-            adguardUsername: adguardUsername,
-            adguardPassword: adguardPassword,
-            adguardName: adguardName,
+            adguard用户名: adguard用户名,
+            adguard密码: adguard密码,
+            adguard名称: adguard名称,
             // Media server widget values
             mediaServerType: existingItem?.config?.clientType || 'jellyfin',
-            mediaServerName: existingItem?.config?.displayName || (existingItem ? '' : 'Jellyfin'),
+            mediaServer名称: existingItem?.config?.display名称 || (existingItem ? '' : 'Jellyfin'),
             msHost: existingItem?.config?.host || '',
             msPort: existingItem?.config?.port || '8096',
             msSsl: existingItem?.config?.ssl || false,
             msApiKey: existingItem?.config?._hasApiKey ? '**********' : '',
             // Sonarr widget values
-            sonarrName: existingItem?.type === ITEM_TYPE.SONARR_WIDGET ? (existingItem?.config?.displayName || (existingItem ? '' : 'Sonarr')) : 'Sonarr',
+            sonarr名称: existingItem?.type === ITEM_TYPE.SONARR_WIDGET ? (existingItem?.config?.display名称 || (existingItem ? '' : 'Sonarr')) : 'Sonarr',
             sonarrHost: existingItem?.type === ITEM_TYPE.SONARR_WIDGET ? (existingItem?.config?.host || '') : '',
             sonarrPort: existingItem?.type === ITEM_TYPE.SONARR_WIDGET ? (existingItem?.config?.port || '8989') : '8989',
             sonarrSsl: existingItem?.type === ITEM_TYPE.SONARR_WIDGET ? (existingItem?.config?.ssl || false) : false,
             sonarrApiKey: existingItem?.type === ITEM_TYPE.SONARR_WIDGET ? (existingItem?.config?._hasApiKey ? '**********' : '') : '',
 
             // Radarr widget values
-            radarrName: existingItem?.type === ITEM_TYPE.RADARR_WIDGET ? (existingItem?.config?.displayName || (existingItem ? '' : 'Radarr')) : 'Radarr',
+            radarr名称: existingItem?.type === ITEM_TYPE.RADARR_WIDGET ? (existingItem?.config?.display名称 || (existingItem ? '' : 'Radarr')) : 'Radarr',
             radarrHost: existingItem?.type === ITEM_TYPE.RADARR_WIDGET ? (existingItem?.config?.host || '') : '',
             radarrPort: existingItem?.type === ITEM_TYPE.RADARR_WIDGET ? (existingItem?.config?.port || '7878') : '7878',
             radarrSsl: existingItem?.type === ITEM_TYPE.RADARR_WIDGET ? (existingItem?.config?.ssl || false) : false,
@@ -202,24 +202,24 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
 
             // Media Request Manager widget values
             mediaRequestManagerService: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?.service || 'jellyseerr') : 'jellyseerr',
-            mediaRequestManagerName: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?.displayName || (existingItem ? '' : 'Jellyseerr')) : 'Jellyseerr',
+            mediaRequestManager名称: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?.display名称 || (existingItem ? '' : 'Jellyseerr')) : 'Jellyseerr',
             mediaRequestManagerHost: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?.host || '') : '',
             mediaRequestManagerPort: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?.port || '5055') : '5055',
             mediaRequestManagerSsl: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?.ssl || false) : false,
             mediaRequestManagerApiKey: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?._hasApiKey ? '**********' : '') : '',
 
             // Notes widget values
-            displayName: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.displayName || 'Notes') : 'Notes',
+            display名称: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.display名称 || 'Notes') : 'Notes',
             defaultNoteFontSize: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.defaultNoteFontSize || '16px') : '16px',
 
             location: location,
-            gauge1: systemMonitorGauges[0] || 'cpu',
-            gauge2: systemMonitorGauges[1] || 'temp',
-            gauge3: systemMonitorGauges[2] || 'ram',
+            gauge1: system监控Gauges[0] || 'cpu',
+            gauge2: system监控Gauges[1] || 'temp',
+            gauge3: system监控Gauges[2] || 'ram',
             networkInterface: networkInterface,
             showDiskUsage: existingItem?.config?.showDiskUsage !== false, // Default to true
             showSystemInfo: existingItem?.config?.showSystemInfo !== false, // Default to true
-            showInternetStatus: existingItem?.config?.showInternetStatus !== false, // Default to true
+            showInternet状态: existingItem?.config?.showInternet状态 !== false, // Default to true
             showIP: existingItem?.config?.showIP ?? existingItem?.config?.showPublicIP ?? false,
             ipDisplayType: existingItem?.config?.ipDisplayType || 'wan',
 
@@ -242,7 +242,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             top_networkInterface: '',
             top_showDiskUsage: true,
             top_showSystemInfo: true,
-            top_showInternetStatus: true,
+            top_showInternet状态: true,
             top_showIP: false,
             top_ipDisplayType: 'wan',
             top_selectedDisks: [],
@@ -252,14 +252,14 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             top_piholePort: '',
             top_piholeSsl: false,
             top_piholeApiToken: '',
-            top_piholePassword: '',
-            top_piholeName: '',
+            top_pihole密码: '',
+            top_pihole名称: '',
             top_adguardHost: '',
             top_adguardPort: '80',
             top_adguardSsl: false,
-            top_adguardUsername: '',
-            top_adguardPassword: '',
-            top_adguardName: '',
+            top_adguard用户名: '',
+            top_adguard密码: '',
+            top_adguard名称: '',
             top_showLabel: true,
             bottom_temperatureUnit: 'fahrenheit',
             bottom_location: null,
@@ -271,7 +271,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             bottom_networkInterface: '',
             bottom_showDiskUsage: true,
             bottom_showSystemInfo: true,
-            bottom_showInternetStatus: true,
+            bottom_showInternet状态: true,
             bottom_showIP: false,
             bottom_ipDisplayType: 'wan',
             bottom_selectedDisks: [],
@@ -281,14 +281,14 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             bottom_piholePort: '',
             bottom_piholeSsl: false,
             bottom_piholeApiToken: '',
-            bottom_piholePassword: '',
-            bottom_piholeName: '',
+            bottom_pihole密码: '',
+            bottom_pihole名称: '',
             bottom_adguardHost: '',
             bottom_adguardPort: '80',
             bottom_adguardSsl: false,
-            bottom_adguardUsername: '',
-            bottom_adguardPassword: '',
-            bottom_adguardName: '',
+            bottom_adguard用户名: '',
+            bottom_adguard密码: '',
+            bottom_adguard名称: '',
             bottom_showLabel: true,
         });
 
@@ -323,7 +323,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('top_networkInterface', topConfig.networkInterface || '');
                         formContext.setValue('top_showDiskUsage', topConfig.showDiskUsage !== false);
                         formContext.setValue('top_showSystemInfo', topConfig.showSystemInfo !== false);
-                        formContext.setValue('top_showInternetStatus', topConfig.showInternetStatus !== false);
+                        formContext.setValue('top_showInternet状态', topConfig.showInternet状态 !== false);
                         formContext.setValue('top_showIP', topConfig.showIP ?? topConfig.showPublicIP ?? false);
                         formContext.setValue('top_ipDisplayType', topConfig.ipDisplayType || 'wan');
                     }
@@ -342,8 +342,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('top_piholeSsl', topConfig.ssl !== undefined ? topConfig.ssl : false);
                         // Use masked values for sensitive data
                         formContext.setValue('top_piholeApiToken', topConfig._hasApiToken ? '**********' : '');
-                        formContext.setValue('top_piholePassword', topConfig._hasPassword ? '**********' : '');
-                        formContext.setValue('top_piholeName', topConfig.displayName || '');
+                        formContext.setValue('top_pihole密码', topConfig._has密码 ? '**********' : '');
+                        formContext.setValue('top_pihole名称', topConfig.display名称 || '');
                         formContext.setValue('top_showLabel', topConfig.showLabel !== undefined ? topConfig.showLabel : true);
                     }
 
@@ -353,9 +353,9 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('top_adguardPort', topConfig.port !== undefined ? topConfig.port : '80');
                         formContext.setValue('top_adguardSsl', topConfig.ssl !== undefined ? topConfig.ssl : false);
                         // Use masked values for sensitive data
-                        formContext.setValue('top_adguardUsername', topConfig._hasUsername ? '**********' : '');
-                        formContext.setValue('top_adguardPassword', topConfig._hasPassword ? '**********' : '');
-                        formContext.setValue('top_adguardName', topConfig.displayName || '');
+                        formContext.setValue('top_adguard用户名', topConfig._has用户名 ? '**********' : '');
+                        formContext.setValue('top_adguard密码', topConfig._has密码 ? '**********' : '');
+                        formContext.setValue('top_adguard名称', topConfig.display名称 || '');
                         formContext.setValue('top_showLabel', topConfig.showLabel !== undefined ? topConfig.showLabel : true);
                     }
 
@@ -397,7 +397,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('bottom_networkInterface', bottomConfig.networkInterface || '');
                         formContext.setValue('bottom_showDiskUsage', bottomConfig.showDiskUsage !== false);
                         formContext.setValue('bottom_showSystemInfo', bottomConfig.showSystemInfo !== false);
-                        formContext.setValue('bottom_showInternetStatus', bottomConfig.showInternetStatus !== false);
+                        formContext.setValue('bottom_showInternet状态', bottomConfig.showInternet状态 !== false);
                         formContext.setValue('bottom_showIP', bottomConfig.showIP ?? bottomConfig.showPublicIP ?? false);
                         formContext.setValue('bottom_ipDisplayType', bottomConfig.ipDisplayType || 'wan');
                     }
@@ -416,8 +416,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('bottom_piholeSsl', bottomConfig.ssl !== undefined ? bottomConfig.ssl : false);
                         // Use masked values for sensitive data
                         formContext.setValue('bottom_piholeApiToken', bottomConfig._hasApiToken ? '**********' : '');
-                        formContext.setValue('bottom_piholePassword', bottomConfig._hasPassword ? '**********' : '');
-                        formContext.setValue('bottom_piholeName', bottomConfig.displayName || '');
+                        formContext.setValue('bottom_pihole密码', bottomConfig._has密码 ? '**********' : '');
+                        formContext.setValue('bottom_pihole名称', bottomConfig.display名称 || '');
                         formContext.setValue('bottom_showLabel', bottomConfig.showLabel !== undefined ? bottomConfig.showLabel : true);
                     }
 
@@ -427,9 +427,9 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('bottom_adguardPort', bottomConfig.port !== undefined ? bottomConfig.port : '80');
                         formContext.setValue('bottom_adguardSsl', bottomConfig.ssl !== undefined ? bottomConfig.ssl : false);
                         // Use masked values for sensitive data
-                        formContext.setValue('bottom_adguardUsername', bottomConfig._hasUsername ? '**********' : '');
-                        formContext.setValue('bottom_adguardPassword', bottomConfig._hasPassword ? '**********' : '');
-                        formContext.setValue('bottom_adguardName', bottomConfig.displayName || '');
+                        formContext.setValue('bottom_adguard用户名', bottomConfig._has用户名 ? '**********' : '');
+                        formContext.setValue('bottom_adguard密码', bottomConfig._has密码 ? '**********' : '');
+                        formContext.setValue('bottom_adguard名称', bottomConfig.display名称 || '');
                         formContext.setValue('bottom_showLabel', bottomConfig.showLabel !== undefined ? bottomConfig.showLabel : true);
                     }
 

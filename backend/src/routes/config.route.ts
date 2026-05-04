@@ -1,13 +1,13 @@
 import { Request, Response, Router } from 'express';
 import fsSync from 'fs';
 import fs from 'fs/promises';
-import StatusCodes from 'http-status-codes';
+import 状态Codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 
 import {  authenticateToken, requireAdmin } from '../middleware/auth.middleware';
 import { Config } from '../types';
-import { BackupService } from '../utils/backup.service';
+import { 返回upService } from '../utils/backup.service';
 
 export const configRoute = Router();
 
@@ -42,7 +42,7 @@ const filterAdminOnlyItems = (config: any): any => {
 
     const filterItems = (items: any[]) => {
         return items.filter(item => {
-            // Remove admin-only items
+            // 移除 admin-only items
             if (item.adminOnly === true) {
                 return false;
             }
@@ -127,25 +127,25 @@ const filterSensitiveData = (config: any): any => {
                 delete newConfig.apiToken;
             }
             if (newConfig.password) {
-                newConfig._hasPassword = true;
+                newConfig._has密码 = true;
                 delete newConfig.password;
             }
 
             // Handle AdGuard Home widget sensitive data
             if (item.type === 'adguard-widget') {
                 if (newConfig.username) {
-                    newConfig._hasUsername = true;
+                    newConfig._has用户名 = true;
                     delete newConfig.username;
                 }
                 if (newConfig.password) {
-                    newConfig._hasPassword = true;
+                    newConfig._has密码 = true;
                     delete newConfig.password;
                 }
             }
 
             // Handle download client (torrent/NZB) sensitive data
             if ((item.type === 'download-client' || item.type === 'torrent-client') && newConfig.password) {
-                newConfig._hasPassword = true;
+                newConfig._has密码 = true;
                 delete newConfig.password;
             }
 
@@ -181,12 +181,12 @@ const filterSensitiveData = (config: any): any => {
                         delete newConfig.topWidget.config.apiToken;
                     }
                     if (newConfig.topWidget.config.password) {
-                        newConfig.topWidget.config._hasPassword = true;
+                        newConfig.topWidget.config._has密码 = true;
                         delete newConfig.topWidget.config.password;
                     }
                     // Handle AdGuard Home username in dual widget
                     if (newConfig.topWidget.config.username) {
-                        newConfig.topWidget.config._hasUsername = true;
+                        newConfig.topWidget.config._has用户名 = true;
                         delete newConfig.topWidget.config.username;
                     }
                 }
@@ -196,12 +196,12 @@ const filterSensitiveData = (config: any): any => {
                         delete newConfig.bottomWidget.config.apiToken;
                     }
                     if (newConfig.bottomWidget.config.password) {
-                        newConfig.bottomWidget.config._hasPassword = true;
+                        newConfig.bottomWidget.config._has密码 = true;
                         delete newConfig.bottomWidget.config.password;
                     }
                     // Handle AdGuard Home username in dual widget
                     if (newConfig.bottomWidget.config.username) {
-                        newConfig.bottomWidget.config._hasUsername = true;
+                        newConfig.bottomWidget.config._has用户名 = true;
                         delete newConfig.bottomWidget.config.username;
                     }
                 }
@@ -244,7 +244,7 @@ const filterSensitiveData = (config: any): any => {
 const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
     const restoredConfig = JSON.parse(JSON.stringify(newConfig)); // Deep clone
 
-    // Create a global map of all existing items by ID for cross-location lookups
+    // 创建 a global map of all existing items by ID for cross-location lookups
     const createGlobalItemMap = (config: any): Map<string, any> => {
         const globalMap = new Map();
 
@@ -262,11 +262,11 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
             });
         };
 
-        // Add items from main dashboard
+        // 添加 items from main dashboard
         if (config.layout?.desktop) addItemsToMap(config.layout.desktop);
         if (config.layout?.mobile) addItemsToMap(config.layout.mobile);
 
-        // Add items from all pages
+        // 添加 items from all pages
         if (config.pages) {
             config.pages.forEach((page: any) => {
                 if (page.layout?.desktop) addItemsToMap(page.layout.desktop);
@@ -341,20 +341,20 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
                 // Clean up and return early since we've copied everything we need
                 delete restoredItemConfig._hasApiToken;
                 delete restoredItemConfig._hasApiKey;
-                delete restoredItemConfig._hasPassword;
-                delete restoredItemConfig._hasUsername;
+                delete restoredItemConfig._has密码;
+                delete restoredItemConfig._has用户名;
                 delete restoredItemConfig._duplicatedFrom;
                 if (restoredItemConfig.topWidget?.config) {
                     delete restoredItemConfig.topWidget.config._hasApiToken;
                     delete restoredItemConfig.topWidget.config._hasApiKey;
-                    delete restoredItemConfig.topWidget.config._hasPassword;
-                    delete restoredItemConfig.topWidget.config._hasUsername;
+                    delete restoredItemConfig.topWidget.config._has密码;
+                    delete restoredItemConfig.topWidget.config._has用户名;
                 }
                 if (restoredItemConfig.bottomWidget?.config) {
                     delete restoredItemConfig.bottomWidget.config._hasApiToken;
                     delete restoredItemConfig.bottomWidget.config._hasApiKey;
-                    delete restoredItemConfig.bottomWidget.config._hasPassword;
-                    delete restoredItemConfig.bottomWidget.config._hasUsername;
+                    delete restoredItemConfig.bottomWidget.config._has密码;
+                    delete restoredItemConfig.bottomWidget.config._has用户名;
                 }
 
                 return { ...newItem, config: restoredItemConfig };
@@ -366,20 +366,20 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
             // Clean up security flags and duplication metadata (they're only for communication, not storage)
             delete restoredItemConfig._hasApiToken;
             delete restoredItemConfig._hasApiKey;
-            delete restoredItemConfig._hasPassword;
-            delete restoredItemConfig._hasUsername;
+            delete restoredItemConfig._has密码;
+            delete restoredItemConfig._has用户名;
             delete restoredItemConfig._duplicatedFrom;
             if (restoredItemConfig.topWidget?.config) {
                 delete restoredItemConfig.topWidget.config._hasApiToken;
                 delete restoredItemConfig.topWidget.config._hasApiKey;
-                delete restoredItemConfig.topWidget.config._hasPassword;
-                delete restoredItemConfig.topWidget.config._hasUsername;
+                delete restoredItemConfig.topWidget.config._has密码;
+                delete restoredItemConfig.topWidget.config._has用户名;
             }
             if (restoredItemConfig.bottomWidget?.config) {
                 delete restoredItemConfig.bottomWidget.config._hasApiToken;
                 delete restoredItemConfig.bottomWidget.config._hasApiKey;
-                delete restoredItemConfig.bottomWidget.config._hasPassword;
-                delete restoredItemConfig.bottomWidget.config._hasUsername;
+                delete restoredItemConfig.bottomWidget.config._has密码;
+                delete restoredItemConfig.bottomWidget.config._has用户名;
             }
 
             return { ...newItem, config: restoredItemConfig };
@@ -394,23 +394,23 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
         if (newItem.config._hasApiToken && !newItem.config.apiToken && existingItem.config.apiToken) {
             restoredItemConfig.apiToken = existingItem.config.apiToken;
         }
-        if (newItem.config._hasPassword && !newItem.config.password && existingItem.config.password) {
+        if (newItem.config._has密码 && !newItem.config.password && existingItem.config.password) {
             restoredItemConfig.password = existingItem.config.password;
         }
 
         // Handle AdGuard Home sensitive data
         if (newItem.type === 'adguard-widget') {
-            if (newItem.config._hasUsername && !newItem.config.username && existingItem.config.username) {
+            if (newItem.config._has用户名 && !newItem.config.username && existingItem.config.username) {
                 restoredItemConfig.username = existingItem.config.username;
             }
-            if (newItem.config._hasPassword && !newItem.config.password && existingItem.config.password) {
+            if (newItem.config._has密码 && !newItem.config.password && existingItem.config.password) {
                 restoredItemConfig.password = existingItem.config.password;
             }
         }
 
         // Handle download client (torrent/NZB) sensitive data
         if (newItem.type === 'download-client' || newItem.type === 'torrent-client') {
-            if (newItem.config._hasPassword && !newItem.config.password && existingItem.config.password) {
+            if (newItem.config._has密码 && !newItem.config.password && existingItem.config.password) {
                 restoredItemConfig.password = existingItem.config.password;
             }
         }
@@ -449,11 +449,11 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
                 if (restoredItemConfig.topWidget.config._hasApiToken && !restoredItemConfig.topWidget.config.apiToken && existingItem.config.topWidget.config.apiToken) {
                     restoredItemConfig.topWidget.config.apiToken = existingItem.config.topWidget.config.apiToken;
                 }
-                if (restoredItemConfig.topWidget.config._hasPassword && !restoredItemConfig.topWidget.config.password && existingItem.config.topWidget.config.password) {
+                if (restoredItemConfig.topWidget.config._has密码 && !restoredItemConfig.topWidget.config.password && existingItem.config.topWidget.config.password) {
                     restoredItemConfig.topWidget.config.password = existingItem.config.topWidget.config.password;
                 }
                 // Handle AdGuard Home username restoration in dual widget
-                if (restoredItemConfig.topWidget.config._hasUsername && !restoredItemConfig.topWidget.config.username && existingItem.config.topWidget.config.username) {
+                if (restoredItemConfig.topWidget.config._has用户名 && !restoredItemConfig.topWidget.config.username && existingItem.config.topWidget.config.username) {
                     restoredItemConfig.topWidget.config.username = existingItem.config.topWidget.config.username;
                 }
             }
@@ -461,11 +461,11 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
                 if (restoredItemConfig.bottomWidget.config._hasApiToken && !restoredItemConfig.bottomWidget.config.apiToken && existingItem.config.bottomWidget.config.apiToken) {
                     restoredItemConfig.bottomWidget.config.apiToken = existingItem.config.bottomWidget.config.apiToken;
                 }
-                if (restoredItemConfig.bottomWidget.config._hasPassword && !restoredItemConfig.bottomWidget.config.password && existingItem.config.bottomWidget.config.password) {
+                if (restoredItemConfig.bottomWidget.config._has密码 && !restoredItemConfig.bottomWidget.config.password && existingItem.config.bottomWidget.config.password) {
                     restoredItemConfig.bottomWidget.config.password = existingItem.config.bottomWidget.config.password;
                 }
                 // Handle AdGuard Home username restoration in dual widget
-                if (restoredItemConfig.bottomWidget.config._hasUsername && !restoredItemConfig.bottomWidget.config.username && existingItem.config.bottomWidget.config.username) {
+                if (restoredItemConfig.bottomWidget.config._has用户名 && !restoredItemConfig.bottomWidget.config.username && existingItem.config.bottomWidget.config.username) {
                     restoredItemConfig.bottomWidget.config.username = existingItem.config.bottomWidget.config.username;
                 }
             }
@@ -474,20 +474,20 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
         // Clean up security flags and duplication metadata (they're only for communication, not storage)
         delete restoredItemConfig._hasApiToken;
         delete restoredItemConfig._hasApiKey;
-        delete restoredItemConfig._hasPassword;
-        delete restoredItemConfig._hasUsername;
+        delete restoredItemConfig._has密码;
+        delete restoredItemConfig._has用户名;
         delete restoredItemConfig._duplicatedFrom;
         if (restoredItemConfig.topWidget?.config) {
             delete restoredItemConfig.topWidget.config._hasApiToken;
             delete restoredItemConfig.topWidget.config._hasApiKey;
-            delete restoredItemConfig.topWidget.config._hasPassword;
-            delete restoredItemConfig.topWidget.config._hasUsername;
+            delete restoredItemConfig.topWidget.config._has密码;
+            delete restoredItemConfig.topWidget.config._has用户名;
         }
         if (restoredItemConfig.bottomWidget?.config) {
             delete restoredItemConfig.bottomWidget.config._hasApiToken;
             delete restoredItemConfig.bottomWidget.config._hasApiKey;
-            delete restoredItemConfig.bottomWidget.config._hasPassword;
-            delete restoredItemConfig.bottomWidget.config._hasUsername;
+            delete restoredItemConfig.bottomWidget.config._has密码;
+            delete restoredItemConfig.bottomWidget.config._has用户名;
         }
 
         return { ...newItem, config: restoredItemConfig };
@@ -563,10 +563,10 @@ configRoute.get('/', async (req: Request, res: Response): Promise<void> => {
             filteredConfig = filterAdminOnlyItems(filteredConfig);
         }
 
-        res.status(StatusCodes.OK).json(filteredConfig);
+        res.status(状态Codes.OK).json(filteredConfig);
     } catch (error) {
         console.error('Error loading config:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error loading config file',
             error: (error as Error).message
         });
@@ -577,35 +577,35 @@ configRoute.get('/', async (req: Request, res: Response): Promise<void> => {
 configRoute.get('/export', [authenticateToken, requireAdmin], async (_req: Request, res: Response): Promise<void> => {
     try {
         const config = loadConfig();
-        const fileName = `lab-dash-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        const file名称 = `lab-dash-backup-${new Date().toISOString().slice(0, 10)}.json`;
 
         // Set headers to force download
         res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+        res.setHeader('Content-Disposition', `attachment; filename=${file名称}`);
 
         // Send the formatted JSON as the response (with sensitive data for backup)
-        res.status(StatusCodes.OK).send(JSON.stringify(config, null, 2));
+        res.status(状态Codes.OK).send(JSON.stringify(config, null, 2));
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error exporting config file',
             error: (error as Error).message
         });
     }
 });
 
-// POST - Save the incoming JSON layout to disk (admin only)
+// POST - 保存 the incoming JSON layout to disk (admin only)
 configRoute.post('/', [authenticateToken, requireAdmin], async (req: Request, res: Response): Promise<void> => {
     try {
         const updates = req.body;
         const existingConfig: Config = loadConfig();
 
         // Restore sensitive data from existing config before saving
-        const configToSave = restoreSensitiveData(updates, existingConfig);
+        const configTo保存 = restoreSensitiveData(updates, existingConfig);
 
         // Apply updates to existing config
-        Object.keys(configToSave).forEach((key) => {
-            if (configToSave[key] !== undefined) {
-                (existingConfig as any)[key] = configToSave[key];
+        Object.keys(configTo保存).forEach((key) => {
+            if (configTo保存[key] !== undefined) {
+                (existingConfig as any)[key] = configTo保存[key];
             }
         });
 
@@ -617,19 +617,19 @@ configRoute.post('/', [authenticateToken, requireAdmin], async (req: Request, re
             existingConfig.pages = [];
         }
 
-        // Save the updated config to file (with sensitive data preserved)
+        // 保存 the updated config to file (with sensitive data preserved)
         await fs.writeFile(CONFIG_FILE, JSON.stringify(existingConfig, null, 2), 'utf-8');
 
         // Return filtered config to frontend (without sensitive data)
         const filteredConfig = filterSensitiveData(existingConfig);
 
-        res.status(StatusCodes.OK).json({
+        res.status(状态Codes.OK).json({
             message: 'Config saved successfully',
             updatedConfig: filteredConfig
         });
     } catch (error) {
         console.error('Error saving config:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error saving config file',
             error: (error as Error).message
         });
@@ -646,7 +646,7 @@ configRoute.post('/import', [authenticateToken, requireAdmin], async (req: Reque
 
         // Validate the imported config structure
         if (!importedConfig || typeof importedConfig !== 'object') {
-            res.status(StatusCodes.BAD_REQUEST).json({
+            res.status(状态Codes.BAD_REQUEST).json({
                 message: 'Invalid configuration format'
             });
             return;
@@ -662,13 +662,13 @@ configRoute.post('/import', [authenticateToken, requireAdmin], async (req: Reque
 
         // Return filtered config to frontend
         const filteredConfig = filterSensitiveData(importedConfig);
-        res.status(StatusCodes.OK).json({
+        res.status(状态Codes.OK).json({
             message: 'Configuration imported successfully',
             updatedConfig: filteredConfig
         });
     } catch (error) {
         console.error('Error importing config:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error importing configuration file',
             error: (error as Error).message
         });
@@ -678,11 +678,11 @@ configRoute.post('/import', [authenticateToken, requireAdmin], async (req: Reque
 // GET - Get backup status (admin only)
 configRoute.get('/backup/status', [authenticateToken, requireAdmin], async (_req: Request, res: Response): Promise<void> => {
     try {
-        const backupService = BackupService.getInstance();
-        const status = await backupService.getBackupStatus();
-        res.status(StatusCodes.OK).json(status);
+        const backupService = 返回upService.getInstance();
+        const status = await backupService.get返回up状态();
+        res.status(状态Codes.OK).json(status);
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error getting backup status',
             error: (error as Error).message
         });
@@ -692,13 +692,13 @@ configRoute.get('/backup/status', [authenticateToken, requireAdmin], async (_req
 // POST - Trigger manual backup (admin only)
 configRoute.post('/backup/trigger', [authenticateToken, requireAdmin], async (_req: Request, res: Response): Promise<void> => {
     try {
-        const backupService = BackupService.getInstance();
-        await backupService.triggerManualBackup();
-        res.status(StatusCodes.OK).json({
-            message: 'Backup created successfully'
+        const backupService = 返回upService.getInstance();
+        await backupService.triggerManual返回up();
+        res.status(状态Codes.OK).json({
+            message: '返回up created successfully'
         });
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error creating backup',
             error: (error as Error).message
         });
@@ -708,13 +708,13 @@ configRoute.post('/backup/trigger', [authenticateToken, requireAdmin], async (_r
 // POST - Restore from backup (admin only)
 configRoute.post('/backup/restore', [authenticateToken, requireAdmin], async (_req: Request, res: Response): Promise<void> => {
     try {
-        const backupService = BackupService.getInstance();
-        await backupService.restoreFromBackup();
-        res.status(StatusCodes.OK).json({
+        const backupService = 返回upService.getInstance();
+        await backupService.restoreFrom返回up();
+        res.status(状态Codes.OK).json({
             message: 'Configuration restored from backup successfully'
         });
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error restoring from backup',
             error: (error as Error).message
         });

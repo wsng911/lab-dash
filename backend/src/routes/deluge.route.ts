@@ -49,7 +49,7 @@ setInterval(async () => {
                     }
                 }
 
-                // Remove from cache regardless of logout success
+                // 移除 from cache regardless of logout success
                 delete sessions[sessionId];
                 expiredCount++;
             } catch (error) {
@@ -106,7 +106,7 @@ function getConnectionDetails(req: Request) {
     const itemId = validateItemId(req);
     const connectionInfo = getItemConnectionInfo(itemId);
     // Try different possible password field names
-    const password = connectionInfo.password || (connectionInfo as any).webPassword || (connectionInfo as any).auth?.password;
+    const password = connectionInfo.password || (connectionInfo as any).web密码 || (connectionInfo as any).auth?.password;
 
     return {
         password: password,
@@ -200,7 +200,7 @@ delugeRoute.post('/login', async (req: Request, res: Response) => {
 
         if (!password) {
             console.error('Deluge authentication failed - missing password. Ensure the password is configured for this item.');
-            res.status(400).json({ error: 'Password must be configured for this item' });
+            res.status(400).json({ error: '密码 must be configured for this item' });
             return;
         }
 
@@ -411,7 +411,7 @@ delugeRoute.get('/stats', async (req: Request, res: Response) => {
             let totalDownload = 0;
             let totalUpload = 0;
             try {
-                const sessionStatus = await axios.post(`${baseUrl}`,
+                const session状态 = await axios.post(`${baseUrl}`,
                     {
                         method: 'core.get_session_status',
                         params: [
@@ -424,8 +424,8 @@ delugeRoute.get('/stats', async (req: Request, res: Response) => {
                     });
 
                 // Extract values with fallbacks to 0
-                totalDownload = sessionStatus.data.result?.total_download || 0;
-                totalUpload = sessionStatus.data.result?.total_upload || 0;
+                totalDownload = session状态.data.result?.total_download || 0;
+                totalUpload = session状态.data.result?.total_upload || 0;
             } catch (sessionErr: any) {
                 console.error('Failed to get Deluge session totals:', sessionErr.message);
                 // Continue with zero values if this fails
@@ -612,7 +612,7 @@ delugeRoute.get('/torrents', async (req: Request, res: Response) => {
                 dlspeed: torrent.download_payload_rate,
                 upspeed: torrent.upload_payload_rate,
                 size: torrent.total_size,
-                eta: torrent.eta // Add ETA in seconds
+                eta: torrent.eta // 添加 ETA in seconds
             };
         });
 
@@ -636,7 +636,7 @@ delugeRoute.post('/logout', authenticateToken, async (req: Request, res: Respons
             // Call Deluge logout endpoint using the helper function
             await logoutDelugeSession(baseUrl, session.cookie);
 
-            // Delete the session
+            // 删除 the session
             delete sessions[sessionId];
         }
 
@@ -847,7 +847,7 @@ delugeRoute.post('/torrents/pause', authenticateToken, async (req: Request, res:
     }
 });
 
-// Delete torrent(s)
+// 删除 torrent(s)
 delugeRoute.post('/torrents/delete', authenticateToken, async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);

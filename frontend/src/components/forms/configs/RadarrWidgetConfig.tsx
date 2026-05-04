@@ -1,7 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 
 import { QueueManagementWidgetConfig } from './QueueManagementWidgetConfig';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface RadarrWidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
@@ -11,7 +11,7 @@ export const RadarrWidgetConfig: React.FC<RadarrWidgetConfigProps> = ({ formCont
     return (
         <QueueManagementWidgetConfig
             formContext={formContext}
-            serviceName='Radarr'
+            service名称='Radarr'
             defaultPort='7878'
         />
     );

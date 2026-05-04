@@ -4,8 +4,8 @@ export interface GroupItem {
     url: string;
     icon?: string;
     isWol?: boolean;
-    macAddress?: string;
-    broadcastAddress?: string;
+    mac添加ress?: string;
+    broadcast添加ress?: string;
     port?: number;
     healthUrl?: string;
     healthCheckType?: string;

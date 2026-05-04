@@ -63,7 +63,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
                         value={fontSize}
                         open={isSelectOpen}
                         onOpen={() => setIsSelectOpen(true)}
-                        onClose={() => setIsSelectOpen(false)}
+                        on关闭={() => setIsSelectOpen(false)}
                         onChange={(e) => onFontSizeChange(e.target.value as string)}
                         sx={{
                             color: 'rgba(255,255,255,0.7)',

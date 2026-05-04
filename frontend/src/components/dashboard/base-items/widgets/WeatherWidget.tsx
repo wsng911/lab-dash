@@ -45,7 +45,7 @@ const getDay = (dateString: string) => {
     }
 };
 
-const weatherDescriptions: Record<number, { description: string; icon: JSX.Element }> = {
+const weather描述s: Record<number, { description: string; icon: JSX.Element }> = {
     0: { description: 'Clear', icon: <BsSunFill style={{ fontSize: '2.4rem' }} /> },
     1: { description: 'Mostly clear', icon: <BsSunFill style={{ fontSize: '2.4rem' }}/> },
     2: { description: 'Partly cloudy', icon: <BsCloudSunFill style={{ fontSize: '2.4rem' }}/> },
@@ -75,7 +75,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
     const [forecastDays, setForecastDays] = useState(5);
     const [isFahrenheit, setIsFahrenheit] = useState(config?.temperatureUnit !== 'celsius');
     const [openTooltipIndex, setOpenTooltipIndex] = useState<number | null>(null);
-    const [locationName, setLocationName] = useState<string | null>(null);
+    const [location名称, setLocation名称] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const timerRef = useRef<number | null>(null);
     const locationSet = useRef(false);
@@ -100,7 +100,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
             });
 
             if (config.location.name) {
-                setLocationName(config.location.name);
+                setLocation名称(config.location.name);
             }
 
             locationSet.current = true;
@@ -118,7 +118,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
                 clearInterval(timerRef.current);
                 timerRef.current = null;
             }
-            // Cancel any ongoing requests when config changes
+            // 取消 any ongoing requests when config changes
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
                 abortControllerRef.current = null;
@@ -159,7 +159,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
                 return;
             }
 
-            // Add a small delay to prevent rapid successive requests
+            // 添加 a small delay to prevent rapid successive requests
             await new Promise(resolve => setTimeout(resolve, 100));
 
             // Check again after delay
@@ -222,12 +222,12 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
         // Set up interval for periodic refresh
         timerRef.current = window.setInterval(() => {
             if (isComponentMounted) {
-                // Cancel any existing request before making a new one
+                // 取消 any existing request before making a new one
                 if (abortControllerRef.current) {
                     abortControllerRef.current.abort();
                 }
 
-                // Create a new abort controller for the interval request
+                // 创建 a new abort controller for the interval request
                 abortControllerRef.current = new AbortController();
                 fetchWeather(abortControllerRef.current.signal);
             }
@@ -235,7 +235,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
 
         return () => {
             isComponentMounted = false;
-            // Cancel any ongoing requests
+            // 取消 any ongoing requests
             abortController.abort();
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
@@ -250,11 +250,11 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
 
     const convertTemperature = (temp: number) => (isFahrenheit ? Math.round((temp * 9) / 5 + 32) : Math.round(temp));
 
-    const renderLocationName = () => {
-        if (!locationName) return null;
+    const renderLocation名称 = () => {
+        if (!location名称) return null;
 
         // Parse location parts from the full name
-        const locationParts = locationName.split(',').map(part => part.trim());
+        const locationParts = location名称.split(',').map(part => part.trim());
 
         // Check if the first part is a US zip code (5 digits)
         const isZipCodeFirst = /^\d{5}$/.test(locationParts[0]);
@@ -320,9 +320,9 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
 
     const renderCurrentWeatherItem = () => {
         return weatherData &&
-        <Box mt={locationName ? 3 : 0.5} mb={1}>
+        <Box mt={location名称 ? 3 : 0.5} mb={1}>
             <Box sx={styles.center}>
-                <Box>{weatherDescriptions[weatherData?.current?.weathercode]?.icon}</Box>
+                <Box>{weather描述s[weatherData?.current?.weathercode]?.icon}</Box>
                 <Box ml={1} sx={{ fontSize: '1.4rem' }}>{convertTemperature(weatherData.current?.temperature_2m)}°{isFahrenheit ? 'F' : 'C'}</Box>
             </Box>
         </Box>;
@@ -331,7 +331,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
     const renderWeatherItem = () => {
         return weatherData && Array.from({ length: forecastDays }, (_, index) => {
             const weatherCode = weatherData.daily?.weathercode[index];
-            const weatherInfo = weatherDescriptions[weatherCode] || { description: 'Unknown', icon: <BsCloudSunFill style={{ fontSize: '2.4rem' }} /> };
+            const weatherInfo = weather描述s[weatherCode] || { description: 'Unknown', icon: <BsCloudSunFill style={{ fontSize: '2.4rem' }} /> };
             const date = new Date(weatherData.daily?.time[index]).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
             const sunrise = weatherData.daily?.sunrise[index] || 'N/A';
             const sunset = weatherData.daily?.sunset[index] || 'N/A';
@@ -369,7 +369,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
                             </Box>
                         }
                         open={openTooltipIndex === index}
-                        onClose={() => setOpenTooltipIndex(null)}
+                        on关闭={() => setOpenTooltipIndex(null)}
                         placement='bottom'
                         arrow
                         disableFocusListener
@@ -466,8 +466,8 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ config }) => {
                 </Box>
             ) : weatherData ? (
                 <Grid sx={{ width: '100%' }}>
-                    {/* Location Name */}
-                    {renderLocationName()}
+                    {/* Location 名称 */}
+                    {renderLocation名称()}
                     {/* 1 Day */}
                     {renderCurrentWeatherItem()}
                     {/* 5 Day */}

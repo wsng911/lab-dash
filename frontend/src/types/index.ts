@@ -52,7 +52,7 @@ export type NewItem = {
         healthCheckType?: string;
         // Security flags for sensitive data
         _hasApiToken?: boolean;
-        _hasPassword?: boolean;
+        _has密码?: boolean;
         [key: string]: any;
     };
 }
@@ -64,7 +64,7 @@ export type Icon = {
     guidelines?: string;
 }
 
-export type SearchProvider = {
+export type 搜索Provider = {
     name: string;
     url: string;
 }
@@ -74,21 +74,21 @@ export type Page = {
     name: string;
     adminOnly?: boolean;
     layout: {
-        desktop: DashboardItem[];
-        mobile: DashboardItem[];
+        desktop: 仪表盘Item[];
+        mobile: 仪表盘Item[];
     };
 }
 
 export type Config = {
     layout: {
-        desktop: DashboardItem[];
-        mobile: DashboardItem[];
+        desktop: 仪表盘Item[];
+        mobile: 仪表盘Item[];
     },
     pages?: Page[];
     title?: string;
     backgroundImage?: string;
     search?: boolean;
-    searchProvider?: SearchProvider;
+    searchProvider?: 搜索Provider;
     showInternetIndicator?: boolean;
     showIP?: boolean;
     ipDisplayType?: 'wan' | 'lan' | 'both';
@@ -103,14 +103,14 @@ export type UploadImageResponse = {
     filePath: string;
 }
 
-export type DashboardLayout = {
+export type 仪表盘Layout = {
     layout: {
-        desktop: DashboardItem[];
-        mobile: DashboardItem[];
+        desktop: 仪表盘Item[];
+        mobile: 仪表盘Item[];
     }
 }
 
-export type DashboardItem = {
+export type 仪表盘Item = {
     id: string;
     label: string;
     type: string;
@@ -124,7 +124,7 @@ export type DashboardItem = {
         healthCheckType?: string;
         // Security flags for sensitive data
         _hasApiToken?: boolean;
-        _hasPassword?: boolean;
+        _has密码?: boolean;
         [key: string]: any;
     };
 };

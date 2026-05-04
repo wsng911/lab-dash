@@ -1,13 +1,13 @@
 import { FormValues } from './types';
 import { DashApi } from '../../../api/dash-api';
-import { DashboardItem, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE } from '../../../types';
+import { 仪表盘Item, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE } from '../../../types';
 import { isEncrypted } from '../../../utils/utils';
 
 // Helper function to create widget configuration based on widget type
 export const createWidgetConfig = async (
     widgetType: string,
     data: FormValues,
-    existingItem?: DashboardItem | null,
+    existingItem?: 仪表盘Item | null,
     formContext?: any
 ): Promise<any> => {
     if (widgetType === ITEM_TYPE.WEATHER_WIDGET) {
@@ -56,10 +56,10 @@ export const createWidgetConfig = async (
             gauges: [data.gauge1, data.gauge2, data.gauge3],
             showDiskUsage: data.showDiskUsage !== false, // Default to true
             showSystemInfo: data.showSystemInfo !== false, // Default to true
-            showInternetStatus: data.showInternetStatus !== false // Default to true
+            showInternet状态: data.showInternet状态 !== false // Default to true
         };
 
-        // Add network interface to config if a network gauge is included
+        // 添加 network interface to config if a network gauge is included
         if ([data.gauge1, data.gauge2, data.gauge3].includes('network') && data.networkInterface) {
             (config as any).networkInterface = data.networkInterface;
         }
@@ -70,32 +70,32 @@ export const createWidgetConfig = async (
             selectedDisks: data.selectedDisks,
             showIcons: data.showIcons,
             showMountPath: data.showMountPath,
-            showName: data.showName,
+            show名称: data.show名称,
             layout: data.layout
         });
 
         // Validate that at least one disk is selected
         if (!data.selectedDisks || !Array.isArray(data.selectedDisks) || data.selectedDisks.length === 0) {
-            throw new Error('At least one disk must be selected for the Disk Monitor widget');
+            throw new Error('At least one disk must be selected for the Disk 监控 widget');
         }
 
         return {
             selectedDisks: data.selectedDisks || [],
             showIcons: data.showIcons !== false,
-            showName: data.showName !== false,
+            show名称: data.show名称 !== false,
             layout: data.layout || '2x2'
         };
     } else if (widgetType === ITEM_TYPE.PIHOLE_WIDGET) {
         // Handle masked values - only encrypt if not masked
         let encryptedToken = '';
-        let encryptedPassword = '';
+        let encrypted密码 = '';
         let hasExistingApiToken = false;
-        let hasExistingPassword = false;
+        let hasExisting密码 = false;
 
         // Check if we're editing an existing item with sensitive data
         if (existingItem?.config) {
             hasExistingApiToken = !!existingItem.config._hasApiToken;
-            hasExistingPassword = !!existingItem.config._hasPassword;
+            hasExisting密码 = !!existingItem.config._has密码;
         }
 
         // Only process API token if it's not the masked value
@@ -112,15 +112,15 @@ export const createWidgetConfig = async (
         }
 
         // Only process password if it's not the masked value
-        if (data.piholePassword && data.piholePassword !== '**********') {
-            if (!isEncrypted(data.piholePassword)) {
+        if (data.pihole密码 && data.pihole密码 !== '**********') {
+            if (!isEncrypted(data.pihole密码)) {
                 try {
-                    encryptedPassword = await DashApi.encryptPiholePassword(data.piholePassword);
+                    encrypted密码 = await DashApi.encryptPihole密码(data.pihole密码);
                 } catch (error) {
                     console.error('Error encrypting Pi-hole password:', error);
                 }
             } else {
-                encryptedPassword = data.piholePassword;
+                encrypted密码 = data.pihole密码;
             }
         }
 
@@ -129,61 +129,61 @@ export const createWidgetConfig = async (
             port: data.piholePort,
             ssl: data.piholeSsl,
             showLabel: data.showLabel,
-            displayName: data.piholeName || 'Pi-hole'
+            display名称: data.pihole名称 || 'Pi-hole'
         };
 
         // Include sensitive fields if they were actually changed (not masked)
         if (encryptedToken) {
             return { ...baseConfig, apiToken: encryptedToken };
-        } else if (encryptedPassword) {
-            return { ...baseConfig, password: encryptedPassword };
+        } else if (encrypted密码) {
+            return { ...baseConfig, password: encrypted密码 };
         } else {
             // If no new sensitive data provided, include security flags for existing data
             const config: any = { ...baseConfig };
             if (hasExistingApiToken) {
                 config._hasApiToken = true;
             }
-            if (hasExistingPassword) {
-                config._hasPassword = true;
+            if (hasExisting密码) {
+                config._has密码 = true;
             }
             return config;
         }
     } else if (widgetType === ITEM_TYPE.ADGUARD_WIDGET) {
         // Handle masked values - only encrypt if not masked
-        let encryptedUsername = '';
-        let encryptedPassword = '';
-        let hasExistingUsername = false;
-        let hasExistingPassword = false;
+        let encrypted用户名 = '';
+        let encrypted密码 = '';
+        let hasExisting用户名 = false;
+        let hasExisting密码 = false;
 
         // Check if we're editing an existing item with sensitive data
         if (existingItem?.config) {
-            hasExistingUsername = !!existingItem.config._hasUsername;
-            hasExistingPassword = !!existingItem.config._hasPassword;
+            hasExisting用户名 = !!existingItem.config._has用户名;
+            hasExisting密码 = !!existingItem.config._has密码;
         }
 
         // Only process username if it's not the masked value
-        if (data.adguardUsername && data.adguardUsername !== '**********') {
-            if (!isEncrypted(data.adguardUsername)) {
+        if (data.adguard用户名 && data.adguard用户名 !== '**********') {
+            if (!isEncrypted(data.adguard用户名)) {
                 try {
-                    encryptedUsername = await DashApi.encryptAdGuardUsername(data.adguardUsername);
+                    encrypted用户名 = await DashApi.encryptAdGuard用户名(data.adguard用户名);
                 } catch (error) {
                     console.error('Error encrypting AdGuard username:', error);
                 }
             } else {
-                encryptedUsername = data.adguardUsername;
+                encrypted用户名 = data.adguard用户名;
             }
         }
 
         // Only process password if it's not the masked value
-        if (data.adguardPassword && data.adguardPassword !== '**********') {
-            if (!isEncrypted(data.adguardPassword)) {
+        if (data.adguard密码 && data.adguard密码 !== '**********') {
+            if (!isEncrypted(data.adguard密码)) {
                 try {
-                    encryptedPassword = await DashApi.encryptAdGuardPassword(data.adguardPassword);
+                    encrypted密码 = await DashApi.encryptAdGuard密码(data.adguard密码);
                 } catch (error) {
                     console.error('Error encrypting AdGuard password:', error);
                 }
             } else {
-                encryptedPassword = data.adguardPassword;
+                encrypted密码 = data.adguard密码;
             }
         }
 
@@ -192,51 +192,51 @@ export const createWidgetConfig = async (
             port: data.adguardPort,
             ssl: data.adguardSsl,
             showLabel: data.showLabel,
-            displayName: data.adguardName || 'AdGuard Home'
+            display名称: data.adguard名称 || 'AdGuard Home'
         };
 
         // Include sensitive fields if they were actually changed (not masked)
-        if (encryptedUsername && encryptedPassword) {
+        if (encrypted用户名 && encrypted密码) {
             return {
                 ...baseConfig,
-                username: encryptedUsername,
-                password: encryptedPassword
+                username: encrypted用户名,
+                password: encrypted密码
             };
         } else {
             const config: any = { ...baseConfig };
             // If we have existing credentials but no new ones provided, set the flags
-            if (hasExistingUsername) {
-                config._hasUsername = true;
+            if (hasExisting用户名) {
+                config._has用户名 = true;
             }
-            if (hasExistingPassword) {
-                config._hasPassword = true;
+            if (hasExisting密码) {
+                config._has密码 = true;
             }
             return config;
         }
     } else if (widgetType === ITEM_TYPE.DOWNLOAD_CLIENT) {
         // Download client widget - use tc* fields for all client types
-        let encryptedPassword = '';
-        let hasExistingPassword = false;
+        let encrypted密码 = '';
+        let hasExisting密码 = false;
 
         // Check if we're editing an existing item with a password
         if (existingItem?.config) {
-            hasExistingPassword = !!existingItem.config._hasPassword;
+            hasExisting密码 = !!existingItem.config._has密码;
         }
 
         // Only process password if it's not the masked value
-        if (data.tcPassword && data.tcPassword !== '**********') {
-            if (!isEncrypted(data.tcPassword)) {
+        if (data.tc密码 && data.tc密码 !== '**********') {
+            if (!isEncrypted(data.tc密码)) {
                 try {
                     if (data.torrentClientType === DOWNLOAD_CLIENT_TYPE.SABNZBD) {
-                        encryptedPassword = await DashApi.encryptSabnzbdPassword(data.tcPassword);
+                        encrypted密码 = await DashApi.encryptSabnzbd密码(data.tc密码);
                     } else {
-                        encryptedPassword = await DashApi.encryptPassword(data.tcPassword);
+                        encrypted密码 = await DashApi.encrypt密码(data.tc密码);
                     }
                 } catch (error) {
                     console.error('Error encrypting download client password:', error);
                 }
             } else {
-                encryptedPassword = data.tcPassword;
+                encrypted密码 = data.tc密码;
             }
         }
 
@@ -249,16 +249,16 @@ export const createWidgetConfig = async (
         };
 
         // Include username for clients that need it (not SABnzbd)
-        if (data.torrentClientType !== DOWNLOAD_CLIENT_TYPE.SABNZBD && data.tcUsername) {
-            config.username = data.tcUsername;
+        if (data.torrentClientType !== DOWNLOAD_CLIENT_TYPE.SABNZBD && data.tc用户名) {
+            config.username = data.tc用户名;
         }
 
         // Include password if it was actually changed (not masked)
-        if (encryptedPassword) {
-            config.password = encryptedPassword;
-        } else if (hasExistingPassword) {
+        if (encrypted密码) {
+            config.password = encrypted密码;
+        } else if (hasExisting密码) {
             // If we have an existing password but no new password provided, set the flag
-            config._hasPassword = true;
+            config._has密码 = true;
         }
 
         return config;
@@ -266,7 +266,7 @@ export const createWidgetConfig = async (
         // Media server widget - use ms* fields for all server types
         const config: any = {
             clientType: data.mediaServerType || 'jellyfin',
-            displayName: data.mediaServerName || '',
+            display名称: data.mediaServer名称 || '',
             host: data.msHost || '',
             port: data.msPort || '8096',
             ssl: data.msSsl || false,
@@ -281,7 +281,7 @@ export const createWidgetConfig = async (
             // API key was changed - encrypt and include it
             if (!isEncrypted(data.msApiKey)) {
                 try {
-                    const encryptedApiKey = await DashApi.encryptPassword(data.msApiKey);
+                    const encryptedApiKey = await DashApi.encrypt密码(data.msApiKey);
                     config.apiKey = encryptedApiKey;
                 } catch (error) {
                     console.error('Error encrypting media server API key:', error);
@@ -296,7 +296,7 @@ export const createWidgetConfig = async (
         // Media request manager widget configuration
         const config: any = {
             service: data.mediaRequestManagerService || 'jellyseerr',
-            displayName: data.mediaRequestManagerName || (data.mediaRequestManagerService === 'jellyseerr' ? 'Jellyseerr' : 'Overseerr'),
+            display名称: data.mediaRequestManager名称 || (data.mediaRequestManagerService === 'jellyseerr' ? 'Jellyseerr' : 'Overseerr'),
             host: data.mediaRequestManagerHost || '',
             port: data.mediaRequestManagerPort || '5055',
             ssl: data.mediaRequestManagerSsl || false,
@@ -311,7 +311,7 @@ export const createWidgetConfig = async (
             // API key was changed - encrypt and include it
             if (!isEncrypted(data.mediaRequestManagerApiKey)) {
                 try {
-                    const encryptedApiKey = await DashApi.encryptPassword(data.mediaRequestManagerApiKey);
+                    const encryptedApiKey = await DashApi.encrypt密码(data.mediaRequestManagerApiKey);
                     config.apiKey = encryptedApiKey;
                 } catch (error) {
                     console.error('Error encrypting media request manager API key:', error);
@@ -325,7 +325,7 @@ export const createWidgetConfig = async (
     } else if (widgetType === ITEM_TYPE.SONARR_WIDGET) {
         // Sonarr widget configuration
         const config: any = {
-            displayName: data.sonarrName || 'Sonarr',
+            display名称: data.sonarr名称 || 'Sonarr',
             host: data.sonarrHost || '',
             port: data.sonarrPort || '8989',
             ssl: data.sonarrSsl || false,
@@ -341,7 +341,7 @@ export const createWidgetConfig = async (
             // API key was changed - encrypt and include it
             if (!isEncrypted(data.sonarrApiKey)) {
                 try {
-                    const encryptedApiKey = await DashApi.encryptPassword(data.sonarrApiKey);
+                    const encryptedApiKey = await DashApi.encrypt密码(data.sonarrApiKey);
                     config.apiKey = encryptedApiKey;
                 } catch (error) {
                     console.error('Error encrypting Sonarr API key:', error);
@@ -355,7 +355,7 @@ export const createWidgetConfig = async (
     } else if (widgetType === ITEM_TYPE.RADARR_WIDGET) {
         // Radarr widget configuration
         const config: any = {
-            displayName: data.radarrName || 'Radarr',
+            display名称: data.radarr名称 || 'Radarr',
             host: data.radarrHost || '',
             port: data.radarrPort || '7878',
             ssl: data.radarrSsl || false,
@@ -371,7 +371,7 @@ export const createWidgetConfig = async (
             // API key was changed - encrypt and include it
             if (!isEncrypted(data.radarrApiKey)) {
                 try {
-                    const encryptedApiKey = await DashApi.encryptPassword(data.radarrApiKey);
+                    const encryptedApiKey = await DashApi.encrypt密码(data.radarrApiKey);
                     config.apiKey = encryptedApiKey;
                 } catch (error) {
                     console.error('Error encrypting Radarr API key:', error);
@@ -405,7 +405,7 @@ export const createWidgetConfig = async (
                 }
             }
 
-            // Create custom data objects for top and bottom widgets with proper field mapping
+            // 创建 custom data objects for top and bottom widgets with proper field mapping
             const topWidgetData = {
                 ...data,
                 // Map position-specific fields to standard fields for the createWidgetConfig function
@@ -421,14 +421,14 @@ export const createWidgetConfig = async (
                 piholePort: data.top_piholePort,
                 piholeSsl: data.top_piholeSsl,
                 piholeApiToken: data.top_piholeApiToken,
-                piholePassword: data.top_piholePassword,
-                piholeName: data.top_piholeName,
+                pihole密码: data.top_pihole密码,
+                pihole名称: data.top_pihole名称,
                 adguardHost: data.top_adguardHost,
                 adguardPort: data.top_adguardPort,
                 adguardSsl: data.top_adguardSsl,
-                adguardUsername: data.top_adguardUsername,
-                adguardPassword: data.top_adguardPassword,
-                adguardName: data.top_adguardName,
+                adguard用户名: data.top_adguard用户名,
+                adguard密码: data.top_adguard密码,
+                adguard名称: data.top_adguard名称,
                 showLabel: data.top_showLabel
             };
 
@@ -447,14 +447,14 @@ export const createWidgetConfig = async (
                 piholePort: data.bottom_piholePort,
                 piholeSsl: data.bottom_piholeSsl,
                 piholeApiToken: data.bottom_piholeApiToken,
-                piholePassword: data.bottom_piholePassword,
-                piholeName: data.bottom_piholeName,
+                pihole密码: data.bottom_pihole密码,
+                pihole名称: data.bottom_pihole名称,
                 adguardHost: data.bottom_adguardHost,
                 adguardPort: data.bottom_adguardPort,
                 adguardSsl: data.bottom_adguardSsl,
-                adguardUsername: data.bottom_adguardUsername,
-                adguardPassword: data.bottom_adguardPassword,
-                adguardName: data.bottom_adguardName,
+                adguard用户名: data.bottom_adguard用户名,
+                adguard密码: data.bottom_adguard密码,
+                adguard名称: data.bottom_adguard名称,
                 showLabel: data.bottom_showLabel
             };
 
@@ -481,7 +481,7 @@ export const createWidgetConfig = async (
     } else if (widgetType === ITEM_TYPE.NOTES_WIDGET) {
         return {
             showLabel: data.showLabel !== undefined ? data.showLabel : true,
-            displayName: data.displayName || 'Notes',
+            display名称: data.display名称 || 'Notes',
             defaultNoteFontSize: data.defaultNoteFontSize || '16px'
         };
     }

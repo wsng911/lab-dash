@@ -1,4 +1,4 @@
-import { Add, Close, List, MoreVert, Save } from '@mui/icons-material';
+import { 添加, 关闭, List, MoreVert, 保存 } from '@mui/icons-material';
 import { Box, CardContent, IconButton, Menu, MenuItem, Tab, Tabs, TextField, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FaStickyNote } from 'react-icons/fa';
@@ -27,11 +27,11 @@ interface Note {
 interface NotesWidgetProps {
     config?: {
         showLabel?: boolean;
-        displayName?: string;
+        display名称?: string;
         defaultNoteFontSize?: string;
     };
-    onEdit?: () => void;
-    onDelete?: () => void;
+    on编辑?: () => void;
+    on删除?: () => void;
 }
 
 export const NotesWidget = ({ config }: NotesWidgetProps) => {
@@ -40,13 +40,13 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
     const [error, setError] = useState<string | null>(null);
     const [viewMode, setViewMode] = useState<'list' | 'view' | 'edit'>('list');
     const [selectedNote, setSelectedNote] = useState<Note | null>(null);
-    const [editTitle, setEditTitle] = useState('');
-    const [editContent, setEditContent] = useState('');
+    const [editTitle, set编辑Title] = useState('');
+    const [editContent, set编辑Content] = useState('');
     const [isNewNote, setIsNewNote] = useState(false);
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isEditingInModal, setIsEditingInModal] = useState(false);
-    const [editTab, setEditTab] = useState<'write' | 'preview'>('write'); // New tab state
+    const [is编辑ingInModal, setIs编辑ingInModal] = useState(false);
+    const [editTab, set编辑Tab] = useState<'write' | 'preview'>('write'); // New tab state
     const [fontSize, setFontSize] = useState('16px'); // Font size state
     const [originalFontSize, setOriginalFontSize] = useState('16px'); // Original font size before editing
 
@@ -77,7 +77,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
             suffix
         );
 
-        setEditContent(newText);
+        set编辑Content(newText);
 
         // Set selection after the component re-renders
         setTimeout(() => {
@@ -114,7 +114,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
     };
 
     const showLabel = config?.showLabel !== false;
-    const displayName = config?.displayName || 'Notes';
+    const display名称 = config?.display名称 || 'Notes';
 
     const fetchNotes = useCallback(async () => {
         try {
@@ -140,25 +140,25 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
 
     const handleNoteClick = (note: Note) => {
         setSelectedNote(note);
-        setEditTitle(note.title);
-        setEditContent(note.content);
+        set编辑Title(note.title);
+        set编辑Content(note.content);
         setFontSize(note.fontSize || config?.defaultNoteFontSize || '16px');
         setViewMode('view');
         setIsNewNote(false);
     };
 
-    const handleEditClick = () => {
+    const handle编辑Click = () => {
         setOriginalFontSize(fontSize);
 
         if (isModalOpen) {
             // If modal is open, edit in modal
-            setIsEditingInModal(true);
+            setIs编辑ingInModal(true);
         } else {
             // If not in modal, edit in widget
             setViewMode('edit');
             setIsModalOpen(false);
         }
-        setEditTab('write'); // Default to write tab
+        set编辑Tab('write'); // Default to write tab
         setMenuAnchorEl(null);
     };
 
@@ -177,15 +177,15 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
 
     const handleNewNote = () => {
         setSelectedNote(null);
-        setEditTitle('');
-        setEditContent('');
+        set编辑Title('');
+        set编辑Content('');
         setFontSize(config?.defaultNoteFontSize || '16px');
         setViewMode('edit');
         setIsNewNote(true);
-        setEditTab('write');
+        set编辑Tab('write');
     };
 
-    const handleSave = async () => {
+    const handle保存 = async () => {
         try {
             if (!editTitle.trim()) {
                 setError('Title is required');
@@ -211,9 +211,9 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                 ));
             }
 
-            if (isEditingInModal) {
+            if (is编辑ingInModal) {
                 // If editing in modal, stay in modal view mode
-                setIsEditingInModal(false);
+                setIs编辑ingInModal(false);
             } else {
                 // If editing in widget, go to widget view mode
                 setViewMode('view');
@@ -227,23 +227,23 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
         }
     };
 
-    const handleDeleteNote = async (noteId: string) => {
+    const handle删除Note = async (noteId: string) => {
         if (!selectedNote) return;
 
-        PopupManager.deleteConfirmation({
-            title: 'Delete Note',
+        PopupManager.delete确认ation({
+            title: '删除 Note',
             text: `Are you sure you want to delete "${selectedNote.title}"?`,
-            confirmText: 'Yes, Delete',
+            confirmText: 'Yes, 删除',
             confirmAction: async () => {
                 try {
                     await DashApi.deleteNote(noteId);
                     setNotes(prev => prev.filter(note => note.id !== noteId));
                     setViewMode('list');
                     setSelectedNote(null);
-                    // Close modal if it's open
+                    // 关闭 modal if it's open
                     if (isModalOpen) {
                         setIsModalOpen(false);
-                        setIsEditingInModal(false);
+                        setIs编辑ingInModal(false);
                     }
                 } catch (err) {
                     console.error('Error deleting note:', err);
@@ -254,7 +254,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
         setMenuAnchorEl(null);
     };
 
-    const handleCancel = () => {
+    const handle取消 = () => {
         if (isNewNote) {
             // If creating a new note, go back to list
             setViewMode('list');
@@ -263,15 +263,15 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
             setFontSize(config?.defaultNoteFontSize || '16px'); // Reset to default font size
         } else if (selectedNote) {
             // If editing existing note, revert changes and go back to view mode
-            setEditTitle(selectedNote.title);
-            setEditContent(selectedNote.content);
+            set编辑Title(selectedNote.title);
+            set编辑Content(selectedNote.content);
             setFontSize(originalFontSize); // Restore original font size
             setViewMode('view');
         }
 
         // Clear edit state if in modal
-        if (isEditingInModal) {
-            setIsEditingInModal(false);
+        if (is编辑ingInModal) {
+            setIs编辑ingInModal(false);
         }
     };
 
@@ -279,7 +279,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
         setMenuAnchorEl(event.currentTarget);
     };
 
-    const handleMenuClose = () => {
+    const handleMenu关闭 = () => {
         setMenuAnchorEl(null);
     };
 
@@ -287,9 +287,9 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
         setIsModalOpen(true);
     };
 
-    const handleCloseModal = () => {
+    const handle关闭Modal = () => {
         setIsModalOpen(false);
-        setIsEditingInModal(false);
+        setIs编辑ingInModal(false);
     };
 
     const formatDate = (dateString: string) => {
@@ -405,7 +405,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                     flexShrink: 0
                 }}>
                     <Typography
-                        onClick={isLoggedIn && isAdmin && !editMode ? handleEditClick : undefined}
+                        onClick={isLoggedIn && isAdmin && !editMode ? handle编辑Click : undefined}
                         sx={{
                             color: 'white',
                             fontSize: isMobile ? '1.75rem' : '2rem',
@@ -463,7 +463,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
 
                 {/* Content */}
                 <Box
-                    onClick={isLoggedIn && isAdmin && !editMode ? handleEditClick : undefined}
+                    onClick={isLoggedIn && isAdmin && !editMode ? handle编辑Click : undefined}
                     sx={{
                         flex: 1,
                         overflow: 'auto',
@@ -503,7 +503,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                         variant='outlined'
                         placeholder='Note title...'
                         value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
+                        onChange={(e) => set编辑Title(e.target.value)}
                         sx={{
                             mb: 0.5,
                             '& .MuiOutlinedInput-root': {
@@ -542,7 +542,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                             }}>
                                 <Tabs
                                     value={editTab}
-                                    onChange={(_, newValue) => setEditTab(newValue)}
+                                    onChange={(_, newValue) => set编辑Tab(newValue)}
                                     sx={{
                                         minHeight: '32px',
                                         minWidth: 'auto',
@@ -601,7 +601,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                         }}>
                             <Tabs
                                 value={editTab}
-                                onChange={(_, newValue) => setEditTab(newValue)}
+                                onChange={(_, newValue) => set编辑Tab(newValue)}
                                 sx={{
                                     minHeight: '32px',
                                     minWidth: 'auto',
@@ -651,7 +651,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                 fullWidth
                                 multiline
                                 value={editContent}
-                                onChange={(e) => setEditContent(e.target.value)}
+                                onChange={(e) => set编辑Content(e.target.value)}
                                 placeholder='Write your note in markdown...'
                                 variant='outlined'
                                 inputRef={textAreaRef}
@@ -711,10 +711,10 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                         mt: 1,
                         flexShrink: 0,
                     }}>
-                        <ConditionalTooltip title='Cancel'>
+                        <ConditionalTooltip title='取消'>
                             <IconButton
                                 size='small'
-                                onClick={handleCancel}
+                                onClick={handle取消}
                                 sx={{
                                     color: 'white',
                                     opacity: 0.8,
@@ -726,13 +726,13 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                     }
                                 }}
                             >
-                                <Close fontSize='small' />
+                                <关闭 fontSize='small' />
                             </IconButton>
                         </ConditionalTooltip>
-                        <ConditionalTooltip title='Save note'>
+                        <ConditionalTooltip title='保存 note'>
                             <IconButton
                                 size='small'
-                                onClick={handleSave}
+                                onClick={handle保存}
                                 sx={{
                                     color: 'white',
                                     opacity: 0.8,
@@ -743,7 +743,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                     }
                                 }}
                             >
-                                <Save fontSize='small' />
+                                <保存 fontSize='small' />
                             </IconButton>
                         </ConditionalTooltip>
                     </Box>
@@ -798,7 +798,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                 variant={isMobile ? 'subtitle1' : 'h6'}
                                 sx={{ color: 'white' }}
                             >
-                                {displayName}
+                                {display名称}
                             </Typography>
                         </Box>
                     )}
@@ -812,7 +812,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                         onClick={handleNewNote}
                                         sx={{ color: 'white', opacity: 0.8, '&:hover': { opacity: 1 } }}
                                     >
-                                        <Add fontSize='medium' />
+                                        <添加 fontSize='medium' />
                                     </IconButton>
                                 </ConditionalTooltip>
                             ) : (
@@ -820,7 +820,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                     size='small'
                                     sx={{ opacity: 0, cursor: 'default', pointerEvents: 'none' }}
                                 >
-                                    <Add fontSize='medium' />
+                                    <添加 fontSize='medium' />
                                 </IconButton>
                             )}
                             {viewMode === 'view' && (
@@ -835,13 +835,13 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                 </ConditionalTooltip>
                             )}
                             {viewMode === 'edit' && (
-                                <ConditionalTooltip title='Cancel'>
+                                <ConditionalTooltip title='取消'>
                                     <IconButton
                                         size='small'
-                                        onClick={handleCancel}
+                                        onClick={handle取消}
                                         sx={{ color: 'white', opacity: 0.8, '&:hover': { opacity: 1 } }}
                                     >
-                                        <Close fontSize='medium' />
+                                        <关闭 fontSize='medium' />
                                     </IconButton>
                                 </ConditionalTooltip>
                             )}
@@ -951,19 +951,19 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
             {/* Modal for viewing note in centered popup */}
             <CenteredModal
                 open={isModalOpen}
-                handleClose={handleCloseModal}
-                title={isEditingInModal ? 'Edit Note' : 'Note'}
+                handle关闭={handle关闭Modal}
+                title={is编辑ingInModal ? '编辑 Note' : 'Note'}
                 fullWidthContent={true}
                 height='80vh'
             >
-                {isEditingInModal ? (
+                {is编辑ingInModal ? (
                     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100%' }}>
                         <TextField
                             fullWidth
                             variant='outlined'
                             placeholder='Note title...'
                             value={editTitle}
-                            onChange={(e) => setEditTitle(e.target.value)}
+                            onChange={(e) => set编辑Title(e.target.value)}
                             sx={{
                                 mb: 0.5,
                                 '& .MuiOutlinedInput-root': {
@@ -998,7 +998,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                         }}>
                             <Tabs
                                 value={editTab}
-                                onChange={(_, newValue) => setEditTab(newValue)}
+                                onChange={(_, newValue) => set编辑Tab(newValue)}
                                 sx={{
                                     minHeight: '32px',
                                     minWidth: 'auto',
@@ -1047,7 +1047,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                     fullWidth
                                     multiline
                                     value={editContent}
-                                    onChange={(e) => setEditContent(e.target.value)}
+                                    onChange={(e) => set编辑Content(e.target.value)}
                                     placeholder='Write your note in markdown...'
                                     variant='outlined'
                                     inputRef={modalTextAreaRef}
@@ -1107,12 +1107,12 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                             mt: 1,
                             flexShrink: 0, // Prevent buttons from shrinking
                         }}>
-                            <ConditionalTooltip title='Cancel'>
+                            <ConditionalTooltip title='取消'>
                                 <IconButton
                                     size='small'
                                     onClick={() => {
-                                        handleCancel();
-                                        setIsEditingInModal(false);
+                                        handle取消();
+                                        setIs编辑ingInModal(false);
                                     }}
                                     sx={{
                                         color: 'white',
@@ -1125,13 +1125,13 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                         }
                                     }}
                                 >
-                                    <Close fontSize='small' />
+                                    <关闭 fontSize='small' />
                                 </IconButton>
                             </ConditionalTooltip>
-                            <ConditionalTooltip title='Save note'>
+                            <ConditionalTooltip title='保存 note'>
                                 <IconButton
                                     size='small'
-                                    onClick={handleSave}
+                                    onClick={handle保存}
                                     sx={{
                                         color: 'white',
                                         opacity: 0.8,
@@ -1142,7 +1142,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                         }
                                     }}
                                 >
-                                    <Save fontSize='small' />
+                                    <保存 fontSize='small' />
                                 </IconButton>
                             </ConditionalTooltip>
                         </Box>
@@ -1156,7 +1156,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
             <Menu
                 anchorEl={menuAnchorEl}
                 open={Boolean(menuAnchorEl)}
-                onClose={handleMenuClose}
+                on关闭={handleMenu关闭}
                 sx={{
                     '& .MuiPaper-root': {
                         bgcolor: '#2A2A2A',
@@ -1167,7 +1167,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                 }}
             >
                 <MenuItem
-                    onClick={() => selectedNote && handleDeleteNote(selectedNote.id)}
+                    onClick={() => selectedNote && handle删除Note(selectedNote.id)}
                     sx={{
                         py: 1,
                         display: 'flex',
@@ -1176,7 +1176,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                     }}
                 >
                     <FaTrashCan size={14} />
-                    Delete
+                    删除
                 </MenuItem>
             </Menu>
         </CardContent>

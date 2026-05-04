@@ -74,7 +74,7 @@ const createAppTheme = (primaryColor: string) => {
                 contrastText: '#ffffff',
             },
             action: {
-                disabledBackground: 'rgba(255, 255, 255, 0.12)',
+                disabled返回ground: 'rgba(255, 255, 255, 0.12)',
                 disabled: 'rgba(255, 255, 255, 0.5)'
             }
         },

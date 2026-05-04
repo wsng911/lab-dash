@@ -10,12 +10,12 @@ type Props = {
     id: string;
     editMode: boolean;
     isOverlay?: boolean;
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
 };
 
-export const BlankAppShortcut: React.FC<Props> = ({ id, editMode, isOverlay = false, onDelete, onEdit, onDuplicate }) => {
+export const BlankAppShortcut: React.FC<Props> = ({ id, editMode, isOverlay = false, on删除, on编辑, onDuplicate }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     return (
@@ -31,8 +31,8 @@ export const BlankAppShortcut: React.FC<Props> = ({ id, editMode, isOverlay = fa
                 visibility: isDragging ? 'hidden' : 'visible',
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate} appShortcut placeholder>
-                {/* <AppShortcut url={url} name={name} iconName={iconName} /> */}
+            <WidgetContainer editMode={editMode} id={id} on删除={on删除} on编辑={on编辑} onDuplicate={onDuplicate} appShortcut placeholder>
+                {/* <AppShortcut url={url} name={name} icon名称={icon名称} /> */}
                 <Box sx={{ width: { xs: '45%', sm: '40%', md: '55%', lg: '50%', xl: '35%' } }} />
             </WidgetContainer>
         </Grid2>

@@ -33,9 +33,9 @@ export default defineConfig({
     //                     if (topLevelFolder !== '.pnpm') {
     //                         return topLevelFolder;
     //                     }
-    //                     const scopedPackageName = modulePath.split('/')[1];
-    //                     const chunkName = scopedPackageName.split('@')[scopedPackageName.startsWith('@') ? 1 : 0];
-    //                     return chunkName;
+    //                     const scopedPackage名称 = modulePath.split('/')[1];
+    //                     const chunk名称 = scopedPackage名称.split('@')[scopedPackage名称.startsWith('@') ? 1 : 0];
+    //                     return chunk名称;
     //                 }
     //             }
     //         }

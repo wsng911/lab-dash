@@ -1,7 +1,7 @@
 import { DndContext, DragEndEvent, DragOverEvent, DragStartEvent, PointerSensor, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import AddIcon from '@mui/icons-material/Add';
+import 添加Icon from '@mui/icons-material/添加';
 import { Box, Grid2 as Grid, Typography } from '@mui/material';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import shortid from 'shortid';
@@ -16,13 +16,13 @@ interface GroupWidgetProps {
     name: string;
     items: GroupItem[];
     onItemsChange?: (items: GroupItem[]) => void;
-    onRemove?: () => void;
-    onEdit?: () => void;
+    on移除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
-    isEditing?: boolean;
+    is编辑ing?: boolean;
     onItemDragOut?: (itemId: string) => void;
-    onItemEdit?: (itemId: string) => void;
-    onItemDelete?: (itemId: string) => void;
+    onItem编辑?: (itemId: string) => void;
+    onItem删除?: (itemId: string) => void;
     onItemDuplicate?: (item: GroupItem) => void;
     isHighlighted?: boolean;
     maxItems?: number | string;
@@ -31,11 +31,11 @@ interface GroupWidgetProps {
 
 interface SortableGroupItemProps {
     item: GroupItem;
-    isEditing: boolean;
+    is编辑ing: boolean;
     groupId: string;
     onDragStart?: (id: string) => void;
-    onEdit?: (id: string) => void;
-    onDelete?: (id: string) => void;
+    on编辑?: (id: string) => void;
+    on删除?: (id: string) => void;
     onDuplicate?: () => void;
     itemSize?: 'small' | 'medium' | 'large';
 }
@@ -43,11 +43,11 @@ interface SortableGroupItemProps {
 // Component for each sortable item within the group
 const SortableGroupItem: React.FC<SortableGroupItemProps> = ({
     item,
-    isEditing,
+    is编辑ing,
     groupId,
     onDragStart,
-    onEdit,
-    onDelete,
+    on编辑,
+    on删除,
     onDuplicate,
     itemSize = 'medium'
 }) => {
@@ -70,7 +70,7 @@ const SortableGroupItem: React.FC<SortableGroupItemProps> = ({
             if (wasDragging && !isCurrentlyDragging) return false;
             return true;
         },
-        disabled: !isEditing // Only allow dragging in edit mode
+        disabled: !is编辑ing // Only allow dragging in edit mode
     });
 
     const handleDragStart = () => {
@@ -80,16 +80,16 @@ const SortableGroupItem: React.FC<SortableGroupItemProps> = ({
     };
 
     // Call the parent's edit handler directly
-    const handleEdit = () => {
-        if (onEdit) {
-            onEdit(item.id);
+    const handle编辑 = () => {
+        if (on编辑) {
+            on编辑(item.id);
         }
     };
 
     // Call the parent's delete handler directly
-    const handleDelete = () => {
-        if (onDelete) {
-            onDelete(item.id);
+    const handle删除 = () => {
+        if (on删除) {
+            on删除(item.id);
         }
     };
 
@@ -121,7 +121,7 @@ const SortableGroupItem: React.FC<SortableGroupItemProps> = ({
             sx={{
                 height: getItemHeight(),
                 width: '100%',
-                cursor: isEditing ? 'grab' : 'pointer',
+                cursor: is编辑ing ? 'grab' : 'pointer',
                 transform: transform ? CSS.Translate.toString(transform) : undefined,
                 transition,
                 opacity: isDragging ? 0.6 : 1,
@@ -137,10 +137,10 @@ const SortableGroupItem: React.FC<SortableGroupItemProps> = ({
             onDragStart={handleDragStart}
         >
             <WidgetContainer
-                editMode={isEditing}
+                editMode={is编辑ing}
                 id={item.id}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
+                on编辑={handle编辑}
+                on删除={handle删除}
                 onDuplicate={handleDuplicate}
                 appShortcut={true}
                 url={item.healthUrl || item.url}
@@ -150,14 +150,14 @@ const SortableGroupItem: React.FC<SortableGroupItemProps> = ({
                 <AppShortcut
                     url={item.url}
                     name={item.name}
-                    iconName={item.icon || ''}
+                    icon名称={item.icon || ''}
                     showLabel={item.showLabel ?? true}
-                    editMode={isEditing}
+                    editMode={is编辑ing}
                     size={itemSize}
                     config={{
                         isWol: item.isWol,
-                        macAddress: item.macAddress,
-                        broadcastAddress: item.broadcastAddress,
+                        mac添加ress: item.mac添加ress,
+                        broadcast添加ress: item.broadcast添加ress,
                         port: item.port,
                         healthUrl: item.healthUrl,
                         healthCheckType: item.healthCheckType
@@ -173,13 +173,13 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
     name,
     items = [],
     onItemsChange,
-    onRemove,
-    onEdit,
+    on移除,
+    on编辑,
     onDuplicate,
-    isEditing = false,
+    is编辑ing = false,
     onItemDragOut,
-    onItemEdit,
-    onItemDelete,
+    onItem编辑,
+    onItem删除,
     onItemDuplicate,
     isHighlighted = false,
     maxItems = 3,
@@ -189,7 +189,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
     const [isDraggingOut, setIsDraggingOut] = useState(false);
     const [isCurrentDropTarget, setIsCurrentDropTarget] = useState(false);
 
-    // Add a ref to prevent duplicate execution
+    // 添加 a ref to prevent duplicate execution
     const duplicationInProgress = useRef<Set<string>>(new Set());
 
     // Detect mobile devices
@@ -241,7 +241,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
 
     const { maxItems: MAX_ITEMS, layout } = getLayoutConfig();
 
-    const getGridSettings = () => {
+    const getGrid设置 = () => {
         if (layout === '2x3') {
             // 2x3 grid layout (6 items in 3 rows of 2 items each)
             return {
@@ -289,7 +289,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
         }
     };
 
-    const gridSettings = getGridSettings();
+    const grid设置 = getGrid设置();
 
     const { setNodeRef: setDroppableRef, isOver } = useDroppable({
         id: `group-droppable-${id}`,
@@ -307,7 +307,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
             return false;
         }
 
-        // Add some margin to consider the item "inside" the group if it's near the border
+        // 添加 some margin to consider the item "inside" the group if it's near the border
         const margin = 30; // pixels
 
         return (
@@ -334,7 +334,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
         const containerRect = groupContainer.getBoundingClientRect();
         const activeRect = active.rect.current.translated;
 
-        // Add null check for activeRect
+        // 添加 null check for activeRect
         if (!activeRect) return;
 
         // Check if the active item is clearly outside the group container
@@ -449,7 +449,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
     };
 
     // Handle item edit - Convert group item to dashboard item for edit form
-    const handleItemEdit = useCallback((itemId: string) => {
+    const handleItem编辑 = useCallback((itemId: string) => {
         // Find the item in the group
         const foundItem = items.find(item => item.id === itemId);
         if (!foundItem) {
@@ -458,16 +458,16 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
         }
 
         // Pass to parent for editing
-        if (onItemEdit) {
-            onItemEdit(itemId);
+        if (onItem编辑) {
+            onItem编辑(itemId);
         } else {
             // If no external handler, use the group's edit function
-            onEdit?.();
+            on编辑?.();
         }
-    }, [items, onItemEdit, onEdit]);
+    }, [items, onItem编辑, on编辑]);
 
     // Handle item delete with confirmation
-    const handleItemDelete = useCallback((itemId: string) => {
+    const handleItem删除 = useCallback((itemId: string) => {
         // Find the item in the group
         const foundItem = items.find(item => item.id === itemId);
         if (!foundItem) {
@@ -476,8 +476,8 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
         }
 
         // Directly call the external delete handler if available
-        if (onItemDelete) {
-            onItemDelete(itemId);
+        if (onItem删除) {
+            onItem删除(itemId);
         } else {
             // If no external handler, just update the items list
             const updatedItems = items.filter(item => item.id !== itemId);
@@ -485,7 +485,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                 onItemsChange(updatedItems);
             }
         }
-    }, [items, onItemsChange, onItemDelete]);
+    }, [items, onItemsChange, onItem删除]);
 
     // Cleanup effects for mobile
     useEffect(() => {
@@ -495,7 +495,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                 // Always restore scrolling when component unmounts or dependencies change
                 document.body.style.overflow = '';
 
-                // Remove any lingering touch event handlers more thoroughly
+                // 移除 any lingering touch event handlers more thoroughly
                 const noop = () => {};
                 document.removeEventListener('touchmove', noop);
                 document.removeEventListener('touchstart', noop);
@@ -504,7 +504,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
         };
     }, [isMobile]);
 
-    // Add handler for drag start
+    // 添加 handler for drag start
     const handleDragStart = (event: DragStartEvent) => {
         const { active } = event;
         setActiveId(active.id.toString());
@@ -537,7 +537,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
             document.addEventListener('pointerup', cleanup, { once: true });
             document.addEventListener('touchend', cleanup, { once: true });
 
-            // Add a failsafe timeout to restore scrolling
+            // 添加 a failsafe timeout to restore scrolling
             setTimeout(() => {
                 if (document.body.style.overflow === 'hidden') {
                     console.log('GroupWidget: Failsafe scroll restore triggered');
@@ -547,7 +547,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
         }
     };
 
-    // Add handler for drag over
+    // 添加 handler for drag over
     const handleDragOver = (event: DragOverEvent) => {
         // Check if something is being dragged over the group
         const { over, active } = event;
@@ -579,7 +579,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
     // Helper function to get appropriate height based on itemSize
     const getItemHeight = () => {
         // Access the string value safely
-        const itemSizeValue = String(gridSettings.itemSize);
+        const itemSizeValue = String(grid设置.itemSize);
 
         if (itemSizeValue === 'small') {
             return { xs: '75px', sm: '85px', md: '80px' };
@@ -591,10 +591,10 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
 
     return (
         <WidgetContainer
-            editMode={isEditing}
+            editMode={is编辑ing}
             id={id}
-            onEdit={onEdit}
-            onDelete={onRemove}
+            on编辑={on编辑}
+            on删除={on移除}
             onDuplicate={undefined}
             isHighlighted={isHighlighted}
             customHeight={layout === '2x3' || layout === '3x2' || layout === '4x2' ? DUAL_WIDGET_CONTAINER_HEIGHT : STANDARD_WIDGET_HEIGHT}
@@ -641,7 +641,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                                 fontWeight: 500,
                                 fontSize: '1rem',
                                 lineHeight: 1.2,
-                                height: gridSettings.titleHeight,
+                                height: grid设置.titleHeight,
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap'
@@ -683,17 +683,17 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                                         display: 'flex',
                                         justifyContent: 'center',
                                         alignItems: 'center',
-                                        maxWidth: layout === '4x2' ? 'none' : gridSettings.maxWidth,
+                                        maxWidth: layout === '4x2' ? 'none' : grid设置.maxWidth,
                                         width: '100%',
                                         height: '100%'
                                     }}
                                 >
                                     <SortableGroupItem
                                         item={item}
-                                        isEditing={isEditing}
+                                        is编辑ing={is编辑ing}
                                         groupId={id}
-                                        onEdit={handleItemEdit}
-                                        onDelete={handleItemDelete}
+                                        on编辑={handleItem编辑}
+                                        on删除={handleItem删除}
                                         onDuplicate={() => {
                                             // Prevent double execution
                                             const duplicateKey = `${id}-${item.id}`;
@@ -709,7 +709,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                                                 duplicationInProgress.current.delete(duplicateKey);
                                             }, 1000);
 
-                                            // Create a duplicate with a new ID using timestamp for uniqueness
+                                            // 创建 a duplicate with a new ID using timestamp for uniqueness
                                             const groupItemId = `group-${shortid.generate()}-${Date.now()}`;
 
                                             const duplicatedItem: GroupItem = {
@@ -724,7 +724,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                                                     onItemDuplicate(duplicatedItem);
                                                 }
                                             } else {
-                                                // Add within the group directly - bypass any external handlers
+                                                // 添加 within the group directly - bypass any external handlers
                                                 const originalIndex = items.findIndex(groupItem => groupItem.id === item.id);
                                                 const updatedItems = [...items];
                                                 updatedItems.splice(originalIndex + 1, 0, duplicatedItem);
@@ -735,20 +735,20 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                                                 }
                                             }
                                         }}
-                                        itemSize={gridSettings.itemSize}
+                                        itemSize={grid设置.itemSize}
                                     />
                                 </Box>
                             ))}
                         </SortableContext>
 
-                        {/* Add Button */}
-                        {visibleItems.length < MAX_ITEMS && isEditing && (
+                        {/* 添加 Button */}
+                        {visibleItems.length < MAX_ITEMS && is编辑ing && (
                             <Box
                                 sx={{
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    maxWidth: layout === '4x2' ? 'none' : gridSettings.maxWidth,
+                                    maxWidth: layout === '4x2' ? 'none' : grid设置.maxWidth,
                                     width: '100%',
                                     height: '100%'
                                 }}
@@ -768,9 +768,9 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                                             backgroundColor: 'rgba(255, 255, 255, 0.05)'
                                         }
                                     }}
-                                    title='Edit group to add items'
+                                    title='编辑 group to add items'
                                 >
-                                    <AddIcon fontSize='medium' />
+                                    <添加Icon fontSize='medium' />
                                 </Box>
                             </Box>
                         )}

@@ -7,7 +7,7 @@ type SabnzbdWidgetConfig = {
     host?: string;
     port?: string;
     ssl?: boolean;
-    _hasPassword?: boolean; // Security flag instead of actual password
+    _has密码?: boolean; // Security flag instead of actual password
     refreshInterval?: number;
     maxDisplayedDownloads?: number;
     showLabel?: boolean;
@@ -30,7 +30,7 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
         password: '' // API key is handled on backend, not sent to frontend
     });
 
-    // Add a counter for login attempts and a maximum number of attempts
+    // 添加 a counter for login attempts and a maximum number of attempts
     const loginAttemptsRef = useRef(0);
     const MAX_LOGIN_ATTEMPTS = 3;
 
@@ -57,7 +57,7 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
         try {
             // SABnzbd doesn't need a login process - it uses API key directly
             // But we need to validate the connection by making a test API call
-            if (!loginCredentials.host || !loginCredentials.port || !config?._hasPassword) {
+            if (!loginCredentials.host || !loginCredentials.port || !config?._has密码) {
                 // Increment attempt counter
                 loginAttemptsRef.current += 1;
 
@@ -193,7 +193,7 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
             const downloadsData = await DashApi.sabnzbdGetDownloads(id || '');
 
             // Check if an empty array was returned due to decryption error
-            if (Array.isArray(downloadsData) && downloadsData.length === 0 && config?._hasPassword) {
+            if (Array.isArray(downloadsData) && downloadsData.length === 0 && config?._has密码) {
                 // If we have credentials but get empty results, it could be a decryption error
                 // We'll handle this case by checking the auth status in the next stats fetch
                 setDownloads([]);
@@ -209,7 +209,7 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
                 size: download.size,
                 dlspeed: download.dlspeed,
                 upspeed: 0, // SABnzbd doesn't upload
-                eta: download.eta // Backend already processes timeleft into eta in seconds
+                eta: download.eta // 返回end already processes timeleft into eta in seconds
             }));
 
             // For SABnzbd, keep the original order from the API (which reflects SABnzbd's queue order)
@@ -241,12 +241,12 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
 
     // Auto-authenticate when config is available and not authenticated
     useEffect(() => {
-        if (config?._hasPassword && !isAuthenticated && !loginAttemptFailed) {
+        if (config?._has密码 && !isAuthenticated && !loginAttemptFailed) {
             handleLogin();
         }
     }, [config, handleLogin, isAuthenticated, loginAttemptFailed]);
 
-    // Add ref to track current downloads without causing re-renders
+    // 添加 ref to track current downloads without causing re-renders
     const downloadsRef = useRef<any[]>([]);
 
     // Update ref when downloads change
@@ -317,9 +317,9 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
         }
     }, [id, fetchDownloads]);
 
-    const onDeleteDownload = useCallback(async (nzoId: string, deleteFiles: boolean): Promise<boolean> => {
+    const on删除Download = useCallback(async (nzoId: string, deleteFiles: boolean): Promise<boolean> => {
         try {
-            await DashApi.sabnzbdDeleteDownload(id || '', nzoId, deleteFiles);
+            await DashApi.sabnzbd删除Download(id || '', nzoId, deleteFiles);
             // Refresh downloads list
             setTimeout(() => fetchDownloads(), 500);
             return true;
@@ -331,7 +331,7 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
 
     return (
         <DownloadClientWidget
-            clientName='SABnzbd'
+            client名称='SABnzbd'
             isLoading={isLoading}
             isAuthenticated={isAuthenticated}
             authError={authError}
@@ -343,7 +343,7 @@ export const SabnzbdWidget = (props: { config?: SabnzbdWidgetConfig; id?: string
             showLabel={config?.showLabel !== false}
             onResumeTorrent={onResumeDownload}
             onPauseTorrent={onPauseDownload}
-            onDeleteTorrent={onDeleteDownload}
+            on删除Torrent={on删除Download}
         />
     );
 };

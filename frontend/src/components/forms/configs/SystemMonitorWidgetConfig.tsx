@@ -8,7 +8,7 @@ import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
 import { ITEM_TYPE } from '../../../types';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 const TEMPERATURE_UNIT_OPTIONS = [
     { id: 'fahrenheit', label: 'Fahrenheit (°F)' },
@@ -23,11 +23,11 @@ const SYSTEM_MONITOR_GAUGE_OPTIONS = [
     { id: 'none', label: 'None' }
 ];
 
-interface SystemMonitorWidgetConfigProps {
+interface System监控WidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
 }
 
-export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetConfigProps) => {
+export const System监控WidgetConfig = ({ formContext }: System监控WidgetConfigProps) => {
     const isMobile = useIsMobile();
     const [networkInterfaces, setNetworkInterfaces] = useState<Array<{id: string, label: string}>>([]);
 
@@ -279,8 +279,8 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
 
             <Grid>
                 <CheckboxElement
-                    label='Show Internet Status'
-                    name='showInternetStatus'
+                    label='Show Internet 状态'
+                    name='showInternet状态'
                     sx={{
                         ml: 1,
                         color: 'white',

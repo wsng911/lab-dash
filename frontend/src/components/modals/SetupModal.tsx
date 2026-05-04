@@ -1,4 +1,4 @@
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { Arrow返回, ArrowForward } from '@mui/icons-material';
 import { Box, Button, Modal, Paper, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { useState } from 'react';
@@ -14,7 +14,7 @@ import { PopupManager } from '../modals/PopupManager';
 type FormValues = {
     username: string;
     password: string;
-    confirmPassword: string;
+    confirm密码: string;
 };
 
 type SetupSlide = {
@@ -29,13 +29,13 @@ type SetupModalProps = {
 
 export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
     const [activeStep, setActiveStep] = useState(0);
-    const { setIsLoggedIn, setUsername, setIsAdmin } = useAppContext();
+    const { setIsLoggedIn, set用户名, setIsAdmin } = useAppContext();
 
     const formContext = useForm<FormValues>({
         defaultValues: {
             username: '',
             password: '',
-            confirmPassword: ''
+            confirm密码: ''
         }
     });
 
@@ -43,17 +43,17 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
     const { formState } = formContext;
     const { errors } = formState;
 
-    const handleSubmit = async (data: FormValues) => {
+    const handle提交 = async (data: FormValues) => {
         try {
-            if (data.password !== data.confirmPassword) {
-                formContext.setError('confirmPassword', {
+            if (data.password !== data.confirm密码) {
+                formContext.setError('confirm密码', {
                     type: 'manual',
-                    message: 'Passwords do not match'
+                    message: '密码s do not match'
                 });
                 return;
             }
 
-            // Create the first user account
+            // 创建 the first user account
             await DashApi.signup(data.username, data.password);
 
             // Log in the user automatically
@@ -61,7 +61,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
 
             // Update auth state in context - first user is always admin
             setIsLoggedIn(true);
-            setUsername(data.username);
+            set用户名(data.username);
             setIsAdmin(loginResponse.isAdmin);
 
             // Don't refresh dashboard here - it will be refreshed after setup is complete
@@ -75,11 +75,11 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
     };
 
     const AdminAccountForm = (
-        <FormContainer onSuccess={handleSubmit} formContext={formContext}>
+        <FormContainer onSuccess={handle提交} formContext={formContext}>
             <Box sx={styles.vcenter} gap={3}>
                 <Box textAlign={'center'}>
                     <Typography variant='h6' gutterBottom align='center'>
-                        Create Administrator Account
+                        创建 Administrator Account
                     </Typography>
                     <Typography variant='body2' sx={{ mt: 1 }}>
                         This will be the first user account for your dashboard
@@ -89,15 +89,15 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                     <Box width={'100%'} sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <TextFieldElement
                             name='username'
-                            label='Username'
+                            label='用户名'
                             variant='outlined'
                             sx={{ width: { xs: '100%', md: '80%' } }}
                             required
-                            placeholder='Username'
+                            placeholder='用户名'
                             rules={{
                                 minLength: {
                                     value: 3,
-                                    message: 'Username must be at least 3 characters'
+                                    message: '用户名 must be at least 3 characters'
                                 }
                             }}
                             slotProps={{
@@ -116,16 +116,16 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                 <Box width={'100%'} sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <TextFieldElement
                         name='password'
-                        label='Password'
+                        label='密码'
                         variant='outlined'
                         sx={{ width: { xs: '100%', md: '80%' } }}
                         type='password'
-                        placeholder='Password'
+                        placeholder='密码'
                         required
                         rules={{
                             minLength: {
                                 value: 6,
-                                message: 'Password must be at least 6 characters'
+                                message: '密码 must be at least 6 characters'
                             }
                         }}
                         slotProps={{
@@ -142,15 +142,15 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                 </Box>
                 <Box width={'100%'} sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <TextFieldElement
-                        name='confirmPassword'
-                        label='Confirm Password'
+                        name='confirm密码'
+                        label='确认 密码'
                         variant='outlined'
                         sx={{ width: { xs: '100%', md: '80%' } }}
                         type='password'
-                        placeholder='Confirm Password'
+                        placeholder='确认 密码'
                         required
-                        error={!!errors.confirmPassword}
-                        helperText={errors.confirmPassword?.message}
+                        error={!!errors.confirm密码}
+                        helperText={errors.confirm密码?.message}
                         slotProps={{
                             input: {
                                 startAdornment: (
@@ -170,7 +170,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                     color='primary'
                     type={'submit'}
                 >
-                    {'Create Account & Continue'}
+                    {'创建 Account & Continue'}
                 </Button>
             </Box>
         </FormContainer>
@@ -182,7 +182,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
             content: (
                 <Box sx={styles.vcenter} p={2}>
                     <Typography variant='h6' gutterBottom align='center'>
-                        Your Personal Dashboard
+                        Your Personal 仪表盘
                     </Typography>
                     <Typography paragraph align='center'>
                         Welcome to Lab Dash, a customizable dashboard for your lab environment.
@@ -195,11 +195,11 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
             ),
         },
         {
-            title: 'Dashboard Features',
+            title: '仪表盘 Features',
             content: (
                 <Box sx={styles.vcenter} p={2}>
                     <Typography variant='h6' gutterBottom align='center'>
-                        Powerful Dashboard Tools
+                        Powerful 仪表盘 Tools
                     </Typography>
                     <Typography paragraph align='center'>
                         Lab Dash features a customizable grid layout where you can add various widgets:
@@ -226,7 +226,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', pl: 4 }}>
                         <Typography>• Dragging and reordering widgets</Typography>
                         <Typography>• Changing the background image</Typography>
-                        <Typography>• Adding custom search providers</Typography>
+                        <Typography>• 添加ing custom search providers</Typography>
                         <Typography>• Importing/exporting configurations</Typography>
                     </Box>
                 </Box>
@@ -252,7 +252,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
             ),
         },
         {
-            title: 'Create Administrator Account',
+            title: '创建 Administrator Account',
             content: AdminAccountForm
         },
     ];
@@ -260,13 +260,13 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
     const handleNext = () => {
         if (activeStep === setupSlides.length - 1) {
             // If we're on the last step with the form, submit the form
-            formContext.handleSubmit(handleSubmit)();
+            formContext.handle提交(handle提交)();
         } else {
             setActiveStep((prevStep) => prevStep + 1);
         }
     };
 
-    const handleBack = () => {
+    const handle返回 = () => {
         setActiveStep((prevStep) => prevStep - 1);
     };
 
@@ -312,11 +312,11 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
                     <Button
-                        startIcon={<ArrowBack />}
-                        onClick={handleBack}
+                        startIcon={<Arrow返回 />}
+                        onClick={handle返回}
                         disabled={activeStep === 0}
                     >
-                        Back
+                        返回
                     </Button>
                     {!isLastStep && <Button
                         endIcon={isLastStep ? undefined : <ArrowForward />}

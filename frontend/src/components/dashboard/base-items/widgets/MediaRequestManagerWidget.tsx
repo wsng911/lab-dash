@@ -1,6 +1,6 @@
 import {
     CheckCircle as ApproveIcon,
-    Cancel as DeclineIcon,
+    取消 as DeclineIcon,
     Movie as MovieIcon,
     Person as PersonIcon,
     Tv as TvIcon
@@ -24,9 +24,9 @@ import {
     useMediaQuery
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { Fa搜索 } from 'react-icons/fa';
 import { FaRegThumbsDown, FaRegThumbsUp } from 'react-icons/fa6';
-import { RemoveScroll } from 'react-remove-scroll';
+import { 移除Scroll } from 'react-remove-scroll';
 
 import { DashApi } from '../../../../api/dash-api';
 import { BACKEND_URL, TWENTY_SEC_IN_MS } from '../../../../constants/constants';
@@ -45,12 +45,12 @@ export interface MediaRequestManagerWidgetProps {
     port?: string;
     ssl?: boolean;
     _hasApiKey?: boolean;
-    displayName?: string;
+    display名称?: string;
     error?: string;
     showLabel?: boolean;
 }
 
-interface SearchResult {
+interface 搜索Result {
     id: number;
     mediaType: 'movie' | 'tv';
     title?: string;
@@ -71,7 +71,7 @@ interface MediaRequest {
     status: number;
     createdAt: string;
     updatedAt: string;
-    profileName?: string;
+    profile名称?: string;
     media: {
         id: number;
         mediaType: 'movie' | 'tv';
@@ -87,7 +87,7 @@ interface MediaRequest {
     };
     requestedBy: {
         id: number;
-        displayName: string;
+        display名称: string;
         username: string;
         avatar?: string;
     };
@@ -101,17 +101,17 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
     port,
     ssl,
     _hasApiKey,
-    displayName,
+    display名称,
     error,
     showLabel
 }) => {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-    const [searchLoading, setSearchLoading] = useState(false);
+    const [searchQuery, set搜索Query] = useState('');
+    const [searchResults, set搜索Results] = useState<搜索Result[]>([]);
+    const [searchLoading, set搜索Loading] = useState(false);
     const [allRequests, setAllRequests] = useState<MediaRequest[]>([]);
     const [loading, setLoading] = useState(true);
-    const [confirmationItem, setConfirmationItem] = useState<SearchResult | null>(null);
-    const [previousSearchQuery, setPreviousSearchQuery] = useState<string>('');
+    const [confirmationItem, set确认ationItem] = useState<搜索Result | null>(null);
+    const [previous搜索Query, setPrevious搜索Query] = useState<string>('');
     const [tvShowDetails, setTvShowDetails] = useState<any>(null);
     const [selectedSeasons, setSelectedSeasons] = useState<number[]>([]);
     const [loadingTvDetails, setLoadingTvDetails] = useState(false);
@@ -120,7 +120,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { editMode, isAdmin, isLoggedIn } = useAppContext();
 
-    const serviceName = service === 'jellyseerr' ? 'Jellyseerr' : 'Overseerr';
+    const service名称 = service === 'jellyseerr' ? 'Jellyseerr' : 'Overseerr';
     // Strip any existing protocol prefix
     const cleanHost = host?.replace(/^https?:\/\//, '') || host;
     const serviceUrl = `${ssl ? 'https' : 'http'}://${cleanHost}:${port}`;
@@ -160,7 +160,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                 }
             }
 
-            // Remove duplicates based on request ID
+            // 移除 duplicates based on request ID
             const uniqueResults = (allResults || []).filter((request, index, self) =>
                 index === self.findIndex(r => r.id === request.id)
             );
@@ -176,47 +176,47 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         }
     }, [id, host, _hasApiKey]);
 
-    const handleSearch = useCallback(async (query: string) => {
+    const handle搜索 = useCallback(async (query: string) => {
         if (!query.trim() || !id || !_hasApiKey) {
-            setSearchResults([]);
+            set搜索Results([]);
             setIsDropdownOpen(false);
             return;
         }
 
-        setSearchLoading(true);
+        set搜索Loading(true);
         try {
-            const response = await DashApi.jellyseerrSearch(id, query.trim());
+            const response = await DashApi.jellyseerr搜索(id, query.trim());
             if (response.success) {
                 const results = response.data.results || [];
                 // Don't limit results, show all matches from Jellyseerr
-                setSearchResults(results);
+                set搜索Results(results);
             }
         } catch (searchError) {
-            console.error('Search error:', searchError);
-            setSearchResults([]);
+            console.error('搜索 error:', searchError);
+            set搜索Results([]);
             setIsDropdownOpen(false);
         } finally {
-            setSearchLoading(false);
+            set搜索Loading(false);
         }
     }, [id, _hasApiKey]);
 
     // Debounced search effect
     useEffect(() => {
         if (!searchQuery.trim() || searchQuery.trim().length < 2) {
-            setSearchResults([]);
+            set搜索Results([]);
             setIsDropdownOpen(false);
             return;
         }
 
         const timeoutId = setTimeout(() => {
-            handleSearch(searchQuery);
+            handle搜索(searchQuery);
         }, 250); // Reduced to 250ms for faster response
 
         return () => clearTimeout(timeoutId);
-    }, [searchQuery, handleSearch]);
+    }, [searchQuery, handle搜索]);
 
-    const handleItemClick = async (item: SearchResult) => {
-        setConfirmationItem(item);
+    const handleItemClick = async (item: 搜索Result) => {
+        set确认ationItem(item);
         setSelectedSeasons([]);
         setTvShowDetails(null);
 
@@ -242,7 +242,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
     // Helper function to check if a season should not be re-requested (has status 2, 3, 4, 5, or 6)
     const isSeasonAvailable = (season: any) => {
         // First check if the season itself has status information
-        // Status 2 = PENDING, Status 3 = PROCESSING, Status 4 = PARTIALLY_AVAILABLE, Status 5 = AVAILABLE, Status 6 = DELETED
+        // 状态 2 = PENDING, 状态 3 = PROCESSING, 状态 4 = PARTIALLY_AVAILABLE, 状态 5 = AVAILABLE, 状态 6 = DELETED
         if (season.status === 2 || season.status === 3 || season.status === 4 || season.status === 5 || season.status === 6) {
             return true;
         }
@@ -253,11 +253,11 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         }
 
         // Check if this specific season exists in the mediaInfo.seasons array
-        const seasonStatus = tvShowDetails.mediaInfo.seasons.find((s: any) => s.seasonNumber === season.seasonNumber);
+        const season状态 = tvShowDetails.mediaInfo.seasons.find((s: any) => s.seasonNumber === season.seasonNumber);
 
-        if (seasonStatus) {
+        if (season状态) {
             // Season is unavailable for re-request if it has status 2, 3, 4, 5, or 6
-            return seasonStatus.status === 2 || seasonStatus.status === 3 || seasonStatus.status === 4 || seasonStatus.status === 5 || seasonStatus.status === 6;
+            return season状态.status === 2 || season状态.status === 3 || season状态.status === 4 || season状态.status === 5 || season状态.status === 6;
         }
 
         return false;
@@ -268,7 +268,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         return seasons.filter((season: any) => season.seasonNumber > 0 && !isSeasonAvailable(season));
     };
 
-    const handleRequest = async (item: SearchResult, seasons?: number[]) => {
+    const handleRequest = async (item: 搜索Result, seasons?: number[]) => {
         if (!id || !_hasApiKey) return;
 
         try {
@@ -282,7 +282,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                 });
             }
 
-            const response = await DashApi.jellyseerrCreateRequest(
+            const response = await DashApi.jellyseerr创建Request(
                 id,
                 item.mediaType,
                 item.id.toString(),
@@ -293,8 +293,8 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                 // Refresh requests after creating one
                 fetchRequests();
                 // Clear search results and query
-                setSearchResults([]);
-                setSearchQuery('');
+                set搜索Results([]);
+                set搜索Query('');
                 setIsDropdownOpen(false);
                 ToastManager.success(`Successfully requested ${title}`);
             } else {
@@ -334,7 +334,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         const request = allRequests.find(r => r.id === requestId);
         const title = request ? getTitle(request.media) : 'Unknown';
 
-        PopupManager.deleteConfirmation({
+        PopupManager.delete确认ation({
             title: 'Decline Request',
             text: `Are you sure you want to decline the request for "${title}"?`,
             confirmText: 'Yes, Decline',
@@ -358,7 +358,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         window.open(serviceUrl, '_blank');
     };
 
-    const getStatusColor = (status: number) => {
+    const get状态Color = (status: number) => {
         switch (status) {
         case 1: return 'warning'; // Pending
         case 2: return 'success'; // Approved
@@ -370,7 +370,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         }
     };
 
-    const getStatusColorSx = (status: number) => {
+    const get状态ColorSx = (status: number) => {
         switch (status) {
         case 1: return { backgroundColor: 'warning.dark', color: 'warning.contrastText' }; // Pending
         case 2: return { backgroundColor: 'success.dark', color: 'success.contrastText' }; // Approved
@@ -382,7 +382,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         }
     };
 
-    const getStatusText = (status: number) => {
+    const get状态Text = (status: number) => {
         switch (status) {
         case 1: return 'Pending';
         case 2: return 'Approved';
@@ -390,7 +390,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         case 4: return 'Partial';
         case 5: return 'Available';
         case 6: return 'Failed';
-        default: return `Status ${status}`;
+        default: return `状态 ${status}`;
         }
     };
 
@@ -403,18 +403,18 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
         return `https://image.tmdb.org/t/p/w92${posterPath}`;
     };
 
-    const getTitle = (item: SearchResult | MediaRequest['media']) => {
+    const getTitle = (item: 搜索Result | MediaRequest['media']) => {
         return item.title || item.name || 'Unknown Title';
     };
 
-    const getReleaseYear = (item: SearchResult | MediaRequest['media']) => {
+    const getReleaseYear = (item: 搜索Result | MediaRequest['media']) => {
         const date = item.releaseDate || item.firstAirDate;
         return date ? new Date(date).getFullYear() : '';
     };
 
     const getServiceIcon = () => {
-        const iconName = service.toLowerCase();
-        return `${BACKEND_URL}/icons/${iconName}.svg`;
+        const icon名称 = service.toLowerCase();
+        return `${BACKEND_URL}/icons/${icon名称}.svg`;
     };
 
     const getUserAvatar = (user: MediaRequest['requestedBy']) => {
@@ -483,7 +483,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                 color: 'white',
                 width: '100%'
             }}>
-                {/* Title/Icon and Search Bar Section */}
+                {/* Title/Icon and 搜索 Bar Section */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: .5, width: '100%' }}>
                     {showLabel && (
                         <Box
@@ -499,7 +499,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                         >
                             <img
                                 src={getServiceIcon()}
-                                alt={serviceName}
+                                alt={service名称}
                                 style={{
                                     width: '24px',
                                     height: '24px',
@@ -511,14 +511,14 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                 }}
                             />
                             <Typography variant={isMobile ? 'subtitle1' : 'h6'} sx={{ color: 'white' }}>
-                                {displayName || serviceName}
+                                {display名称 || service名称}
                             </Typography>
                         </Box>
                     )}
                     <ClickAwayListener onClickAway={() => {
                         if (searchQuery && !confirmationItem) {
-                            setSearchQuery('');
-                            setSearchResults([]);
+                            set搜索Query('');
+                            set搜索Results([]);
                         }
                         // Always reset dropdown state when clicking away
                         setIsDropdownOpen(false);
@@ -531,7 +531,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                             alignItems: 'center',
                             visibility: editMode ? 'hidden' : 'visible'
                         }}>
-                            <RemoveScroll
+                            <移除Scroll
                                 enabled={isDropdownOpen && searchResults.length > 0}
                                 removeScrollBar={false}
                                 style={{ width: '100%' }}
@@ -544,10 +544,10 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                     }
                                     inputValue={searchQuery}
                                     onInputChange={(_, newInputValue) => {
-                                        setSearchQuery(newInputValue);
+                                        set搜索Query(newInputValue);
                                     }}
                                     onOpen={() => setIsDropdownOpen(true)}
-                                    onClose={() => setIsDropdownOpen(false)}
+                                    on关闭={() => setIsDropdownOpen(false)}
                                     onChange={(_, newValue) => {
                                         if (newValue && typeof newValue !== 'string') {
                                         // Dismiss keyboard on mobile
@@ -556,9 +556,9 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                 activeElement.blur();
                                             }
 
-                                            setPreviousSearchQuery(searchQuery); // Save current search query
+                                            setPrevious搜索Query(searchQuery); // 保存 current search query
                                             handleItemClick(newValue);
-                                            setSearchQuery(''); // Clear search after selection
+                                            set搜索Query(''); // Clear search after selection
                                             setIsDropdownOpen(false);
                                         }
                                     }}
@@ -574,18 +574,18 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                     activeElement.blur();
                                                 }
 
-                                                setPreviousSearchQuery(searchQuery);
+                                                setPrevious搜索Query(searchQuery);
                                                 handleItemClick(firstItem);
-                                                setSearchQuery('');
+                                                set搜索Query('');
                                                 setIsDropdownOpen(false);
                                             }
                                         }
                                     }}
                                     loading={searchLoading}
-                                    loadingText='Searching...'
+                                    loadingText='搜索ing...'
                                     noOptionsText={searchQuery.length < 2 ? 'Type to search...' : 'No results found'}
                                     filterOptions={(options) => options} // Don't filter on frontend, show all API results
-                                    open={searchQuery.length >= 2 && searchResults.length > 0 && !searchLoading && !confirmationItem} // Close when modal is open
+                                    open={searchQuery.length >= 2 && searchResults.length > 0 && !searchLoading && !confirmationItem} // 关闭 when modal is open
                                     disablePortal={false} // Allow portal for proper dropdown positioning
                                     disableClearable={false}
                                     componentsProps={{
@@ -683,12 +683,12 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            placeholder='Search for movies or TV shows...'
+                                            placeholder='搜索 for movies or TV shows...'
                                             InputProps={{
                                                 ...params.InputProps,
                                                 startAdornment: (
                                                     <InputAdornment position='start' sx={{ color: 'text.primary' }}>
-                                                        <FaSearch />
+                                                        <Fa搜索 />
                                                     </InputAdornment>
                                                 ),
                                                 endAdornment: (
@@ -720,7 +720,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                         }
                                     }}
                                 />
-                            </RemoveScroll>
+                            </移除Scroll>
                         </Box>
                     </ClickAwayListener>
                 </Box>
@@ -865,11 +865,11 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
 
                                                                     {/* Profile text */}
                                                                     <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>
-                                                                        Profile: {request.profileName || 'Default'}
+                                                                        Profile: {request.profile名称 || 'Default'}
                                                                     </Typography>
                                                                 </Box>
 
-                                                                {/* Username positioned at bottom right, aligned with profile */}
+                                                                {/* 用户名 positioned at bottom right, aligned with profile */}
                                                                 <Box sx={{
                                                                     position: 'absolute',
                                                                     bottom: 0,
@@ -890,7 +890,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                         <PersonIcon sx={{ fontSize: '0.75rem', color: 'white' }} />
                                                                     )}
                                                                     <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary' }}>
-                                                                        {request.requestedBy.displayName}
+                                                                        {request.requestedBy.display名称}
                                                                     </Typography>
                                                                     <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
                                                                         • {formatDate(request.createdAt)}
@@ -908,15 +908,15 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                     height: '100%',
                                                                     gap: 1
                                                                 }}>
-                                                                    {/* Status chip */}
+                                                                    {/* 状态 chip */}
                                                                     <Chip
-                                                                        label={getStatusText(request.status)}
-                                                                        color={getStatusColor(request.status)}
+                                                                        label={get状态Text(request.status)}
+                                                                        color={get状态Color(request.status)}
                                                                         size='small'
                                                                         sx={{
                                                                             fontSize: '0.8rem',
                                                                             height: '1.25rem',
-                                                                            ...getStatusColorSx(request.status)
+                                                                            ...get状态ColorSx(request.status)
                                                                         }}
                                                                     />
 
@@ -988,17 +988,17 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                 )}
             </Box>
 
-            {/* Confirmation Modal */}
+            {/* 确认ation Modal */}
             <CenteredModal
                 open={!!confirmationItem}
-                handleClose={() => {
-                    setConfirmationItem(null);
+                handle关闭={() => {
+                    set确认ationItem(null);
                     setTvShowDetails(null);
                     setSelectedSeasons([]);
                     // Restore the previous search query to reopen autocomplete
-                    if (previousSearchQuery) {
-                        setSearchQuery(previousSearchQuery);
-                        setPreviousSearchQuery('');
+                    if (previous搜索Query) {
+                        set搜索Query(previous搜索Query);
+                        setPrevious搜索Query('');
                     }
                 }}
                 title={confirmationItem ? `Request ${getTitle(confirmationItem)}` : ''}
@@ -1161,16 +1161,16 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                                 if (season.status === 3) return 'Processing';
                                                                                 if (season.status === 4) return 'Partial';
                                                                                 if (season.status === 5) return 'Available';
-                                                                                if (season.status === 6) return 'Deleted';
+                                                                                if (season.status === 6) return '删除d';
 
                                                                                 // Check mediaInfo.seasons status
-                                                                                const seasonStatus = tvShowDetails?.mediaInfo?.seasons?.find((s: any) => s.seasonNumber === season.seasonNumber);
-                                                                                if (seasonStatus) {
-                                                                                    if (seasonStatus.status === 2) return 'Pending';
-                                                                                    if (seasonStatus.status === 3) return 'Processing';
-                                                                                    if (seasonStatus.status === 4) return 'Partial';
-                                                                                    if (seasonStatus.status === 5) return 'Available';
-                                                                                    if (seasonStatus.status === 6) return 'Deleted';
+                                                                                const season状态 = tvShowDetails?.mediaInfo?.seasons?.find((s: any) => s.seasonNumber === season.seasonNumber);
+                                                                                if (season状态) {
+                                                                                    if (season状态.status === 2) return 'Pending';
+                                                                                    if (season状态.status === 3) return 'Processing';
+                                                                                    if (season状态.status === 4) return 'Partial';
+                                                                                    if (season状态.status === 5) return 'Available';
+                                                                                    if (season状态.status === 6) return '删除d';
                                                                                 }
 
                                                                                 return 'Unavailable'; // fallback
@@ -1186,7 +1186,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                                     case 3: return 'info.dark'; // Processing
                                                                                     case 4: return 'success.dark'; // Partial
                                                                                     case 5: return 'success.dark'; // Available
-                                                                                    case 6: return 'error.dark'; // Deleted
+                                                                                    case 6: return 'error.dark'; // 删除d
                                                                                     default: return 'success.dark';
                                                                                     }
                                                                                 })(),
@@ -1197,7 +1197,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                                     case 3: return 'info.contrastText'; // Processing
                                                                                     case 4: return 'success.contrastText'; // Partial
                                                                                     case 5: return 'success.contrastText'; // Available
-                                                                                    case 6: return 'error.contrastText'; // Deleted
+                                                                                    case 6: return 'error.contrastText'; // 删除d
                                                                                     default: return 'success.contrastText';
                                                                                     }
                                                                                 })()
@@ -1237,26 +1237,26 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                             <Button
                                 variant='outlined'
                                 onClick={() => {
-                                    setConfirmationItem(null);
+                                    set确认ationItem(null);
                                     setTvShowDetails(null);
                                     setSelectedSeasons([]);
                                     // Restore the previous search query to reopen autocomplete
-                                    if (previousSearchQuery) {
-                                        setSearchQuery(previousSearchQuery);
-                                        setPreviousSearchQuery('');
+                                    if (previous搜索Query) {
+                                        set搜索Query(previous搜索Query);
+                                        setPrevious搜索Query('');
                                     }
                                 }}
                                 sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)' }}
                             >
-                                Cancel
+                                取消
                             </Button>
                             <Button
                                 variant='contained'
                                 onClick={() => {
                                     const seasonsToRequest = confirmationItem.mediaType === 'tv' ? selectedSeasons : undefined;
                                     handleRequest(confirmationItem, seasonsToRequest);
-                                    setConfirmationItem(null);
-                                    setPreviousSearchQuery(''); // Clear saved search since request was made
+                                    set确认ationItem(null);
+                                    setPrevious搜索Query(''); // Clear saved search since request was made
                                 }}
                                 disabled={
                                     confirmationItem.status?.status === 4 ||

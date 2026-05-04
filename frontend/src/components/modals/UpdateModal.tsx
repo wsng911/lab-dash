@@ -29,12 +29,12 @@ interface ReleaseNote {
 
 interface UpdateModalProps {
   open: boolean;
-  handleClose: () => void;
+  handle关闭: () => void;
   latestVersion: string | null;
   isAdmin: boolean;
 }
 
-export const UpdateModal = ({ open, handleClose, latestVersion, isAdmin }: UpdateModalProps) => {
+export const UpdateModal = ({ open, handle关闭, latestVersion, isAdmin }: UpdateModalProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [releaseNotes, setReleaseNotes] = useState<ReleaseNote[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -57,19 +57,19 @@ export const UpdateModal = ({ open, handleClose, latestVersion, isAdmin }: Updat
         // Clean up the release notes
         let cleanedNotes = body;
 
-        // Remove any "**Full Changelog**" section at the end
+        // 移除 any "**Full Changelog**" section at the end
         const fullChangelogIndex = cleanedNotes.indexOf('**Full Changelog**');
         if (fullChangelogIndex > 0) {
             cleanedNotes = cleanedNotes.substring(0, fullChangelogIndex).trim();
         }
 
-        // Remove everything after "by @" including "by @" itself
+        // 移除 everything after "by @" including "by @" itself
         const byAuthorIndex = cleanedNotes.indexOf('by @');
         if (byAuthorIndex > 0) {
             cleanedNotes = cleanedNotes.substring(0, byAuthorIndex).trim();
         }
 
-        // Remove any compare links at the end
+        // 移除 any compare links at the end
         const compareIndex = cleanedNotes.indexOf('**Compare:');
         if (compareIndex > 0) {
             cleanedNotes = cleanedNotes.substring(0, compareIndex).trim();
@@ -138,7 +138,7 @@ export const UpdateModal = ({ open, handleClose, latestVersion, isAdmin }: Updat
     };
 
     return (
-        <CenteredModal open={open} handleClose={handleClose} title='Update Available'>
+        <CenteredModal open={open} handle关闭={handle关闭} title='Update Available'>
             <Box sx={{ p: 2 }}>
                 <Typography variant='h6' gutterBottom>
                     A new version is available: {latestVersion}
@@ -230,7 +230,7 @@ export const UpdateModal = ({ open, handleClose, latestVersion, isAdmin }: Updat
                                         } else {
                                             PopupManager.failure(result.message);
                                         }
-                                        handleClose();
+                                        handle关闭();
                                     } catch (error) {
                                         PopupManager.failure('Failed to update container');
                                     } finally {
@@ -244,7 +244,7 @@ export const UpdateModal = ({ open, handleClose, latestVersion, isAdmin }: Updat
                                 variant='contained'
                                 onClick={() => {
                                     window.open('https://github.com/AnthonyGress/lab-dash/blob/main/README.md#updating', '_blank');
-                                    handleClose();
+                                    handle关闭();
                                 }}
                             >
                                 Update Guide

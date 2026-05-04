@@ -57,7 +57,7 @@ const getApiKey = (req: Request): string | null => {
     return apiKey;
 };
 
-// Search for movies and TV shows
+// 搜索 for movies and TV shows
 jellyseerRoute.get('/search', async (req: Request, res: Response) => {
     console.log('Jellyseerr search request');
     try {
@@ -76,7 +76,7 @@ jellyseerRoute.get('/search', async (req: Request, res: Response) => {
         if (!query) {
             res.status(400).json({
                 success: false,
-                error: 'Search query is required'
+                error: '搜索 query is required'
             });
             return;
         }
@@ -153,7 +153,7 @@ jellyseerRoute.get('/requests', async (req: Request, res: Response) => {
                             }
                         );
 
-                        // Add title information to the media object
+                        // 添加 title information to the media object
                         request.media.title = mediaResponse.data.title || mediaResponse.data.name;
                         request.media.overview = mediaResponse.data.overview;
                         request.media.releaseDate = mediaResponse.data.releaseDate || mediaResponse.data.firstAirDate;
@@ -213,7 +213,7 @@ jellyseerRoute.post('/request', async (req: Request, res: Response) => {
             mediaId: parseInt(mediaId)
         };
 
-        // Add seasons for TV shows
+        // 添加 seasons for TV shows
         if (mediaType === 'tv') {
             if (seasons && seasons.length > 0) {
                 requestBody.seasons = seasons;

@@ -13,7 +13,7 @@ const ThemedAlert = Swal.mixin({
     scrollbarPadding: true,
 });
 
-export type ConfirmationOptions = {
+export type 确认ationOptions = {
     title: string,
     confirmAction: () => any,
     confirmText?: string,
@@ -40,7 +40,7 @@ export class PopupManager {
             text: text && text,
             icon: 'success',
             iconColor: theme.palette.success.main,
-            showConfirmButton: true,
+            show确认Button: true,
             confirmButtonColor: CONFIRM_COLOR,
         }).then(() => action && action());
     }
@@ -63,7 +63,7 @@ export class PopupManager {
         }).then(() => action && action());
     }
 
-    public static confirmation (options: ConfirmationOptions) {
+    public static confirmation (options: 确认ationOptions) {
         ThemedAlert.fire({
             title: `${options.title}`,
             confirmButtonText: options.confirmText ? options.confirmText : 'Yes',
@@ -72,10 +72,10 @@ export class PopupManager {
             icon: 'info',
             showDenyButton: true,
             denyButtonColor: grey[500],
-            denyButtonText: 'Cancel',
+            denyButtonText: '取消',
             reverseButtons: true
         }).then((result: any) => {
-            if (result.isConfirmed) {
+            if (result.is确认ed) {
                 options.confirmAction();
             } else if (result.isDenied) {
                 if (options.denyAction) {
@@ -85,21 +85,21 @@ export class PopupManager {
         });
     }
 
-    public static deleteConfirmation (options: ConfirmationOptions) {
+    public static delete确认ation (options: 确认ationOptions) {
         ThemedAlert.fire({
             title: `${options.title}`,
-            confirmButtonText: options.confirmText ? options.confirmText : 'Yes, Delete',
+            confirmButtonText: options.confirmText ? options.confirmText : 'Yes, 删除',
             confirmButtonColor: theme.palette.error.main,
             text: options.text ? options.text : 'This action cannot be undone',
             html: options.html && options.html,
             icon: 'error',
             iconColor: theme.palette.error.main,
             showDenyButton: true,
-            denyButtonText: 'Cancel',
+            denyButtonText: '取消',
             denyButtonColor: grey[500],
             reverseButtons: true
         }).then((result: any) => {
-            if (result.isConfirmed) {
+            if (result.is确认ed) {
                 options.confirmAction();
             } else if (result.isDenied) {
                 if (options.denyAction) {
@@ -117,16 +117,16 @@ export class PopupManager {
             icon: 'error',
             iconColor: theme.palette.error.main,
             showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: options.confirmText || 'Confirm',
+            show取消Button: true,
+            confirmButtonText: options.confirmText || '确认',
             confirmButtonColor: theme.palette.error.main,
             denyButtonText: options.denyText || 'Deny',
             denyButtonColor: theme.palette.info.main,
-            cancelButtonText: 'Cancel',
+            cancelButtonText: '取消',
             reverseButtons: true,
             focusDeny: true
         }).then((result: any) => {
-            if (result.isConfirmed) {
+            if (result.is确认ed) {
                 options.confirmAction();
             } else if (result.isDenied) {
                 options.denyAction();

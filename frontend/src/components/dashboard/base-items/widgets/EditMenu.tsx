@@ -5,15 +5,15 @@ import { FaArrowRight, FaCopy, FaFile, FaHouse, FaPenToSquare, FaTrashCan } from
 
 import { useAppContext } from '../../../../context/useAppContext';
 
-type EditMenuProps = {
+type 编辑MenuProps = {
     editMode: boolean;
     itemId?: string;
-    onEdit?: () => void;
-    onDelete?: () => void;
+    on编辑?: () => void;
+    on删除?: () => void;
     onDuplicate?: () => void;
 };
 
-export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, onDelete, onDuplicate }) => {
+export const 编辑Menu: React.FC<编辑MenuProps> = ({ editMode, itemId, on编辑, on删除, onDuplicate }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [moveMenuAnchor, setMoveMenuAnchor] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -26,7 +26,7 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
         setAnchorEl(event.currentTarget);
     };
 
-    const handleMenuClose = () => {
+    const handleMenu关闭 = () => {
         setAnchorEl(null);
     };
 
@@ -34,15 +34,15 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
         setMoveMenuAnchor(event.currentTarget);
     };
 
-    const handleMoveMenuClose = () => {
+    const handleMoveMenu关闭 = () => {
         setMoveMenuAnchor(null);
     };
 
     const handleMoveToPage = async (targetPageId: string | null) => {
         if (itemId) {
             await moveItemToPage(itemId, targetPageId);
-            handleMoveMenuClose();
-            handleMenuClose();
+            handleMoveMenu关闭();
+            handleMenu关闭();
         }
     };
 
@@ -70,7 +70,7 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
             <Menu
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleMenuClose}
+                on关闭={handleMenu关闭}
                 disableScrollLock={false}
                 sx={{
                     '& .MuiPaper-root': {
@@ -82,7 +82,7 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
                 }}
             >
                 <MenuItem
-                    onClick={() => { handleMenuClose(); onEdit?.(); }}
+                    onClick={() => { handleMenu关闭(); on编辑?.(); }}
                     sx={{
                         py: 1,
                         display: 'flex',
@@ -91,11 +91,11 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
                     }}
                 >
                     <FaPenToSquare size={14} />
-                    Edit
+                    编辑
                 </MenuItem>
                 {onDuplicate && (
                     <MenuItem
-                        onClick={() => { handleMenuClose(); onDuplicate(); }}
+                        onClick={() => { handleMenu关闭(); onDuplicate(); }}
                         sx={{
                             py: 1,
                             display: 'flex',
@@ -122,7 +122,7 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
                     </MenuItem>
                 )}
                 <MenuItem
-                    onClick={() => { handleMenuClose(); onDelete?.(); }}
+                    onClick={() => { handleMenu关闭(); on删除?.(); }}
                     sx={{
                         py: 1,
                         display: 'flex',
@@ -131,7 +131,7 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
                     }}
                 >
                     <FaTrashCan size={14} />
-                    Delete
+                    删除
                 </MenuItem>
             </Menu>
 
@@ -139,7 +139,7 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
             <Menu
                 anchorEl={moveMenuAnchor}
                 open={moveMenuOpen}
-                onClose={handleMoveMenuClose}
+                on关闭={handleMoveMenu关闭}
                 disableScrollLock={false}
                 anchorOrigin={{
                     vertical: 'top',

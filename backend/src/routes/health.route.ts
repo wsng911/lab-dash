@@ -53,7 +53,7 @@ healthRoute.get('/', async (req: Request, res: Response): Promise<void> => {
             timeout: 10000, // Increased to 10 seconds to handle slower services
             httpsAgent,
             responseType: 'text',
-            validateStatus: () => true // Accept any HTTP status code
+            validate状态: () => true // Accept any HTTP status code
         });
 
         if (response.status >= 200 && response.status < 400) {
@@ -74,8 +74,8 @@ const getLanIP = (): string | null => {
     const priorityInterfaces = ['en0', 'eth0', 'wlan0'];
 
     // First try priority interfaces
-    for (const ifaceName of priorityInterfaces) {
-        const iface = interfaces[ifaceName];
+    for (const iface名称 of priorityInterfaces) {
+        const iface = interfaces[iface名称];
         if (iface) {
             for (const details of iface) {
                 if (details.family === 'IPv4' && !details.internal) {
@@ -86,8 +86,8 @@ const getLanIP = (): string | null => {
     }
 
     // Fallback: find first non-internal IPv4 address
-    for (const ifaceName in interfaces) {
-        const iface = interfaces[ifaceName];
+    for (const iface名称 in interfaces) {
+        const iface = interfaces[iface名称];
         if (iface) {
             for (const details of iface) {
                 if (details.family === 'IPv4' && !details.internal) {

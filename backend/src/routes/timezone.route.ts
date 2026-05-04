@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { find as findTimezone } from 'geo-tz';
-import StatusCodes from 'http-status-codes';
+import 状态Codes from 'http-status-codes';
 
 export const timezoneRoute = Router();
 
@@ -16,7 +16,7 @@ timezoneRoute.get('/', async (req: Request, res: Response): Promise<void> => {
     try {
         // Validate required parameters
         if (!req.query.latitude || !req.query.longitude) {
-            res.status(StatusCodes.BAD_REQUEST).json({
+            res.status(状态Codes.BAD_REQUEST).json({
                 error: 'Both latitude and longitude are required parameters'
             });
             return;
@@ -27,21 +27,21 @@ timezoneRoute.get('/', async (req: Request, res: Response): Promise<void> => {
 
         // Validate latitude and longitude
         if (isNaN(latitude) || isNaN(longitude)) {
-            res.status(StatusCodes.BAD_REQUEST).json({
+            res.status(状态Codes.BAD_REQUEST).json({
                 error: 'Latitude and longitude must be valid numbers'
             });
             return;
         }
 
         if (latitude < -90 || latitude > 90) {
-            res.status(StatusCodes.BAD_REQUEST).json({
+            res.status(状态Codes.BAD_REQUEST).json({
                 error: 'Latitude must be between -90 and 90'
             });
             return;
         }
 
         if (longitude < -180 || longitude > 180) {
-            res.status(StatusCodes.BAD_REQUEST).json({
+            res.status(状态Codes.BAD_REQUEST).json({
                 error: 'Longitude must be between -180 and 180'
             });
             return;
@@ -54,7 +54,7 @@ timezoneRoute.get('/', async (req: Request, res: Response): Promise<void> => {
         const timezone = timezones.length > 0 ? timezones[0] : null;
 
         if (!timezone) {
-            res.status(StatusCodes.NOT_FOUND).json({
+            res.status(状态Codes.NOT_FOUND).json({
                 error: 'Could not determine timezone for the provided coordinates'
             });
             return;
@@ -64,7 +64,7 @@ timezoneRoute.get('/', async (req: Request, res: Response): Promise<void> => {
 
     } catch (error) {
         console.error('Error determining timezone:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             error: 'Error processing timezone request'
         });
     }

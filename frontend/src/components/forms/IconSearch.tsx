@@ -20,7 +20,7 @@ type Props = {
 };
 
 // Helper function to get the actual icon display name from the icon object
-const getIconDisplayName = (icon: Icon | null): string => {
+const getIconDisplay名称 = (icon: Icon | null): string => {
     if (!icon) return '';
 
     // If the icon has a name property and it's not a custom-pending icon, use it
@@ -32,10 +32,10 @@ const getIconDisplayName = (icon: Icon | null): string => {
     if (icon.path) {
         // Get the last part of the path
         const pathParts = icon.path.split('/');
-        const fileName = pathParts[pathParts.length - 1];
+        const file名称 = pathParts[pathParts.length - 1];
 
-        // Remove file extension
-        const nameWithoutExtension = fileName.split('.')[0];
+        // 移除 file extension
+        const nameWithoutExtension = file名称.split('.')[0];
 
         // Replace hyphens and underscores with spaces
         return nameWithoutExtension.replace(/[-_]/g, ' ');
@@ -44,7 +44,7 @@ const getIconDisplayName = (icon: Icon | null): string => {
     return '';
 };
 
-export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
+export const Icon搜索 = ({ control, errors, onCustomIconSelect }: Props) => {
     const [selectedIcon, setSelectedIcon] = useState<Icon | null>(control._defaultValues.icon || null);
     const [iconList, setIconList] = useState<Icon[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -118,7 +118,7 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                             URL.revokeObjectURL(tempPreviewUrl);
                         }
 
-                        // Create a temporary preview URL
+                        // 创建 a temporary preview URL
                         // Validate file type
                         if (!file.type.startsWith('image/')) {
                             console.error('Invalid file type. Only image files are allowed.');
@@ -131,9 +131,9 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                         // Sanitize the object URL
                         const sanitizedObjectUrl = encodeURI(objectUrl);
 
-                        // Create a valid icon object
+                        // 创建 a valid icon object
                         const tempIcon: Icon = {
-                            name: file.name.replace(/\.[^/.]+$/, ''), // Remove extension
+                            name: file.name.replace(/\.[^/.]+$/, ''), // 移除 extension
                             path: sanitizedObjectUrl,
                             source: 'custom-pending'
                         };
@@ -176,7 +176,7 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                                 disablePortal
                                 blurOnSelect={true}
                                 ListboxComponent={VirtualizedListbox}
-                                getOptionLabel={(option) => getIconDisplayName(option)}
+                                getOptionLabel={(option) => getIconDisplay名称(option)}
                                 isOptionEqualToValue={(option, value) => {
                                     // First check if both have paths and match by path (most reliable)
                                     if (option?.path && value?.path) {
@@ -219,7 +219,7 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                                     }} key={shortid.generate()}>
                                         <img
                                             src={option.source === 'custom-pending' ? option.path : getIconPath(option.path)}
-                                            alt={getIconDisplayName(option)}
+                                            alt={getIconDisplay名称(option)}
                                             width={24}
                                             style={{ marginRight: 8 }}
                                             key={shortid.generate()}
@@ -232,7 +232,7 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                                                 whiteSpace: 'nowrap',
                                                 maxWidth: '180px'
                                             }}>
-                                            {getIconDisplayName(option)} {option.source === 'custom' && ' (Custom)'}
+                                            {getIconDisplay名称(option)} {option.source === 'custom' && ' (Custom)'}
                                         </Typography>
                                     </Box>
                                 )}
@@ -264,7 +264,7 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                                                     src={selectedIcon.source === 'custom-pending'
                                                         ? encodeURI(selectedIcon.path)
                                                         : getIconPath(selectedIcon.path)}
-                                                    alt={getIconDisplayName(selectedIcon)}
+                                                    alt={getIconDisplay名称(selectedIcon)}
                                                     width={25}
                                                     crossOrigin='anonymous'
                                                 />
@@ -278,7 +278,7 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                                                         maxWidth: '60px',
                                                         textAlign: 'center'
                                                     }}>
-                                                    {getIconDisplayName(selectedIcon)}
+                                                    {getIconDisplay名称(selectedIcon)}
                                                 </Typography>
                                             </Box>
                                         }

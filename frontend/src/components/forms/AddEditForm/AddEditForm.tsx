@@ -1,4 +1,4 @@
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Arrow返回IosIcon from '@mui/icons-material/Arrow返回Ios';
 import { Box, Button, Grid2 as Grid, Paper, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,7 @@ import { DashApi } from '../../../api/dash-api';
 import { useAppContext } from '../../../context/useAppContext';
 import { COLORS, styles } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
-import { DashboardItem, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE, NewItem, Page, TORRENT_CLIENT_TYPE } from '../../../types';
+import { 仪表盘Item, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE, NewItem, Page, TORRENT_CLIENT_TYPE } from '../../../types';
 import { isEncrypted } from '../../../utils/utils';
 import { AppShortcutConfig, PlaceholderConfig, WidgetConfig } from '../configs';
 import { ITEM_TYPE_OPTIONS, WIDGET_OPTIONS } from './constants';
@@ -20,14 +20,14 @@ import { FormValues } from './types';
 import { WidgetSelector } from './WidgetSelector';
 
 type Props = {
-    handleClose: () => void
-    existingItem?: DashboardItem | null;
-    onSubmit?: (item: DashboardItem) => void;
+    handle关闭: () => void
+    existingItem?: 仪表盘Item | null;
+    on提交?: (item: 仪表盘Item) => void;
 }
 
-export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
+export const 添加编辑Form = ({ handle关闭, existingItem, on提交 }: Props) => {
     const { formState: { errors } } = useForm();
-    const { dashboardLayout, addItem, updateItem, addPage, refreshDashboard, pageNameToSlug, pages } = useAppContext();
+    const { dashboardLayout, addItem, updateItem, addPage, refresh仪表盘, page名称ToSlug, pages } = useAppContext();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
     const [customIconFile, setCustomIconFile] = useState<File | null>(null);
@@ -78,10 +78,10 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
         }
     }, [selectedItemType, selectedWidgetType, formContext, existingItem]);
 
-    // Automatically set shortcutName to "Group" for new group widgets
+    // Automatically set shortcut名称 to "Group" for new group widgets
     useEffect(() => {
         if (!existingItem && selectedItemType === 'widget' && selectedWidgetType === ITEM_TYPE.GROUP_WIDGET) {
-            formContext.setValue('shortcutName', 'Group');
+            formContext.setValue('shortcut名称', 'Group');
         }
     }, [selectedItemType, selectedWidgetType, existingItem, formContext]);
 
@@ -118,37 +118,37 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
         scrollToTop();
     };
 
-    const handleSubmit = async (data: FormValues) => {
+    const handle提交 = async (data: FormValues) => {
         // Handle page creation/editing
         if (data.itemType === ITEM_TYPE.PAGE) {
-            if (data.pageName) {
+            if (data.page名称) {
                 try {
-                    if (existingItem && onSubmit) {
+                    if (existingItem && on提交) {
                         // This is editing an existing page
                         const updatedPageItem = {
                             ...existingItem,
-                            label: data.pageName,
+                            label: data.page名称,
                             adminOnly: data.adminOnly
                         };
-                        onSubmit(updatedPageItem as DashboardItem);
-                        handleFormClose();
+                        on提交(updatedPageItem as 仪表盘Item);
+                        handleForm关闭();
                     } else {
                         // This is creating a new page
-                        const newPageId = await addPage(data.pageName, data.adminOnly);
-                        handleFormClose();
+                        const newPageId = await addPage(data.page名称, data.adminOnly);
+                        handleForm关闭();
 
                         if (newPageId) {
                             // Wait a brief moment for state to update, then navigate to the newly created page
                             setTimeout(() => {
-                                const pageSlug = pageNameToSlug(data.pageName!);
+                                const pageSlug = page名称ToSlug(data.page名称!);
                                 navigate(`/${pageSlug}`);
                             }, 100);
                         }
                     }
                 } catch (error) {
                     console.error('Error with page operation:', error);
-                    // Set form error for the pageName field
-                    formContext.setError('pageName', {
+                    // Set form error for the page名称 field
+                    formContext.setError('page名称', {
                         type: 'manual',
                         message: error instanceof Error ? error.message : 'Failed to save page'
                     });
@@ -192,26 +192,26 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     gauges: [data.gauge1, data.gauge2, data.gauge3],
                     showDiskUsage: data.showDiskUsage !== false, // Default to true
                     showSystemInfo: data.showSystemInfo !== false, // Default to true
-                    showInternetStatus: data.showInternetStatus !== false, // Default to true
+                    showInternet状态: data.showInternet状态 !== false, // Default to true
                     showIP: data.showIP || false,
                     ipDisplayType: data.ipDisplayType || 'wan'
                 };
 
-                // Add network interface to config if a network gauge is included
+                // 添加 network interface to config if a network gauge is included
                 if ([data.gauge1, data.gauge2, data.gauge3].includes('network') && data.networkInterface) {
                     (config as any).networkInterface = data.networkInterface;
                 }
             } else if (data.widgetType === ITEM_TYPE.PIHOLE_WIDGET) {
                 // Handle masked values - only encrypt if not masked
                 let encryptedToken = '';
-                let encryptedPassword = '';
+                let encrypted密码 = '';
                 let hasExistingApiToken = false;
-                let hasExistingPassword = false;
+                let hasExisting密码 = false;
 
                 // Check if we're editing an existing item with sensitive data
                 if (existingItem?.config) {
                     hasExistingApiToken = !!existingItem.config._hasApiToken;
-                    hasExistingPassword = !!existingItem.config._hasPassword;
+                    hasExisting密码 = !!existingItem.config._has密码;
                 }
 
                 // Only process API token if it's not the masked value
@@ -228,15 +228,15 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 }
 
                 // Only process password if it's not the masked value
-                if (data.piholePassword && data.piholePassword !== '**********') {
-                    if (!isEncrypted(data.piholePassword)) {
+                if (data.pihole密码 && data.pihole密码 !== '**********') {
+                    if (!isEncrypted(data.pihole密码)) {
                         try {
-                            encryptedPassword = await DashApi.encryptPiholePassword(data.piholePassword);
+                            encrypted密码 = await DashApi.encryptPihole密码(data.pihole密码);
                         } catch (error) {
                             console.error('Error encrypting Pi-hole password:', error);
                         }
                     } else {
-                        encryptedPassword = data.piholePassword;
+                        encrypted密码 = data.pihole密码;
                     }
                 }
 
@@ -245,7 +245,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     port: data.piholePort,
                     ssl: data.piholeSsl,
                     showLabel: data.showLabel,
-                    displayName: data.piholeName || 'Pi-hole'
+                    display名称: data.pihole名称 || 'Pi-hole'
                 };
 
                 // Include sensitive fields if they were actually changed (not masked)
@@ -259,48 +259,48 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 }
 
                 // Include password if it was actually changed (not masked)
-                if (encryptedPassword) {
-                    config = { ...config, password: encryptedPassword };
-                } else if (hasExistingPassword) {
+                if (encrypted密码) {
+                    config = { ...config, password: encrypted密码 };
+                } else if (hasExisting密码) {
                     // If we have an existing password but no new password provided, set the flag
-                    config = { ...config, _hasPassword: true };
+                    config = { ...config, _has密码: true };
                 }
             } else if (data.widgetType === ITEM_TYPE.ADGUARD_WIDGET) {
                 // Handle masked values - only encrypt if not masked
-                let encryptedUsername = '';
-                let encryptedPassword = '';
-                let hasExistingUsername = false;
-                let hasExistingPassword = false;
+                let encrypted用户名 = '';
+                let encrypted密码 = '';
+                let hasExisting用户名 = false;
+                let hasExisting密码 = false;
 
                 // Check if we're editing an existing item with sensitive data
                 if (existingItem?.config) {
-                    hasExistingUsername = !!existingItem.config._hasUsername;
-                    hasExistingPassword = !!existingItem.config._hasPassword;
+                    hasExisting用户名 = !!existingItem.config._has用户名;
+                    hasExisting密码 = !!existingItem.config._has密码;
                 }
 
                 // Only process username if it's not the masked value
-                if (data.adguardUsername && data.adguardUsername !== '**********') {
-                    if (!isEncrypted(data.adguardUsername)) {
+                if (data.adguard用户名 && data.adguard用户名 !== '**********') {
+                    if (!isEncrypted(data.adguard用户名)) {
                         try {
-                            encryptedUsername = await DashApi.encryptAdGuardUsername(data.adguardUsername);
+                            encrypted用户名 = await DashApi.encryptAdGuard用户名(data.adguard用户名);
                         } catch (error) {
                             console.error('Error encrypting AdGuard username:', error);
                         }
                     } else {
-                        encryptedUsername = data.adguardUsername;
+                        encrypted用户名 = data.adguard用户名;
                     }
                 }
 
                 // Only process password if it's not the masked value
-                if (data.adguardPassword && data.adguardPassword !== '**********') {
-                    if (!isEncrypted(data.adguardPassword)) {
+                if (data.adguard密码 && data.adguard密码 !== '**********') {
+                    if (!isEncrypted(data.adguard密码)) {
                         try {
-                            encryptedPassword = await DashApi.encryptAdGuardPassword(data.adguardPassword);
+                            encrypted密码 = await DashApi.encryptAdGuard密码(data.adguard密码);
                         } catch (error) {
                             console.error('Error encrypting AdGuard password:', error);
                         }
                     } else {
-                        encryptedPassword = data.adguardPassword;
+                        encrypted密码 = data.adguard密码;
                     }
                 }
 
@@ -309,50 +309,50 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     port: data.adguardPort,
                     ssl: data.adguardSsl,
                     showLabel: data.showLabel,
-                    displayName: data.adguardName || 'AdGuard Home'
+                    display名称: data.adguard名称 || 'AdGuard Home'
                 };
 
                 // Include sensitive fields if they were actually changed (not masked)
-                if (encryptedUsername && encryptedPassword) {
+                if (encrypted用户名 && encrypted密码) {
                     config = {
                         ...baseConfig,
-                        username: encryptedUsername,
-                        password: encryptedPassword
+                        username: encrypted用户名,
+                        password: encrypted密码
                     };
                 } else {
                     config = baseConfig;
                     // If we have existing credentials but no new ones provided, set the flags
-                    if (hasExistingUsername) {
-                        config = { ...config, _hasUsername: true };
+                    if (hasExisting用户名) {
+                        config = { ...config, _has用户名: true };
                     }
-                    if (hasExistingPassword) {
-                        config = { ...config, _hasPassword: true };
+                    if (hasExisting密码) {
+                        config = { ...config, _has密码: true };
                     }
                 }
             } else if (data.widgetType === ITEM_TYPE.DOWNLOAD_CLIENT) {
                 // Download client widget - use tc* fields for all client types
-                let encryptedPassword = '';
-                let hasExistingPassword = false;
+                let encrypted密码 = '';
+                let hasExisting密码 = false;
 
                 // Check if we're editing an existing item with a password
                 if ((existingItem?.type === ITEM_TYPE.DOWNLOAD_CLIENT || existingItem?.type === ITEM_TYPE.TORRENT_CLIENT) && existingItem?.id) {
-                    hasExistingPassword = true;
+                    hasExisting密码 = true;
                 }
 
                 // Only process password if it's not the masked value
-                if (data.tcPassword && data.tcPassword !== '**********') {
-                    if (!isEncrypted(data.tcPassword)) {
+                if (data.tc密码 && data.tc密码 !== '**********') {
+                    if (!isEncrypted(data.tc密码)) {
                         try {
                             if (data.torrentClientType === DOWNLOAD_CLIENT_TYPE.SABNZBD) {
-                                encryptedPassword = await DashApi.encryptSabnzbdPassword(data.tcPassword);
+                                encrypted密码 = await DashApi.encryptSabnzbd密码(data.tc密码);
                             } else {
-                                encryptedPassword = await DashApi.encryptPassword(data.tcPassword);
+                                encrypted密码 = await DashApi.encrypt密码(data.tc密码);
                             }
                         } catch (error) {
                             console.error('Error encrypting download client password:', error);
                         }
                     } else {
-                        encryptedPassword = data.tcPassword;
+                        encrypted密码 = data.tc密码;
                     }
                 }
 
@@ -365,16 +365,16 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 };
 
                 // Include username for clients that need it (not SABnzbd)
-                if (data.torrentClientType !== DOWNLOAD_CLIENT_TYPE.SABNZBD && data.tcUsername) {
-                    baseConfig.username = data.tcUsername;
+                if (data.torrentClientType !== DOWNLOAD_CLIENT_TYPE.SABNZBD && data.tc用户名) {
+                    baseConfig.username = data.tc用户名;
                 }
 
                 // Include password if it was actually changed (not masked)
-                if (encryptedPassword) {
-                    baseConfig.password = encryptedPassword;
-                } else if (hasExistingPassword) {
+                if (encrypted密码) {
+                    baseConfig.password = encrypted密码;
+                } else if (hasExisting密码) {
                     // If we have an existing password but no new password provided, set the flag
-                    baseConfig._hasPassword = true;
+                    baseConfig._has密码 = true;
                 }
 
                 config = baseConfig;
@@ -382,7 +382,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 // Media server widget - use ms* fields for all server types
                 config = {
                     clientType: data.mediaServerType || 'jellyfin',
-                    displayName: data.mediaServerName || '',
+                    display名称: data.mediaServer名称 || '',
                     host: data.msHost || '',
                     port: data.msPort || '8096',
                     ssl: data.msSsl || false,
@@ -397,7 +397,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     // API key was changed - encrypt and include it
                     if (!isEncrypted(data.msApiKey)) {
                         try {
-                            const encryptedApiKey = await DashApi.encryptPassword(data.msApiKey);
+                            const encryptedApiKey = await DashApi.encrypt密码(data.msApiKey);
                             config.apiKey = encryptedApiKey;
                         } catch (error) {
                             console.error('Error encrypting media server API key:', error);
@@ -457,7 +457,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                         }
                     }
 
-                    // Create custom data objects for top and bottom widgets with proper field mapping
+                    // 创建 custom data objects for top and bottom widgets with proper field mapping
                     const topWidgetData = {
                         ...data,
                         // Map position-specific fields to standard fields for the createWidgetConfig function
@@ -470,25 +470,25 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                         networkInterface: data.top_networkInterface,
                         showDiskUsage: data.top_showDiskUsage,
                         showSystemInfo: data.top_showSystemInfo,
-                        showInternetStatus: data.top_showInternetStatus,
+                        showInternet状态: data.top_showInternet状态,
                         showIP: data.top_showIP,
                         ipDisplayType: data.top_ipDisplayType,
                         selectedDisks: data.top_selectedDisks,
                         showIcons: data.top_showIcons,
                         showMountPath: data.top_showMountPath,
-                        showName: data.top_showName,
+                        show名称: data.top_show名称,
                         piholeHost: data.top_piholeHost,
                         piholePort: data.top_piholePort,
                         piholeSsl: data.top_piholeSsl,
                         piholeApiToken: data.top_piholeApiToken,
-                        piholePassword: data.top_piholePassword,
-                        piholeName: data.top_piholeName,
+                        pihole密码: data.top_pihole密码,
+                        pihole名称: data.top_pihole名称,
                         adguardHost: data.top_adguardHost,
                         adguardPort: data.top_adguardPort,
                         adguardSsl: data.top_adguardSsl,
-                        adguardUsername: data.top_adguardUsername,
-                        adguardPassword: data.top_adguardPassword,
-                        adguardName: data.top_adguardName,
+                        adguard用户名: data.top_adguard用户名,
+                        adguard密码: data.top_adguard密码,
+                        adguard名称: data.top_adguard名称,
                         showLabel: data.top_showLabel
                     };
 
@@ -504,25 +504,25 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                         networkInterface: data.bottom_networkInterface,
                         showDiskUsage: data.bottom_showDiskUsage,
                         showSystemInfo: data.bottom_showSystemInfo,
-                        showInternetStatus: data.bottom_showInternetStatus,
+                        showInternet状态: data.bottom_showInternet状态,
                         showIP: data.bottom_showIP,
                         ipDisplayType: data.bottom_ipDisplayType,
                         selectedDisks: data.bottom_selectedDisks,
                         showIcons: data.bottom_showIcons,
                         showMountPath: data.bottom_showMountPath,
-                        showName: data.bottom_showName,
+                        show名称: data.bottom_show名称,
                         piholeHost: data.bottom_piholeHost,
                         piholePort: data.bottom_piholePort,
                         piholeSsl: data.bottom_piholeSsl,
                         piholeApiToken: data.bottom_piholeApiToken,
-                        piholePassword: data.bottom_piholePassword,
-                        piholeName: data.bottom_piholeName,
+                        pihole密码: data.bottom_pihole密码,
+                        pihole名称: data.bottom_pihole名称,
                         adguardHost: data.bottom_adguardHost,
                         adguardPort: data.bottom_adguardPort,
                         adguardSsl: data.bottom_adguardSsl,
-                        adguardUsername: data.bottom_adguardUsername,
-                        adguardPassword: data.bottom_adguardPassword,
-                        adguardName: data.bottom_adguardName,
+                        adguard用户名: data.bottom_adguard用户名,
+                        adguard密码: data.bottom_adguard密码,
+                        adguard名称: data.bottom_adguard名称,
                         showLabel: data.bottom_showLabel
                     };
 
@@ -544,18 +544,18 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
         } else if (data.itemType === ITEM_TYPE.APP_SHORTCUT) {
             config = {};
 
-            // Add Wake-on-LAN config if enabled
+            // 添加 Wake-on-LAN config if enabled
             if (data.isWol) {
                 config = {
                     ...config,
                     isWol: true,
-                    macAddress: data.macAddress,
-                    broadcastAddress: data.broadcastAddress,
+                    mac添加ress: data.mac添加ress,
+                    broadcast添加ress: data.broadcast添加ress,
                     port: data.port
                 };
             }
 
-            // Add health URL if provided
+            // 添加 health URL if provided
             if (data.healthUrl) {
                 config = {
                     ...config,
@@ -596,14 +596,14 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
         }
 
         // Generate label for DOWNLOAD_CLIENT widgets if not provided
-        let itemLabel = data.shortcutName || '';
+        let itemLabel = data.shortcut名称 || '';
         if (actualItemType === ITEM_TYPE.DOWNLOAD_CLIENT && !itemLabel) {
             const clientType = data.torrentClientType || DOWNLOAD_CLIENT_TYPE.QBITTORRENT;
-            const clientName = clientType === DOWNLOAD_CLIENT_TYPE.DELUGE ? 'Deluge'
+            const client名称 = clientType === DOWNLOAD_CLIENT_TYPE.DELUGE ? 'Deluge'
                 : clientType === DOWNLOAD_CLIENT_TYPE.TRANSMISSION ? 'Transmission'
                     : clientType === DOWNLOAD_CLIENT_TYPE.SABNZBD ? 'SABnzbd'
                         : 'qBittorrent';
-            itemLabel = `${clientName} Client`;
+            itemLabel = `${client名称} Client`;
         }
 
         const updatedItem: NewItem = {
@@ -622,47 +622,47 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
 
         try {
             if (existingItem) {
-                // If onSubmit prop is provided, we're editing within a group context
+                // If on提交 prop is provided, we're editing within a group context
                 // This is more reliable than trying to detect group items by their absence from dashboardLayout
-                if (onSubmit) {
+                if (on提交) {
                     // This is an item being edited within a group widget
                     const updated = {
                         ...existingItem,
                         ...updatedItem
                     };
-                    onSubmit(updated as DashboardItem);
+                    on提交(updated as 仪表盘Item);
 
-                    // Don't call refreshDashboard() for group items as it can cause duplication
+                    // Don't call refresh仪表盘() for group items as it can cause duplication
                     // The group widget's updateGroupItem function handles the state updates properly
                 } else {
                     // This is a regular dashboard item
                     await updateItem(existingItem.id, updatedItem);
 
                     // Refresh the dashboard to ensure all widgets are updated with latest data
-                    await refreshDashboard();
+                    await refresh仪表盘();
                 }
             } else {
                 await addItem(updatedItem);
 
                 // Refresh the dashboard to ensure all widgets are updated with latest data
-                await refreshDashboard();
+                await refresh仪表盘();
             }
 
             formContext.reset();
-            handleFormClose();
+            handleForm关闭();
         } catch (error) {
             console.error('Error submitting form:', error);
             // Still close the form even if there's an error
             formContext.reset();
-            handleFormClose();
+            handleForm关闭();
         }
     };
 
-    const handleFormClose = () => {
+    const handleForm关闭 = () => {
         setCustomIconFile(null);
         setCurrentStep(existingItem ? 'configure' : 'select');
         formContext.reset();
-        handleClose();
+        handle关闭();
     };
 
     return (
@@ -683,7 +683,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     }}
                 >
                     <FormContainer
-                        onSuccess={handleSubmit}
+                        onSuccess={handle提交}
                         formContext={formContext}
                         key={existingItem ? `form-${existingItem.id}` : 'new-form'}
                     >
@@ -716,9 +716,9 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                     backgroundColor: `${'primary.main'}10`
                                                 }
                                             }}
-                                            startIcon={<ArrowBackIosIcon />}
+                                            startIcon={<Arrow返回IosIcon />}
                                         >
-                                            Back
+                                            返回
                                         </Button>
 
                                         <Typography variant='h6' sx={{
@@ -767,9 +767,9 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                     backgroundColor: `${'primary.main'}10`
                                                 }
                                             }}
-                                            startIcon={<ArrowBackIosIcon />}
+                                            startIcon={<Arrow返回IosIcon />}
                                         >
-                                            Back
+                                            返回
                                         </Button>
 
                                         <Typography variant='h6' sx={{
@@ -794,8 +794,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                         <>
                                             <Grid>
                                                 <TextFieldElement
-                                                    label='Page Name'
-                                                    name='pageName'
+                                                    label='Page 名称'
+                                                    name='page名称'
                                                     required
                                                     fullWidth
                                                     sx={{
@@ -922,7 +922,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
 
                                     <Grid sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
                                         <Button variant='contained' type='submit' sx={{ minHeight: '3rem' }} fullWidth>
-                                            {existingItem ? 'Update' : 'Add'}
+                                            {existingItem ? 'Update' : '添加'}
                                         </Button>
                                     </Grid>
                                 </>

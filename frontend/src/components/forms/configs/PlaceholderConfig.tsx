@@ -5,7 +5,7 @@ import { CheckboxElement, SelectElement } from 'react-hook-form-mui';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface PlaceholderConfigProps {
     formContext: UseFormReturn<FormValues>;

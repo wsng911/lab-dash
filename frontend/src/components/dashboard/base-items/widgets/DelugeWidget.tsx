@@ -8,7 +8,7 @@ type DelugeWidgetConfig = {
     port?: string;
     ssl?: boolean;
     username?: string;
-    _hasPassword?: boolean; // Security flag instead of actual password
+    _has密码?: boolean; // Security flag instead of actual password
     refreshInterval?: number;
     maxDisplayedTorrents?: number;
     showLabel?: boolean;
@@ -27,10 +27,10 @@ export const DelugeWidget = (props: { config?: DelugeWidgetConfig; id?: string }
         port: config?.port || '8112',
         ssl: config?.ssl || false,
         username: config?.username || '',
-        password: '' // Password is handled on backend, not sent to frontend
+        password: '' // 密码 is handled on backend, not sent to frontend
     });
 
-    // Add a counter for login attempts and a maximum number of attempts
+    // 添加 a counter for login attempts and a maximum number of attempts
     const loginAttemptsRef = useRef(0);
     const MAX_LOGIN_ATTEMPTS = 3;
     const autoLoginAttemptedRef = useRef(false);
@@ -44,7 +44,7 @@ export const DelugeWidget = (props: { config?: DelugeWidgetConfig; id?: string }
                 port: config.port !== undefined ? config.port : (loginCredentials.port || '8112'),
                 ssl: config.ssl || false,
                 username: config.username || '',
-                password: '' // Password is handled on backend, not sent to frontend
+                password: '' // 密码 is handled on backend, not sent to frontend
             };
 
             const credentialsChanged =
@@ -147,7 +147,7 @@ export const DelugeWidget = (props: { config?: DelugeWidgetConfig; id?: string }
     // Auto-login when component mounts or credentials change
     useEffect(() => {
         if (
-            config?._hasPassword &&
+            config?._has密码 &&
             !autoLoginAttemptedRef.current &&
             !isAuthenticated &&
             !loginAttemptFailed
@@ -233,7 +233,7 @@ export const DelugeWidget = (props: { config?: DelugeWidgetConfig; id?: string }
         autoLoginAttemptedRef.current = false; // Allow auto-login to be attempted again
     };
 
-    // Add ref to track current torrents without causing re-renders
+    // 添加 ref to track current torrents without causing re-renders
     const torrentsRef = useRef<any[]>([]);
 
     // Update ref when torrents change
@@ -328,13 +328,13 @@ export const DelugeWidget = (props: { config?: DelugeWidgetConfig; id?: string }
         }
     }, [loginCredentials, fetchTorrents]);
 
-    const handleDeleteTorrent = useCallback(async (hash: string, deleteFiles: boolean) => {
+    const handle删除Torrent = useCallback(async (hash: string, deleteFiles: boolean) => {
         try {
             if (!id) {
                 console.error('Widget ID is required for delete torrent');
                 return false;
             }
-            const success = await DashApi.delugeDeleteTorrent(hash, deleteFiles, id);
+            const success = await DashApi.deluge删除Torrent(hash, deleteFiles, id);
 
             // Refresh the torrents list after operation
             if (success) {
@@ -354,7 +354,7 @@ export const DelugeWidget = (props: { config?: DelugeWidgetConfig; id?: string }
 
     return (
         <DownloadClientWidget
-            clientName='Deluge'
+            client名称='Deluge'
             isLoading={isLoading}
             isAuthenticated={isAuthenticated}
             authError={authError}
@@ -366,7 +366,7 @@ export const DelugeWidget = (props: { config?: DelugeWidgetConfig; id?: string }
             showLabel={config?.showLabel || false}
             onResumeTorrent={handleResumeTorrent}
             onPauseTorrent={handlePauseTorrent}
-            onDeleteTorrent={handleDeleteTorrent}
+            on删除Torrent={handle删除Torrent}
         />
     );
 };

@@ -33,23 +33,23 @@ uploadsRoute.get('/images', authenticateToken, (req: Request, res: Response) => 
                     const filenameWithoutExt = path.parse(file).name;
                     const nameParts = filenameWithoutExt.split('-');
 
-                    let displayNameWithoutExt = filenameWithoutExt;
+                    let display名称WithoutExt = filenameWithoutExt;
 
                     // Check if the last part is a timestamp (all digits)
                     if (nameParts.length > 1 && /^\d+$/.test(nameParts[nameParts.length - 1])) {
-                        // Remove the timestamp part and join the rest
-                        displayNameWithoutExt = nameParts.slice(0, -1).join('-');
+                        // 移除 the timestamp part and join the rest
+                        display名称WithoutExt = nameParts.slice(0, -1).join('-');
                     }
 
                     // Apply the same sanitization as in app-shortcut route
-                    const sanitizeFileName = (fileName: string): string => {
-                        return fileName.trim();
+                    const sanitizeFile名称 = (file名称: string): string => {
+                        return file名称.trim();
                     };
 
-                    const displayName = sanitizeFileName(displayNameWithoutExt) + fileExtension;
+                    const display名称 = sanitizeFile名称(display名称WithoutExt) + fileExtension;
 
                     images.push({
-                        name: displayName,
+                        name: display名称,
                         path: `/uploads/app-icons/${file}`,
                         size: stats.size,
                         uploadDate: stats.birthtime,
@@ -89,7 +89,7 @@ uploadsRoute.get('/images', authenticateToken, (req: Request, res: Response) => 
     }
 });
 
-// Delete an uploaded image
+// 删除 an uploaded image
 uploadsRoute.delete('/images', authenticateToken, (req: Request, res: Response) => {
     try {
         const { imagePath } = req.body;
@@ -114,7 +114,7 @@ uploadsRoute.delete('/images', authenticateToken, (req: Request, res: Response) 
             return;
         }
 
-        // Delete the file
+        // 删除 the file
         fs.unlinkSync(fullPath);
 
         res.json({ message: 'Image deleted successfully' });

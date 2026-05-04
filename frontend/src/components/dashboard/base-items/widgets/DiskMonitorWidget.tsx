@@ -18,23 +18,23 @@ interface DiskInfo {
 
 interface DiskSelection {
     mount: string;
-    customName: string;
+    custom名称: string;
     showMountPath?: boolean;
 }
 
-interface DiskMonitorWidgetProps {
+interface Disk监控WidgetProps {
     config?: {
         selectedDisks?: DiskSelection[];
         showIcons?: boolean;
         showMountPath?: boolean;
-        showName?: boolean;
+        show名称?: boolean;
         layout?: '2x2' | '2x4' | '1x5';
         dualWidgetPosition?: 'top' | 'bottom';
     };
     editMode?: boolean;
 }
 
-export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) => {
+export const Disk监控Widget = ({ config, editMode }: Disk监控WidgetProps) => {
     const [diskData, setDiskData] = useState<DiskInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
     // Get config options with defaults
     const selectedDisks = config?.selectedDisks || [];
     const showIcons = config?.showIcons !== false;
-    const showName = config?.showName !== false;
+    const show名称 = config?.show名称 !== false;
     const isDualWidget = config?.dualWidgetPosition !== undefined;
     // Force 2x2 layout for dual widgets to maintain standard widget height
     const layout = isDualWidget ? '2x2' : (config?.layout || '2x2');
@@ -112,16 +112,16 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
         }
     }, [editMode]);
 
-    // Create display disks with custom names
+    // 创建 display disks with custom names
     const displayDisks = selectedDisks
         .map(selected => {
             const diskInfo = diskData.find(disk => disk.mount === selected.mount);
             return diskInfo ? {
                 ...diskInfo,
-                customName: selected.customName || selected.mount
+                custom名称: selected.custom名称 || selected.mount
             } : null;
         })
-        .filter(Boolean) as (DiskInfo & { customName: string })[];
+        .filter(Boolean) as (DiskInfo & { custom名称: string })[];
 
     // Get max disks based on layout
     const getMaxDisks = () => {
@@ -135,7 +135,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
 
     const gridDisks = displayDisks.slice(0, getMaxDisks());
 
-    const DiskItem = ({ disk, diskConfig }: { disk: DiskInfo & { customName: string }, diskConfig: DiskSelection }) => {
+    const DiskItem = ({ disk, diskConfig }: { disk: DiskInfo & { custom名称: string }, diskConfig: DiskSelection }) => {
         const mountPathRef = useRef<HTMLElement>(null);
         const [showTooltip, setShowTooltip] = useState(false);
 
@@ -193,7 +193,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                                     maxWidth: '60%'
                                 }}
                             >
-                                {disk.customName}
+                                {disk.custom名称}
                             </Typography>
                             {diskConfig.showMountPath && (
                                 showTooltip ? (
@@ -322,7 +322,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
     return (
         <CardContent sx={{
             height: '100%',
-            padding: '0 !important', // Remove all default padding
+            padding: '0 !important', // 移除 all default padding
             maxWidth: '100%',
             width: '100%',
             display: 'flex',
@@ -343,7 +343,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
             }}>
 
                 {/* Conditionally rendered title */}
-                {showName && (
+                {show名称 && (
                     <Box
                         sx={{
                             position: 'absolute',
@@ -365,7 +365,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                                 fontSize: '1.1rem',
                             }}
                         >
-                            Disk Monitor
+                            Disk 监控
                         </Typography>
                     </Box>
                 )}
@@ -422,7 +422,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                                 };
 
                                 // Find the disk configuration
-                                const diskConfig = selectedDisks.find(d => d.mount === disk.mount) || { mount: disk.mount, customName: disk.customName };
+                                const diskConfig = selectedDisks.find(d => d.mount === disk.mount) || { mount: disk.mount, custom名称: disk.custom名称 };
 
                                 return (
                                     <Grid key={disk.mount} size={getGridSize()} sx={{

@@ -1,7 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 
 import { QueueManagementWidgetConfig } from './QueueManagementWidgetConfig';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface SonarrWidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
@@ -11,7 +11,7 @@ export const SonarrWidgetConfig: React.FC<SonarrWidgetConfigProps> = ({ formCont
     return (
         <QueueManagementWidgetConfig
             formContext={formContext}
-            serviceName='Sonarr'
+            service名称='Sonarr'
             defaultPort='8989'
         />
     );

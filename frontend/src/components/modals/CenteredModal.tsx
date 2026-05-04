@@ -1,4 +1,4 @@
-import CloseIcon from '@mui/icons-material/Close';
+import 关闭Icon from '@mui/icons-material/关闭';
 import { AppBar, Box, IconButton, Modal, Toolbar, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -8,7 +8,7 @@ import { theme } from '../../theme/theme';
 
 type Props = {
     open: boolean;
-    handleClose: () => void;
+    handle关闭: () => void;
     title?: string;
     children: ReactNode;
     width?: string
@@ -16,7 +16,7 @@ type Props = {
     fullWidthContent?: boolean
 }
 
-export const CenteredModal = ({ open, handleClose, children, width, height, title, fullWidthContent = false }: Props) => {
+export const CenteredModal = ({ open, handle关闭, children, width, height, title, fullWidthContent = false }: Props) => {
     const windowDimensions = useWindowDimensions();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -45,16 +45,16 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
         maxHeight: height ? height : '90vh',
         display: 'flex',
         flexDirection: 'column',
-        outline: 'none', // Remove focus outline
+        outline: 'none', // 移除 focus outline
         border: 'none'   // Ensure no border
     };
 
     return (
         <Modal
             open={open}
-            onClose={(event, reason) => {
+            on关闭={(event, reason) => {
                 if (reason === 'escapeKeyDown') {
-                    handleClose();
+                    handle关闭();
                 }
             }}
             aria-labelledby='modal-title'
@@ -62,7 +62,7 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
             disableScrollLock={false}
         >
             <Box sx={style}>
-                {/* AppBar with Title and Close Button */}
+                {/* AppBar with Title and 关闭 Button */}
                 <AppBar position='static' sx={{
                     height: '3rem',
                     borderRadius: '8px 8px 0 0',
@@ -73,7 +73,7 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
                         justifyContent: 'space-between', // Ensures space between title & close button
                         alignItems: 'center', // Vertically aligns everything
                         height: '100%',
-                        px: 2, // Add padding for spacing
+                        px: 2, // 添加 padding for spacing
                         mt: isMobile ? '-.2rem' : '-.5rem'
                     }}>
                         <Typography id='modal-title' sx={{ flexGrow: 1 }}>{title}</Typography>
@@ -82,13 +82,13 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
                             onClick={(e) => e.stopPropagation()} // Prevent drag from triggering on click
                             sx={styles.vcenter}
                         >
-                            <Tooltip title='Close' placement='top'>
+                            <Tooltip title='关闭' placement='top'>
                                 <IconButton
-                                    onClick={handleClose}
-                                    aria-label='Close modal'
+                                    onClick={handle关闭}
+                                    aria-label='关闭 modal'
                                 >
                                     <Box height={'100%'} sx={styles.vcenter}>
-                                        <CloseIcon sx={{ fontSize: 28, color: 'white' }} />
+                                        <关闭Icon sx={{ fontSize: 28, color: 'white' }} />
                                     </Box>
                                 </IconButton>
                             </Tooltip>

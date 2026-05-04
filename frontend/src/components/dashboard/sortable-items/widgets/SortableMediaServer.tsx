@@ -9,8 +9,8 @@ type Props = {
     id: string;
     editMode: boolean;
     isOverlay?: boolean;
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
     config?: any;
     url?: string;
@@ -20,8 +20,8 @@ export const SortableMediaServer: React.FC<Props> = ({
     id,
     editMode,
     isOverlay = false,
-    onDelete,
-    onEdit,
+    on删除,
+    on编辑,
     onDuplicate,
     config,
     url
@@ -54,8 +54,8 @@ export const SortableMediaServer: React.FC<Props> = ({
                 config={config}
                 editMode={editMode}
                 id={id}
-                onEdit={onEdit}
-                onDelete={onDelete}
+                on编辑={on编辑}
+                on删除={on删除}
                 onDuplicate={onDuplicate}
             />
         </Grid2>

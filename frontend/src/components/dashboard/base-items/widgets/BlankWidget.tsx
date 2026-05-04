@@ -10,13 +10,13 @@ type Props = {
     label?: string;
     isOverlay?: boolean;
     editMode: boolean;
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
     row?: boolean;
 };
 
-export const BlankWidget: React.FC<Props> = ({ id, label, editMode, isOverlay = false, onDelete, onEdit, onDuplicate, row }) => {
+export const BlankWidget: React.FC<Props> = ({ id, label, editMode, isOverlay = false, on删除, on编辑, onDuplicate, row }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     return (
@@ -32,7 +32,7 @@ export const BlankWidget: React.FC<Props> = ({ id, label, editMode, isOverlay = 
                 visibility: isDragging ? 'hidden' : 'visible',
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate} placeholder rowPlaceholder={row}>
+            <WidgetContainer editMode={editMode} id={id} on删除={on删除} on编辑={on编辑} onDuplicate={onDuplicate} placeholder rowPlaceholder={row}>
                 <Typography variant='h6' textAlign='center'>
                     {/* {label} */}
                 </Typography>

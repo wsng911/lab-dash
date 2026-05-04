@@ -2,7 +2,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { AdGuardWidgetConfig } from './AdGuardWidgetConfig';
 import { DateTimeWidgetConfig } from './DateTimeWidgetConfig';
-import { DiskMonitorWidgetConfig } from './DiskMonitorWidgetConfig';
+import { Disk监控WidgetConfig } from './Disk监控WidgetConfig';
 import { DownloadClientWidgetConfig } from './DownloadClientWidgetConfig';
 import { DualWidgetConfig } from './DualWidgetConfig';
 import { GroupWidgetConfig } from './GroupWidgetConfig';
@@ -12,15 +12,15 @@ import { NotesWidgetConfig } from './NotesWidgetConfig';
 import { PiholeWidgetConfig } from './PiholeWidgetConfig';
 import { RadarrWidgetConfig } from './RadarrWidgetConfig';
 import { SonarrWidgetConfig } from './SonarrWidgetConfig';
-import { SystemMonitorWidgetConfig } from './SystemMonitorWidgetConfig';
+import { System监控WidgetConfig } from './System监控WidgetConfig';
 import { WeatherWidgetConfig } from './WeatherWidgetConfig';
-import { DashboardItem, ITEM_TYPE } from '../../../types';
-import { FormValues } from '../AddEditForm/types';
+import { 仪表盘Item, ITEM_TYPE } from '../../../types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface WidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
     widgetType: string;
-    existingItem?: DashboardItem | null;
+    existingItem?: 仪表盘Item | null;
 }
 
 export const WidgetConfig = ({ formContext, widgetType, existingItem }: WidgetConfigProps) => {
@@ -30,9 +30,9 @@ export const WidgetConfig = ({ formContext, widgetType, existingItem }: WidgetCo
     case ITEM_TYPE.DATE_TIME_WIDGET:
         return <DateTimeWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.SYSTEM_MONITOR_WIDGET:
-        return <SystemMonitorWidgetConfig formContext={formContext} />;
+        return <System监控WidgetConfig formContext={formContext} />;
     case ITEM_TYPE.DISK_MONITOR_WIDGET:
-        return <DiskMonitorWidgetConfig formContext={formContext} />;
+        return <Disk监控WidgetConfig formContext={formContext} />;
     case ITEM_TYPE.PIHOLE_WIDGET:
         return <PiholeWidgetConfig formContext={formContext} existingItem={existingItem} />;
     case ITEM_TYPE.ADGUARD_WIDGET:

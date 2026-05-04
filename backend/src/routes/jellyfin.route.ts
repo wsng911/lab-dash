@@ -9,10 +9,10 @@ export const jellyfinRoute = Router();
 interface JellyfinSession {
     Id: string;
     UserId: string;
-    UserName: string;
+    User名称: string;
     Client: string;
     ApplicationVersion: string;
-    DeviceName: string;
+    Device名称: string;
     DeviceType: string;
     PlayState?: {
         IsPaused: boolean;
@@ -21,12 +21,12 @@ interface JellyfinSession {
     };
     NowPlayingItem?: {
         Id: string;
-        Name: string;
+        名称: string;
         Type: string;
         RunTimeTicks: number;
         ProductionYear?: number;
-        SeriesName?: string;
-        SeasonName?: string;
+        Series名称?: string;
+        Season名称?: string;
         IndexNumber?: number;
         ParentIndexNumber?: number;
         ImageTags?: {
@@ -84,7 +84,7 @@ jellyfinRoute.get('/sessions', async (req: Request, res: Response) => {
 
         const httpModule = ssl ? https : http;
 
-        // Create promise-based HTTP request
+        // 创建 promise-based HTTP request
         const makeRequest = (): Promise<JellyfinSession[]> => {
             return new Promise((resolve, reject) => {
                 const options = {

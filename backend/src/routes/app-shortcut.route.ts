@@ -8,9 +8,9 @@ import { authenticateToken } from '../middleware/auth.middleware';
 
 export const appShortcutRoute = Router();
 
-const sanitizeFileName = (fileName: string): string => {
+const sanitizeFile名称 = (file名称: string): string => {
     // Replace special characters and normalize spaces, but keep the extension
-    return fileName
+    return file名称
         .replace(/[^\w\s.-]/g, '')
         .replace(/[\s_-]+/g, ' ')
         .trim();
@@ -24,9 +24,9 @@ const storage = multer.diskStorage({
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        const originalName = path.parse(file.originalname).name;
+        const original名称 = path.parse(file.originalname).name;
 
-        const sanitizedName = originalName
+        const sanitized名称 = original名称
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .trim();
@@ -34,8 +34,8 @@ const storage = multer.diskStorage({
         const timestamp = Date.now();
         const ext = path.extname(file.originalname);
 
-        // Final format: sanitizedOriginalName-timestamp.ext
-        cb(null, `${sanitizedName}-${timestamp}${ext}`);
+        // Final format: sanitizedOriginal名称-timestamp.ext
+        cb(null, `${sanitized名称}-${timestamp}${ext}`);
     }
 });
 
@@ -49,11 +49,11 @@ appShortcutRoute.post('/upload', upload.single('file'), (req: Request, res: Resp
     }
 
     // Sanitize the file name for display (keeping extension)
-    const sanitizedName = sanitizeFileName(req.file.originalname);
+    const sanitized名称 = sanitizeFile名称(req.file.originalname);
 
     console.log('File uploaded successfully:', {
-        originalName: req.file.originalname,
-        sanitizedName,
+        original名称: req.file.originalname,
+        sanitized名称,
         filename: req.file.filename,
         path: req.file.path
     });
@@ -61,7 +61,7 @@ appShortcutRoute.post('/upload', upload.single('file'), (req: Request, res: Resp
     res.status(200).json({
         message: 'App icon uploaded successfully',
         filePath: `/uploads/app-icons/${req.file.filename}`,
-        name: sanitizedName, // Use sanitized name
+        name: sanitized名称, // Use sanitized name
         source: 'custom'
     });
 });
@@ -76,17 +76,17 @@ appShortcutRoute.post('/upload-batch', authenticateToken, upload.array('files', 
     }
 
     const uploadedIcons = files.map(file => {
-        const sanitizedName = sanitizeFileName(file.originalname);
+        const sanitized名称 = sanitizeFile名称(file.originalname);
 
         console.log('File uploaded successfully:', {
-            originalName: file.originalname,
-            sanitizedName,
+            original名称: file.originalname,
+            sanitized名称,
             filename: file.filename,
             path: file.path
         });
 
         return {
-            name: sanitizedName,
+            name: sanitized名称,
             filePath: `/uploads/app-icons/${file.filename}`,
             source: 'custom'
         };
@@ -103,7 +103,7 @@ appShortcutRoute.get('/custom-icons', (req: Request, res: Response) => {
     try {
         const uploadPath = path.join(UPLOAD_DIRECTORY, 'app-icons');
 
-        // Create directory if it doesn't exist
+        // 创建 directory if it doesn't exist
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath, { recursive: true });
             res.json({ icons: [] });
@@ -120,25 +120,25 @@ appShortcutRoute.get('/custom-icons', (req: Request, res: Response) => {
             const filenameWithoutExt = path.parse(file).name;
 
             // Extract the original name part (everything before the timestamp)
-            // Format is: sanitizedName-timestamp
+            // Format is: sanitized名称-timestamp
             const nameParts = filenameWithoutExt.split('-');
 
             // If the filename has our expected format with a timestamp suffix,
             // remove the timestamp; otherwise keep the full name
-            let displayNameWithoutExt = filenameWithoutExt;
+            let display名称WithoutExt = filenameWithoutExt;
 
             // Check if the last part is a timestamp (all digits)
             if (nameParts.length > 1 && /^\d+$/.test(nameParts[nameParts.length - 1])) {
-                // Remove the timestamp part and join the rest
-                displayNameWithoutExt = nameParts.slice(0, -1).join('-');
+                // 移除 the timestamp part and join the rest
+                display名称WithoutExt = nameParts.slice(0, -1).join('-');
             }
 
             // Ensure the display name is sanitized and add back the extension
-            const displayName = sanitizeFileName(displayNameWithoutExt + fileExtension);
+            const display名称 = sanitizeFile名称(display名称WithoutExt + fileExtension);
 
-            // Create the icon object
+            // 创建 the icon object
             return {
-                name: displayName,
+                name: display名称,
                 path: `/uploads/app-icons/${file}`,
                 source: 'custom'
             };

@@ -3,12 +3,12 @@ import path from 'path';
 
 import { UPLOAD_DIRECTORY } from '../constants/constants';
 
-export const removeExistingFiles = (exceptFileName?: string) => {
+export const removeExistingFiles = (exceptFile名称?: string) => {
     try {
         const files = fs.readdirSync(UPLOAD_DIRECTORY);
         files.forEach(file => {
             // If an exception filename is provided, skip that file
-            if (exceptFileName && file === exceptFileName) {
+            if (exceptFile名称 && file === exceptFile名称) {
                 return;
             }
 

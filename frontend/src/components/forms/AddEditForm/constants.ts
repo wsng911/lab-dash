@@ -28,7 +28,7 @@ export const WIDGET_OPTIONS = [
         id: ITEM_TYPE.ADGUARD_WIDGET,
         label: 'AdGuard Home',
         icon: FaShieldAlt,
-        description: 'Monitor AdGuard Home DNS blocking statistics'
+        description: '监控 AdGuard Home DNS blocking statistics'
     },
     {
         id: ITEM_TYPE.DATE_TIME_WIDGET,
@@ -38,7 +38,7 @@ export const WIDGET_OPTIONS = [
     },
     {
         id: ITEM_TYPE.DISK_MONITOR_WIDGET,
-        label: 'Disk Monitor',
+        label: 'Disk 监控',
         icon: FaHdd,
         description: 'View disk usage and storage information'
     },
@@ -71,19 +71,19 @@ export const WIDGET_OPTIONS = [
         id: ITEM_TYPE.MEDIA_SERVER_WIDGET,
         label: 'Media Server',
         icon: FaPlay,
-        description: 'Monitor active users, now playing details, and total stored media '
+        description: '监控 active users, now playing details, and total stored media '
     },
     {
         id: ITEM_TYPE.NOTES_WIDGET,
         label: 'Notes',
         icon: FaStickyNote,
-        description: 'Save quick notes with markdown support'
+        description: '保存 quick notes with markdown support'
     },
     {
         id: ITEM_TYPE.PIHOLE_WIDGET,
         label: 'Pi-hole',
         icon: FaShieldAlt,
-        description: 'Monitor Pi-hole DNS blocking statistics'
+        description: '监控 Pi-hole DNS blocking statistics'
     },
     {
         id: ITEM_TYPE.RADARR_WIDGET,
@@ -99,9 +99,9 @@ export const WIDGET_OPTIONS = [
     },
     {
         id: ITEM_TYPE.SYSTEM_MONITOR_WIDGET,
-        label: 'System Monitor',
+        label: 'System 监控',
         icon: FaMicrochip,
-        description: 'Monitor CPU, RAM, temperature, network speed and more'
+        description: '监控 CPU, RAM, temperature, network speed and more'
     },
     {
         id: ITEM_TYPE.WEATHER_WIDGET,
@@ -134,6 +134,6 @@ export const ITEM_TYPE_OPTIONS = [
         id: ITEM_TYPE.PAGE,
         label: 'Page',
         icon: PageIcon,
-        description: 'Add new pages within your dashboard'
+        description: '添加 new pages within your dashboard'
     },
 ];

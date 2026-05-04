@@ -1,8 +1,8 @@
 import { Card, CardContent, useMediaQuery } from '@mui/material';
 import React from 'react';
 
-import { EditMenu } from './EditMenu';
-import { StatusIndicator } from './StatusIndicator';
+import { 编辑Menu } from './编辑Menu';
+import { 状态Indicator } from './状态Indicator';
 import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../constants/widget-dimensions';
 import { COLORS } from '../../../../theme/styles';
 import { theme } from '../../../../theme/theme';
@@ -11,8 +11,8 @@ type DualWidgetContainerProps = {
     children: React.ReactNode;
     editMode?: boolean;
     id?: string;
-    onEdit?: () => void;
-    onDelete?: () => void;
+    on编辑?: () => void;
+    on删除?: () => void;
     onDuplicate?: () => void;
     url?: string;
 };
@@ -21,8 +21,8 @@ export const DualWidgetContainer: React.FC<DualWidgetContainerProps> = ({
     children,
     editMode = false,
     id,
-    onEdit,
-    onDelete,
+    on编辑,
+    on删除,
     onDuplicate,
     url
 }) => {
@@ -52,7 +52,7 @@ export const DualWidgetContainer: React.FC<DualWidgetContainerProps> = ({
                 backdropFilter: '6px'
             }}
         >
-            <EditMenu editMode={editMode} itemId={id} onEdit={onEdit} onDelete={onDelete} onDuplicate={onDuplicate} />
+            <编辑Menu editMode={editMode} itemId={id} on编辑={on编辑} on删除={on删除} onDuplicate={onDuplicate} />
 
             <CardContent
                 sx={{

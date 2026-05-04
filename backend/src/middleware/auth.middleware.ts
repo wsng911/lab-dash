@@ -39,7 +39,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
             return;
         }
 
-        // Add user to request
+        // 添加 user to request
         req.user = user;
         next();
     });

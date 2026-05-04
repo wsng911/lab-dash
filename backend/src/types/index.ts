@@ -20,15 +20,15 @@ export type Page = {
     name: string;
     adminOnly?: boolean;
     layout: {
-        desktop: DashboardItem[];
-        mobile: DashboardItem[];
+        desktop: 仪表盘Item[];
+        mobile: 仪表盘Item[];
     };
 }
 
 export type Config = {
     layout: {
-        desktop: DashboardItem[];
-        mobile: DashboardItem[];
+        desktop: 仪表盘Item[];
+        mobile: 仪表盘Item[];
     },
     pages?: Page[];
     title?: string;
@@ -53,12 +53,12 @@ export type Note = {
     fontSize?: string;
 }
 
-export type DashboardLayout = {
-    desktop: DashboardItem[];
-    mobile: DashboardItem[];
+export type 仪表盘Layout = {
+    desktop: 仪表盘Item[];
+    mobile: 仪表盘Item[];
 }
 
-export type DashboardItem = {
+export type 仪表盘Item = {
     id: string;
     label: string;
     type: string;

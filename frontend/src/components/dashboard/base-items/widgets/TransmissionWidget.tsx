@@ -22,7 +22,7 @@ type TransmissionWidgetConfig = {
     port?: string;
     ssl?: boolean;
     username?: string;
-    _hasPassword?: boolean; // Security flag instead of actual password
+    _has密码?: boolean; // Security flag instead of actual password
     refreshInterval?: number;
     maxDisplayedTorrents?: number;
     showLabel?: boolean;
@@ -41,10 +41,10 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
         port: config?.port || '9091',
         ssl: config?.ssl || false,
         username: config?.username || '',
-        password: '' // Password is handled on backend, not sent to frontend
+        password: '' // 密码 is handled on backend, not sent to frontend
     });
 
-    // Add a counter for login attempts and a maximum number of attempts
+    // 添加 a counter for login attempts and a maximum number of attempts
     const loginAttemptsRef = useRef(0);
     const MAX_LOGIN_ATTEMPTS = 3;
 
@@ -56,7 +56,7 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
                 port: config.port !== undefined ? config.port : (prev.port || '9091'),
                 ssl: config.ssl || false,
                 username: config.username || '',
-                password: '' // Password is handled on backend, not sent to frontend
+                password: '' // 密码 is handled on backend, not sent to frontend
             }));
             // Reset attempt counter and failed flag when credentials change
             loginAttemptsRef.current = 0;
@@ -70,7 +70,7 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
         try {
             // If no username and no password configured, skip login and go straight to authenticated state
             // For Transmission, authentication is optional
-            if (!config?.username && !config?._hasPassword) {
+            if (!config?.username && !config?._has密码) {
                 setIsAuthenticated(true);
                 loginAttemptsRef.current = 0;
                 setLoginAttemptFailed(false);
@@ -187,7 +187,7 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
             const torrentsData = await DashApi.transmissionGetTorrents(id || '');
 
             // Check if an empty array was returned due to decryption error
-            if (Array.isArray(torrentsData) && torrentsData.length === 0 && loginCredentials.username && config?._hasPassword) {
+            if (Array.isArray(torrentsData) && torrentsData.length === 0 && loginCredentials.username && config?._has密码) {
                 // If we have credentials but get empty results, it could be a decryption error
                 // We'll handle this case by checking the auth status in the next stats fetch
                 setTorrents([]);
@@ -250,7 +250,7 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
 
 
 
-    // Add ref to track current torrents without causing re-renders
+    // 添加 ref to track current torrents without causing re-renders
     const torrentsRef = useRef<any[]>([]);
 
     // Update ref when torrents change
@@ -356,13 +356,13 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
         }
     }, [loginCredentials, fetchTorrents, torrents]);
 
-    const handleDeleteTorrent = useCallback(async (hash: string, deleteFiles: boolean) => {
+    const handle删除Torrent = useCallback(async (hash: string, deleteFiles: boolean) => {
         try {
             // For Transmission, we need to find the torrent ID from the hash
             const torrent = torrents.find(t => t.hash === hash);
             if (!torrent) return false;
 
-            const success = await DashApi.transmissionDeleteTorrent(torrent.id || hash, deleteFiles, id || '');
+            const success = await DashApi.transmission删除Torrent(torrent.id || hash, deleteFiles, id || '');
 
             // Refresh the torrents list after operation
             if (success) {
@@ -387,7 +387,7 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
 
     return (
         <DownloadClientWidget
-            clientName='Transmission'
+            client名称='Transmission'
             isLoading={isLoading}
             isAuthenticated={isAuthenticated}
             authError={authError}
@@ -399,7 +399,7 @@ export const TransmissionWidget = (props: { config?: TransmissionWidgetConfig; i
             showLabel={config?.showLabel || false}
             onResumeTorrent={handleStartTorrent}
             onPauseTorrent={handleStopTorrent}
-            onDeleteTorrent={handleDeleteTorrent}
+            on删除Torrent={handle删除Torrent}
         />
     );
 };

@@ -1,10 +1,10 @@
-import { DashboardItem } from '.';
+import { 仪表盘Item } from '.';
 import { GroupItem } from './group';
 
 export interface DndDataForAppShortcut {
     type: string;
     id: string;
-    originalItem?: DashboardItem;
+    originalItem?: 仪表盘Item;
 }
 
 export interface DndDataForGroupItem {

@@ -32,7 +32,7 @@ class IconCache {
             this.evictOldest();
         }
 
-        // Remove existing entry if it exists
+        // 移除 existing entry if it exists
         if (this.cache.has(key)) {
             const existing = this.cache.get(key)!;
             this.currentCacheSize -= existing.size;
@@ -63,12 +63,12 @@ class IconCache {
     }
 
     private evictOldest(): void {
-        // Remove the oldest 25% of cache entries
+        // 移除 the oldest 25% of cache entries
         const entries = Array.from(this.cache.entries());
         entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
 
-        const toRemove = Math.ceil(entries.length * 0.25);
-        for (let i = 0; i < toRemove && i < entries.length; i++) {
+        const to移除 = Math.ceil(entries.length * 0.25);
+        for (let i = 0; i < to移除 && i < entries.length; i++) {
             const [key, value] = entries[i];
             this.cache.delete(key);
             this.currentCacheSize -= value.size;

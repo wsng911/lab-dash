@@ -5,7 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 const TEMPERATURE_UNIT_OPTIONS = [
     { id: 'fahrenheit', label: 'Fahrenheit (°F)' },
@@ -25,10 +25,10 @@ interface WeatherWidgetConfigProps {
 
 export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) => {
     const isMobile = useIsMobile();
-    const [locationSearch, setLocationSearch] = useState('');
+    const [location搜索, setLocation搜索] = useState('');
     const [locationOptions, setLocationOptions] = useState<LocationOption[]>([]);
     const [selectedLocation, setSelectedLocation] = useState<LocationOption | null>(null);
-    const [isSearching, setIsSearching] = useState(false);
+    const [is搜索ing, setIs搜索ing] = useState(false);
 
     // Watch the temperature unit directly from the form
     const watchedTemperatureUnit = formContext.watch('temperatureUnit');
@@ -41,24 +41,24 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
         const locationValue = formContext.getValues('location');
         if (locationValue) {
             setSelectedLocation(locationValue as LocationOption);
-            setLocationSearch(locationValue.name || '');
+            setLocation搜索(locationValue.name || '');
         }
     }, [formContext]);
 
     // Debounce location search and fetch results
     useEffect(() => {
         const fetchLocations = async () => {
-            if (locationSearch.length < 2) {
+            if (location搜索.length < 2) {
                 setLocationOptions([]);
                 return;
             }
 
-            setIsSearching(true);
+            setIs搜索ing(true);
             try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationSearch)}&limit=5`);
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location搜索)}&limit=5`);
                 const data = await response.json();
 
-                // Create a Map to track seen names and ensure uniqueness
+                // 创建 a Map to track seen names and ensure uniqueness
                 const uniqueLocations = new Map();
 
                 // Process each location, ensuring uniqueness
@@ -85,18 +85,18 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                 console.error('Error fetching locations:', error);
                 setLocationOptions([]);
             } finally {
-                setIsSearching(false);
+                setIs搜索ing(false);
             }
         };
 
         const timer = setTimeout(() => {
-            if (locationSearch) {
+            if (location搜索) {
                 fetchLocations();
             }
         }, 500); // 500ms debounce
 
         return () => clearTimeout(timer);
-    }, [locationSearch]);
+    }, [location搜索]);
 
     // When a location is selected, update the form values
     useEffect(() => {
@@ -168,9 +168,9 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                         }
                         return option.name;
                     }}
-                    inputValue={locationSearch}
+                    inputValue={location搜索}
                     onInputChange={(_, newValue) => {
-                        setLocationSearch(newValue);
+                        setLocation搜索(newValue);
                     }}
                     onChange={(_, newValue) => {
                         // Handle both string and LocationOption types
@@ -181,15 +181,15 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                             setSelectedLocation(newValue);
                         }
                     }}
-                    loading={isSearching}
+                    loading={is搜索ing}
                     loadingText={
                         <Typography style={{ color: theme.palette.text.primary }}>
-                            Searching...
+                            搜索ing...
                         </Typography>
                     }
                     noOptionsText={
                         <Typography style={{ color: theme.palette.text.primary }}>
-                            {locationSearch.length < 2 ? 'Type to search...' : 'No locations found'}
+                            {location搜索.length < 2 ? 'Type to search...' : 'No locations found'}
                         </Typography>
                     }
                     fullWidth
@@ -202,7 +202,7 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label='Search location'
+                            label='搜索 location'
                             variant='outlined'
                             helperText='Enter a zip code or city'
                             FormHelperTextProps={{

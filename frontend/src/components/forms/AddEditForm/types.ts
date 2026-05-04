@@ -1,6 +1,6 @@
 export type FormValues = {
-    shortcutName?: string;
-    pageName?: string;
+    shortcut名称?: string;
+    page名称?: string;
     itemType: string;
     url?: string;
     healthUrl?: string;
@@ -19,14 +19,14 @@ export type FormValues = {
     networkInterface?: string;
     showDiskUsage?: boolean;
     showSystemInfo?: boolean;
-    showInternetStatus?: boolean;
+    showInternet状态?: boolean;
     showIP?: boolean;
     ipDisplayType?: 'wan' | 'lan' | 'both';
     // Disk monitor widget
-    selectedDisks?: Array<{ mount: string; customName: string; showMountPath?: boolean }>;
+    selectedDisks?: Array<{ mount: string; custom名称: string; showMountPath?: boolean }>;
     showIcons?: boolean;
     showMountPath?: boolean;
-    showName?: boolean;
+    show名称?: boolean;
     layout?: '2x2' | '2x4' | '1x6';
     // DateTime widget
     timezone?: string;
@@ -38,31 +38,31 @@ export type FormValues = {
     piholePort?: string;
     piholeSsl?: boolean;
     piholeApiToken?: string;
-    piholePassword?: string;
-    piholeName?: string;
+    pihole密码?: string;
+    pihole名称?: string;
     // AdGuard widget
     adguardHost?: string;
     adguardPort?: string;
     adguardSsl?: boolean;
-    adguardUsername?: string;
-    adguardPassword?: string;
-    adguardName?: string;
+    adguard用户名?: string;
+    adguard密码?: string;
+    adguard名称?: string;
     // Media server widget
     mediaServerType?: string;
-    mediaServerName?: string;
+    mediaServer名称?: string;
     msHost?: string;
     msPort?: string;
     msSsl?: boolean;
     msApiKey?: string;
     // Sonarr widget
-    sonarrName?: string;
+    sonarr名称?: string;
     sonarrHost?: string;
     sonarrPort?: string;
     sonarrSsl?: boolean;
     sonarrApiKey?: string;
 
     // Radarr widget
-    radarrName?: string;
+    radarr名称?: string;
     radarrHost?: string;
     radarrPort?: string;
     radarrSsl?: boolean;
@@ -70,27 +70,27 @@ export type FormValues = {
 
     // Media Request Manager widget
     mediaRequestManagerService?: 'jellyseerr' | 'overseerr';
-    mediaRequestManagerName?: string;
+    mediaRequestManager名称?: string;
     mediaRequestManagerHost?: string;
     mediaRequestManagerPort?: string;
     mediaRequestManagerSsl?: boolean;
     mediaRequestManagerApiKey?: string;
 
     // Notes widget
-    displayName?: string;
+    display名称?: string;
     defaultNoteFontSize?: string;
 
     // Torrent client widget
     torrentClient?: string;
     torrentUrl?: string;
-    torrentUsername?: string;
-    torrentPassword?: string;
+    torrent用户名?: string;
+    torrent密码?: string;
     torrentClientType?: string;
     tcHost?: string;
     tcPort?: string;
     tcSsl?: boolean;
-    tcUsername?: string;
-    tcPassword?: string;
+    tc用户名?: string;
+    tc密码?: string;
 
     // Dual Widget
     topWidgetType?: string;
@@ -106,26 +106,26 @@ export type FormValues = {
     top_networkInterface?: string;
     top_showDiskUsage?: boolean;
     top_showSystemInfo?: boolean;
-    top_showInternetStatus?: boolean;
+    top_showInternet状态?: boolean;
     top_showIP?: boolean;
     top_ipDisplayType?: 'wan' | 'lan' | 'both';
-    top_selectedDisks?: Array<{ mount: string; customName: string; showMountPath?: boolean }>;
+    top_selectedDisks?: Array<{ mount: string; custom名称: string; showMountPath?: boolean }>;
     top_showIcons?: boolean;
     top_showMountPath?: boolean;
-    top_showName?: boolean;
+    top_show名称?: boolean;
     top_layout?: '2x2' | '2x4' | '1x6';
     top_piholeHost?: string;
     top_piholePort?: string;
     top_piholeSsl?: boolean;
     top_piholeApiToken?: string;
-    top_piholePassword?: string;
-    top_piholeName?: string;
+    top_pihole密码?: string;
+    top_pihole名称?: string;
     top_adguardHost?: string;
     top_adguardPort?: string;
     top_adguardSsl?: boolean;
-    top_adguardUsername?: string;
-    top_adguardPassword?: string;
-    top_adguardName?: string;
+    top_adguard用户名?: string;
+    top_adguard密码?: string;
+    top_adguard名称?: string;
     top_showLabel?: boolean;
     // Dual Widget - position-specific fields for bottom widget
     bottom_temperatureUnit?: string;
@@ -138,32 +138,32 @@ export type FormValues = {
     bottom_networkInterface?: string;
     bottom_showDiskUsage?: boolean;
     bottom_showSystemInfo?: boolean;
-    bottom_showInternetStatus?: boolean;
+    bottom_showInternet状态?: boolean;
     bottom_showIP?: boolean;
     bottom_ipDisplayType?: 'wan' | 'lan' | 'both';
-    bottom_selectedDisks?: Array<{ mount: string; customName: string; showMountPath?: boolean }>;
+    bottom_selectedDisks?: Array<{ mount: string; custom名称: string; showMountPath?: boolean }>;
     bottom_showIcons?: boolean;
     bottom_showMountPath?: boolean;
-    bottom_showName?: boolean;
+    bottom_show名称?: boolean;
     bottom_layout?: '2x2' | '2x4' | '1x6';
     bottom_piholeHost?: string;
     bottom_piholePort?: string;
     bottom_piholeSsl?: boolean;
     bottom_piholeApiToken?: string;
-    bottom_piholePassword?: string;
-    bottom_piholeName?: string;
+    bottom_pihole密码?: string;
+    bottom_pihole名称?: string;
     bottom_adguardHost?: string;
     bottom_adguardPort?: string;
     bottom_adguardSsl?: boolean;
-    bottom_adguardUsername?: string;
-    bottom_adguardPassword?: string;
-    bottom_adguardName?: string;
+    bottom_adguard用户名?: string;
+    bottom_adguard密码?: string;
+    bottom_adguard名称?: string;
     bottom_showLabel?: boolean;
     // Other fields
     adminOnly?: boolean;
     isWol?: boolean;
-    macAddress?: string;
-    broadcastAddress?: string;
+    mac添加ress?: string;
+    broadcast添加ress?: string;
     port?: string;
     maxItems?: string;
 };

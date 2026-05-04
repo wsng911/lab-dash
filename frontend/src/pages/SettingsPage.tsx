@@ -2,11 +2,11 @@ import { Box, Paper, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { SettingsForm } from '../components/forms/SettingsForm';
+import { 设置Form } from '../components/forms/设置Form';
 import { useAppContext } from '../context/useAppContext';
 import { styles } from '../theme/styles';
 
-export const SettingsPage = () => {
+export const 设置Page = () => {
     const { isLoggedIn, isAdmin } = useAppContext();
     const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ export const SettingsPage = () => {
                 borderRadius: 2,
                 mb: 4
             }} component={Paper}>
-                <SettingsForm />
+                <设置Form />
             </Box>
         </Box>
     );

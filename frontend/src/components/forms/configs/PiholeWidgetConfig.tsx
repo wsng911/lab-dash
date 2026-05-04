@@ -5,7 +5,7 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 
 interface PiholeWidgetConfigProps {
@@ -20,7 +20,7 @@ export const PiholeWidgetConfig = ({ formContext, existingItem }: PiholeWidgetCo
 
     // Track if we're editing an existing item with sensitive data
     const [hasExistingApiToken, setHasExistingApiToken] = useState(false);
-    const [hasExistingPassword, setHasExistingPassword] = useState(false);
+    const [hasExisting密码, setHasExisting密码] = useState(false);
 
     const textFieldSx = {
         width: '100%',
@@ -48,11 +48,11 @@ export const PiholeWidgetConfig = ({ formContext, existingItem }: PiholeWidgetCo
                 }
             }
 
-            if (config._hasPassword) {
-                setHasExistingPassword(true);
+            if (config._has密码) {
+                setHasExisting密码(true);
                 // Set masked value in form if not already set
-                if (!formContext.getValues('piholePassword')) {
-                    formContext.setValue('piholePassword', MASKED_VALUE);
+                if (!formContext.getValues('pihole密码')) {
+                    formContext.setValue('pihole密码', MASKED_VALUE);
                 }
             }
         }
@@ -63,12 +63,12 @@ export const PiholeWidgetConfig = ({ formContext, existingItem }: PiholeWidgetCo
 
 
         if (value && value !== MASKED_VALUE) {
-            formContext.setValue('piholePassword', '');
+            formContext.setValue('pihole密码', '');
         }
     };
 
     // Handle password changes
-    const handlePasswordChange = (value: string) => {
+    const handle密码Change = (value: string) => {
 
         // Clear API token if password is being set
         if (value && value !== MASKED_VALUE) {
@@ -81,73 +81,73 @@ export const PiholeWidgetConfig = ({ formContext, existingItem }: PiholeWidgetCo
         const subscription = formContext.watch((value, { name }) => {
             if (name === 'piholeApiToken') {
                 handleApiTokenChange(value.piholeApiToken || '');
-            } else if (name === 'piholePassword') {
-                handlePasswordChange(value.piholePassword || '');
+            } else if (name === 'pihole密码') {
+                handle密码Change(value.pihole密码 || '');
             }
         });
 
         return () => subscription.unsubscribe();
-    }, [formContext, hasExistingApiToken, hasExistingPassword]);
+    }, [formContext, hasExistingApiToken, hasExisting密码]);
 
     // Mutual exclusivity effect for new values
     useEffect(() => {
         const piholeApiToken = formContext.watch('piholeApiToken');
-        const piholePassword = formContext.watch('piholePassword');
+        const pihole密码 = formContext.watch('pihole密码');
 
         // Only enforce mutual exclusivity for non-masked values
-        if (piholeApiToken && piholeApiToken !== MASKED_VALUE && piholePassword && piholePassword !== MASKED_VALUE) {
-            formContext.setValue('piholePassword', '');
+        if (piholeApiToken && piholeApiToken !== MASKED_VALUE && pihole密码 && pihole密码 !== MASKED_VALUE) {
+            formContext.setValue('pihole密码', '');
         }
     }, [formContext.watch('piholeApiToken')]);
 
     useEffect(() => {
         const piholeApiToken = formContext.watch('piholeApiToken');
-        const piholePassword = formContext.watch('piholePassword');
+        const pihole密码 = formContext.watch('pihole密码');
 
         // Only enforce mutual exclusivity for non-masked values
-        if (piholePassword && piholePassword !== MASKED_VALUE && piholeApiToken && piholeApiToken !== MASKED_VALUE) {
+        if (pihole密码 && pihole密码 !== MASKED_VALUE && piholeApiToken && piholeApiToken !== MASKED_VALUE) {
             formContext.setValue('piholeApiToken', '');
         }
-    }, [formContext.watch('piholePassword')]);
+    }, [formContext.watch('pihole密码')]);
 
     // Helper function to determine if field should be required
     const isApiTokenRequired = () => {
-        const password = formContext.watch('piholePassword');
+        const password = formContext.watch('pihole密码');
         // API token is required only if there's no password AND no existing password (not masked)
         // If password is masked, it means there's an existing password, so API token is not required
-        return !password && !hasExistingPassword;
+        return !password && !hasExisting密码;
     };
 
-    const isPasswordRequired = () => {
+    const is密码Required = () => {
         const apiToken = formContext.watch('piholeApiToken');
-        // Password is required only if there's no API token AND no existing API token (not masked)
+        // 密码 is required only if there's no API token AND no existing API token (not masked)
         // If API token is masked, it means there's an existing API token, so password is not required
         return !apiToken && !hasExistingApiToken;
     };
 
     // Helper function to determine if field should be disabled
     const isApiTokenDisabled = () => {
-        const password = formContext.watch('piholePassword');
+        const password = formContext.watch('pihole密码');
         // API token is disabled if password has a real (non-masked) value
         return Boolean(password && password !== MASKED_VALUE);
     };
 
-    const isPasswordDisabled = () => {
+    const is密码Disabled = () => {
         const apiToken = formContext.watch('piholeApiToken');
-        // Password is disabled if API token has a real (non-masked) value
+        // 密码 is disabled if API token has a real (non-masked) value
         return Boolean(apiToken && apiToken !== MASKED_VALUE);
     };
 
     // Helper function to get helper text
     const getApiTokenHelperText = () => {
-        const password = formContext.watch('piholePassword');
+        const password = formContext.watch('pihole密码');
         if (password && password !== MASKED_VALUE) {
-            return 'Password already provided';
+            return '密码 already provided';
         }
-        return 'Enter the API token from Pi-hole Settings > API/Web interface';
+        return 'Enter the API token from Pi-hole 设置 > API/Web interface';
     };
 
-    const getPasswordHelperText = () => {
+    const get密码HelperText = () => {
         const apiToken = formContext.watch('piholeApiToken');
         if (apiToken && apiToken !== MASKED_VALUE) {
             return 'API Token already provided';
@@ -187,8 +187,8 @@ export const PiholeWidgetConfig = ({ formContext, existingItem }: PiholeWidgetCo
             </Grid>
             <Grid sx={{ width: '100%', mb: 2 }}>
                 <TextFieldElement
-                    name='piholeName'
-                    label='Display Name'
+                    name='pihole名称'
+                    label='Display 名称'
                     variant='outlined'
                     placeholder='Pi-hole'
                     fullWidth
@@ -218,15 +218,15 @@ export const PiholeWidgetConfig = ({ formContext, existingItem }: PiholeWidgetCo
             </Grid>
             <Grid sx={{ width: '100%', mb: 2 }}>
                 <TextFieldElement
-                    name='piholePassword'
-                    label='Password (Pi-hole v6)'
+                    name='pihole密码'
+                    label='密码 (Pi-hole v6)'
                     type='password'
                     variant='outlined'
                     fullWidth
                     autoComplete='off'
-                    required={isPasswordRequired()}
-                    disabled={isPasswordDisabled()}
-                    helperText={getPasswordHelperText()}
+                    required={is密码Required()}
+                    disabled={is密码Disabled()}
+                    helperText={get密码HelperText()}
                     sx={textFieldSx}
                     slotProps={{
                         inputLabel: { style: { color: theme.palette.text.primary } },
@@ -248,7 +248,7 @@ export const PiholeWidgetConfig = ({ formContext, existingItem }: PiholeWidgetCo
             </Grid>
             <Grid sx={{ width: '100%' }}>
                 <CheckboxElement
-                    label='Show Name'
+                    label='Show 名称'
                     name='showLabel'
                     checked={formContext.watch('showLabel')}
                     sx={{

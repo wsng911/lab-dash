@@ -9,24 +9,24 @@ const BACKUP_DIR = path.join(__dirname, '../config/backups');
 const BACKUP_FILE = path.join(BACKUP_DIR, 'config-weekly-backup.json');
 const BACKUP_METADATA_FILE = path.join(BACKUP_DIR, 'backup-metadata.json');
 
-interface BackupMetadata {
-    lastBackupTime: number;
-    nextBackupTime: number;
+interface 返回upMetadata {
+    last返回upTime: number;
+    next返回upTime: number;
     backupIntervalMs: number;
 }
 
-export class BackupService {
-    private static instance: BackupService;
+export class 返回upService {
+    private static instance: 返回upService;
     private backupIntervalMs = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
     private intervalId: ReturnType<typeof setInterval> | null = null;
 
     private constructor() {}
 
-    public static getInstance(): BackupService {
-        if (!BackupService.instance) {
-            BackupService.instance = new BackupService();
+    public static getInstance(): 返回upService {
+        if (!返回upService.instance) {
+            返回upService.instance = new 返回upService();
         }
-        return BackupService.instance;
+        return 返回upService.instance;
     }
 
     /**
@@ -35,18 +35,18 @@ export class BackupService {
     public async initialize(): Promise<void> {
         try {
             // Ensure backup directory exists
-            await this.ensureBackupDirectory();
+            await this.ensure返回upDirectory();
 
             // Check if we need to perform an immediate backup
-            const shouldBackup = await this.shouldPerformBackup();
-            if (shouldBackup) {
-                await this.performBackup();
+            const should返回up = await this.shouldPerform返回up();
+            if (should返回up) {
+                await this.perform返回up();
             }
 
             // Start the periodic backup schedule
-            this.startBackupSchedule();
+            this.start返回upSchedule();
 
-            console.log('Backup service initialized successfully');
+            console.log('返回up service initialized successfully');
         } catch (error) {
             console.error('Failed to initialize backup service:', error);
         }
@@ -59,32 +59,32 @@ export class BackupService {
         if (this.intervalId) {
             clearInterval(this.intervalId);
             this.intervalId = null;
-            console.log('Backup service stopped');
+            console.log('返回up service stopped');
         }
     }
 
     /**
      * Ensure the backup directory exists
      */
-    private async ensureBackupDirectory(): Promise<void> {
+    private async ensure返回upDirectory(): Promise<void> {
         try {
             await fsPromises.access(BACKUP_DIR);
         } catch {
             await fsPromises.mkdir(BACKUP_DIR, { recursive: true });
-            console.log('Created backup directory:', BACKUP_DIR);
+            console.log('创建d backup directory:', BACKUP_DIR);
         }
     }
 
     /**
      * Check if a backup should be performed based on the last backup time
      */
-    private async shouldPerformBackup(): Promise<boolean> {
+    private async shouldPerform返回up(): Promise<boolean> {
         try {
-            const metadata = await this.loadBackupMetadata();
+            const metadata = await this.load返回upMetadata();
             const currentTime = Date.now();
 
             // If no previous backup or it's been more than a week, perform backup
-            return !metadata.lastBackupTime || (currentTime >= metadata.nextBackupTime);
+            return !metadata.last返回upTime || (currentTime >= metadata.next返回upTime);
         } catch {
             // If metadata doesn't exist, we should perform a backup
             return true;
@@ -94,7 +94,7 @@ export class BackupService {
     /**
      * Load backup metadata
      */
-    private async loadBackupMetadata(): Promise<BackupMetadata> {
+    private async load返回upMetadata(): Promise<返回upMetadata> {
         try {
             const metadataContent = await fsPromises.readFile(BACKUP_METADATA_FILE, 'utf-8');
             return JSON.parse(metadataContent);
@@ -102,24 +102,24 @@ export class BackupService {
             // Return default metadata if file doesn't exist
             const currentTime = Date.now();
             return {
-                lastBackupTime: 0,
-                nextBackupTime: currentTime + this.backupIntervalMs,
+                last返回upTime: 0,
+                next返回upTime: currentTime + this.backupIntervalMs,
                 backupIntervalMs: this.backupIntervalMs
             };
         }
     }
 
     /**
-     * Save backup metadata
+     * 保存 backup metadata
      */
-    private async saveBackupMetadata(metadata: BackupMetadata): Promise<void> {
+    private async save返回upMetadata(metadata: 返回upMetadata): Promise<void> {
         await fsPromises.writeFile(BACKUP_METADATA_FILE, JSON.stringify(metadata, null, 2), 'utf-8');
     }
 
     /**
      * Perform the actual backup
      */
-    public async performBackup(): Promise<void> {
+    public async perform返回up(): Promise<void> {
         try {
             // Check if config file exists
             if (!fs.existsSync(CONFIG_FILE)) {
@@ -131,7 +131,7 @@ export class BackupService {
             const configContent = await fsPromises.readFile(CONFIG_FILE, 'utf-8');
             const config: Config = JSON.parse(configContent);
 
-            // Create backup with timestamp comment
+            // 创建 backup with timestamp comment
             const backupData = {
                 ...config,
                 _backupMetadata: {
@@ -146,12 +146,12 @@ export class BackupService {
 
             // Update metadata
             const currentTime = Date.now();
-            const metadata: BackupMetadata = {
-                lastBackupTime: currentTime,
-                nextBackupTime: currentTime + this.backupIntervalMs,
+            const metadata: 返回upMetadata = {
+                last返回upTime: currentTime,
+                next返回upTime: currentTime + this.backupIntervalMs,
                 backupIntervalMs: this.backupIntervalMs
             };
-            await this.saveBackupMetadata(metadata);
+            await this.save返回upMetadata(metadata);
 
             console.log(`Config backup created successfully at: ${new Date().toISOString()}`);
         } catch (error) {
@@ -163,7 +163,7 @@ export class BackupService {
     /**
      * Start the periodic backup schedule
      */
-    private startBackupSchedule(): void {
+    private start返回upSchedule(): void {
         // Clear any existing interval
         if (this.intervalId) {
             clearInterval(this.intervalId);
@@ -172,40 +172,40 @@ export class BackupService {
         // Check every hour if a backup is needed
         this.intervalId = setInterval(async () => {
             try {
-                const shouldBackup = await this.shouldPerformBackup();
-                if (shouldBackup) {
-                    await this.performBackup();
+                const should返回up = await this.shouldPerform返回up();
+                if (should返回up) {
+                    await this.perform返回up();
                 }
             } catch (error) {
                 console.error('Error during scheduled backup check:', error);
             }
         }, 60 * 60 * 1000); // Check every hour
 
-        console.log('Backup schedule started');
+        console.log('返回up schedule started');
     }
 
     /**
      * Get backup status and next backup time
      */
-    public async getBackupStatus(): Promise<{
-        lastBackupTime: string | null;
-        nextBackupTime: string;
+    public async get返回up状态(): Promise<{
+        last返回upTime: string | null;
+        next返回upTime: string;
         backupExists: boolean;
     }> {
         try {
-            const metadata = await this.loadBackupMetadata();
+            const metadata = await this.load返回upMetadata();
             const backupExists = fs.existsSync(BACKUP_FILE);
 
             return {
-                lastBackupTime: metadata.lastBackupTime ? new Date(metadata.lastBackupTime).toISOString() : null,
-                nextBackupTime: new Date(metadata.nextBackupTime).toISOString(),
+                last返回upTime: metadata.last返回upTime ? new Date(metadata.last返回upTime).toISOString() : null,
+                next返回upTime: new Date(metadata.next返回upTime).toISOString(),
                 backupExists
             };
         } catch (error) {
             console.error('Error getting backup status:', error);
             return {
-                lastBackupTime: null,
-                nextBackupTime: new Date(Date.now() + this.backupIntervalMs).toISOString(),
+                last返回upTime: null,
+                next返回upTime: new Date(Date.now() + this.backupIntervalMs).toISOString(),
                 backupExists: false
             };
         }
@@ -214,14 +214,14 @@ export class BackupService {
     /**
      * Manually trigger a backup (useful for testing or manual backups)
      */
-    public async triggerManualBackup(): Promise<void> {
-        await this.performBackup();
+    public async triggerManual返回up(): Promise<void> {
+        await this.perform返回up();
     }
 
     /**
      * Restore from backup
      */
-    public async restoreFromBackup(): Promise<void> {
+    public async restoreFrom返回up(): Promise<void> {
         try {
             if (!fs.existsSync(BACKUP_FILE)) {
                 throw new Error('No backup file found');
@@ -231,7 +231,7 @@ export class BackupService {
             const backupContent = await fsPromises.readFile(BACKUP_FILE, 'utf-8');
             const backupData = JSON.parse(backupContent);
 
-            // Remove backup metadata before restoring
+            // 移除 backup metadata before restoring
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { _backupMetadata, ...configData } = backupData;
 
@@ -246,4 +246,4 @@ export class BackupService {
     }
 }
 
-export default BackupService;
+export default 返回upService;

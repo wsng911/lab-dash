@@ -9,7 +9,7 @@ type QBittorrentWidgetConfig = {
     port?: string;
     ssl?: boolean;
     username?: string;
-    _hasPassword?: boolean; // Security flag instead of actual password
+    _has密码?: boolean; // Security flag instead of actual password
     refreshInterval?: number;
     maxDisplayedTorrents?: number;
     showLabel?: boolean;
@@ -28,10 +28,10 @@ export const QBittorrentWidget = (props: { config?: QBittorrentWidgetConfig; id?
         port: config?.port || '8080',
         ssl: config?.ssl || false,
         username: config?.username || '',
-        password: '' // Password is handled on backend, not sent to frontend
+        password: '' // 密码 is handled on backend, not sent to frontend
     });
 
-    // Add a counter for login attempts and a maximum number of attempts
+    // 添加 a counter for login attempts and a maximum number of attempts
     const loginAttemptsRef = useRef(0);
     const MAX_LOGIN_ATTEMPTS = 3;
 
@@ -43,7 +43,7 @@ export const QBittorrentWidget = (props: { config?: QBittorrentWidgetConfig; id?
                 port: config.port !== undefined ? config.port : (prev.port || '8080'),
                 ssl: config.ssl || false,
                 username: config.username || '',
-                password: '' // Password is handled on backend, not sent to frontend
+                password: '' // 密码 is handled on backend, not sent to frontend
             }));
             // Reset attempt counter and failed flag when credentials change
             loginAttemptsRef.current = 0;
@@ -148,7 +148,7 @@ export const QBittorrentWidget = (props: { config?: QBittorrentWidgetConfig; id?
             const torrentsData = await DashApi.qbittorrentGetTorrents(id || '');
 
             // Check if an empty array was returned due to decryption error
-            if (Array.isArray(torrentsData) && torrentsData.length === 0 && loginCredentials.username && config?._hasPassword) {
+            if (Array.isArray(torrentsData) && torrentsData.length === 0 && loginCredentials.username && config?._has密码) {
                 // If we have credentials but get empty results, it could be a decryption error
                 // We'll handle this case by checking the auth status in the next stats fetch
                 setTorrents([]);
@@ -190,14 +190,14 @@ export const QBittorrentWidget = (props: { config?: QBittorrentWidgetConfig; id?
 
     // Auto-login when username and password are available and not authenticated
     useEffect(() => {
-        if (config?.username && config?._hasPassword && !isAuthenticated && !loginAttemptFailed) {
+        if (config?.username && config?._has密码 && !isAuthenticated && !loginAttemptFailed) {
             handleLogin();
         }
     }, [config, handleLogin, isAuthenticated, loginAttemptFailed]);
 
 
 
-    // Add ref to track current torrents without causing re-renders
+    // 添加 ref to track current torrents without causing re-renders
     const torrentsRef = useRef<any[]>([]);
 
     // Update ref when torrents change
@@ -296,9 +296,9 @@ export const QBittorrentWidget = (props: { config?: QBittorrentWidgetConfig; id?
         }
     }, [loginCredentials, fetchTorrents]);
 
-    const handleDeleteTorrent = useCallback(async (hash: string, deleteFiles: boolean) => {
+    const handle删除Torrent = useCallback(async (hash: string, deleteFiles: boolean) => {
         try {
-            const success = await DashApi.qbittorrentDeleteTorrent(hash, deleteFiles, id || '');
+            const success = await DashApi.qbittorrent删除Torrent(hash, deleteFiles, id || '');
 
             // Refresh the torrents list after operation
             if (success) {
@@ -323,7 +323,7 @@ export const QBittorrentWidget = (props: { config?: QBittorrentWidgetConfig; id?
 
     return (
         <DownloadClientWidget
-            clientName='qBittorrent'
+            client名称='qBittorrent'
             isLoading={isLoading}
             isAuthenticated={isAuthenticated}
             authError={authError}
@@ -335,7 +335,7 @@ export const QBittorrentWidget = (props: { config?: QBittorrentWidgetConfig; id?
             showLabel={config?.showLabel || false}
             onResumeTorrent={handleStartTorrent}
             onPauseTorrent={handleStopTorrent}
-            onDeleteTorrent={handleDeleteTorrent}
+            on删除Torrent={handle删除Torrent}
         />
     );
 };

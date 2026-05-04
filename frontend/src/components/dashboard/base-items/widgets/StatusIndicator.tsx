@@ -3,20 +3,20 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Tooltip } from '@mui/material';
 import React from 'react';
 
-import { useServiceStatus } from '../../../../hooks/useServiceStatus';
+import { useService状态 } from '../../../../hooks/useService状态';
 import { isValidHttpUrl } from '../../../../utils/utils';
 
-type StatusIndicatorProps = {
+type 状态IndicatorProps = {
     url?: string;
     healthCheckType?: 'http' | 'ping';
 };
 
-export const StatusIndicator: React.FC<StatusIndicatorProps> = ({ url, healthCheckType = 'http' }) => {
+export const 状态Indicator: React.FC<状态IndicatorProps> = ({ url, healthCheckType = 'http' }) => {
     // For ping type, we don't need to validate the URL format
     const isPingType = healthCheckType === 'ping';
     const isValidUrl = isPingType || (url && isValidHttpUrl(url));
 
-    const isOnline = useServiceStatus(isValidUrl ? url : null, healthCheckType);
+    const isOnline = useService状态(isValidUrl ? url : null, healthCheckType);
 
     let dotColor = 'gray';
     let tooltipText = 'Unknown';

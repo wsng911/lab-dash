@@ -1,53 +1,43 @@
-# Build (Backend)
 FROM node:22-slim AS backend-build
 
-WORKDIR /usr/src/app
-COPY ./backend ./
+WORKDIR /app
 
-# Check architecture and install Python 3 for ARM
-RUN apt-get update && \
-    ARCH=$(uname -m) && \
-    echo "Detected architecture: $ARCH" && \
-    if [ "$ARCH" = "armv7l" ] || [ "$ARCH" = "armhf" ] || [ "$ARCH" = "arm" ]; then \
-      echo "Installing Python 3 for ARM architecture" && \
-      apt-get install -y python3 python3-pip; \
-    else \
-      echo "Skipping Python 3 installation for architecture: $ARCH"; \
-    fi
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/* && \
+    git config --global user.email "dev@example.com" && \
+    git config --global user.name "dev"
 
-RUN npm install --omit-optional
-RUN npm run build
-
-# Build (Frontend)
-FROM node:22-slim AS frontend-build
-WORKDIR /usr/src/app
-# Copy root package.json for version access
-COPY ./package.json ../package.json
-COPY ./frontend ./
+COPY package*.json ./
 RUN npm install
-ENV NODE_ENV=production
+
+COPY . .
+
+RUN git init && git add -A && git commit -m "init" || true
+
+RUN npm run build:backend
+
+FROM node:22-slim AS frontend-build
+
+WORKDIR /app/frontend
+
+COPY frontend/package*.json ./
+RUN npm install
+
+COPY frontend/ ./
 RUN npm run build
 
-# Deploy (Backend)
-FROM node:22-slim AS backend-deploy
+FROM node:22-slim
 
 WORKDIR /app
+
+COPY --from=backend-build /app/dist ./dist
+COPY --from=backend-build /app/node_modules ./node_modules
+COPY --from=backend-build /app/package.json ./
+COPY --from=frontend-build /app/frontend/dist ./frontend/dist
+
+RUN mkdir -p /app/data
+
 ENV NODE_ENV=production
+
 EXPOSE 2022
 
-# Install runtime dependencies and Python 3 for ARM
-RUN apt-get update && \
-    apt-get install -y iputils-ping lm-sensors ca-certificates && \
-    ARCH=$(uname -m) && \
-    echo "Detected architecture: $ARCH" && \
-    if [ "$ARCH" = "armv7l" ] || [ "$ARCH" = "armhf" ] || [ "$ARCH" = "arm" ]; then \
-      echo "Installing Python 3 for ARM architecture" && \
-      apt-get install -y python3 python3-pip; \
-    fi
-
-COPY --from=backend-build /usr/src/app/dist/config ../config
-COPY --from=backend-build /usr/src/app/dist/index.js ./
-COPY --from=backend-build /usr/src/app/dist/package.json ./
-COPY --from=frontend-build /usr/src/app/dist ./public
-RUN npm i --omit-dev --omit-optional
-CMD [ "node", "index.js" ]
+CMD ["node", "dist/index.js"]

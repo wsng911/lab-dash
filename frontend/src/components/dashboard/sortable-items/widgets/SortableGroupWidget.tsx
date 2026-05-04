@@ -7,11 +7,11 @@ import shortid from 'shortid';
 
 import { DUAL_WIDGET_CONTAINER_HEIGHT, STANDARD_WIDGET_HEIGHT } from '../../../../constants/widget-dimensions';
 import { useAppContext } from '../../../../context/useAppContext';
-import { DashboardItem, ITEM_TYPE } from '../../../../types';
+import { 仪表盘Item, ITEM_TYPE } from '../../../../types';
 import { GroupItem } from '../../../../types/group';
-import { AddEditForm } from '../../../forms/AddEditForm/AddEditForm';
+import { 添加编辑Form } from '../../../forms/添加编辑Form/添加编辑Form';
 import { CenteredModal } from '../../../modals/CenteredModal';
-import { ConfirmationOptions, PopupManager } from '../../../modals/PopupManager';
+import { 确认ationOptions, PopupManager } from '../../../modals/PopupManager';
 import GroupWidget from '../../base-items/widgets/GroupWidget';
 
 /**
@@ -40,8 +40,8 @@ interface Props {
   label: string;
   config?: GroupWidgetConfig;
   editMode: boolean;
-  onDelete?: () => void;
-  onEdit?: () => void;
+  on删除?: () => void;
+  on编辑?: () => void;
   onDuplicate?: () => void;
   isOverlay?: boolean;
 }
@@ -51,16 +51,16 @@ export const SortableGroupWidget: React.FC<Props> = ({
     label,
     config,
     editMode,
-    onDelete,
-    onEdit,
+    on删除,
+    on编辑,
     onDuplicate,
     isOverlay = false
 }) => {
-    const { dashboardLayout, setDashboardLayout, saveLayout, refreshDashboard } = useAppContext();
+    const { dashboardLayout, set仪表盘Layout, saveLayout, refresh仪表盘 } = useAppContext();
     const groupWidgetRef = useRef<HTMLDivElement | null>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const [openEditItemModal, setOpenEditItemModal] = useState(false);
+    const [open编辑ItemModal, setOpen编辑ItemModal] = useState(false);
     const [isCurrentDropTarget, setIsCurrentDropTarget] = useState(false);
     const [itemBeingDraggedOut, setItemBeingDraggedOut] = useState<string | null>(null);
     const [draggingOutStarted, setDraggingOutStarted] = useState(false);
@@ -94,14 +94,14 @@ export const SortableGroupWidget: React.FC<Props> = ({
         });
 
         // Update local state to reflect the change
-        setDashboardLayout(updatedLayout);
+        set仪表盘Layout(updatedLayout);
 
-        // Save layout in the background
+        // 保存 layout in the background
         saveLayout(updatedLayout);
-    }, [id, dashboardLayout, saveLayout, setDashboardLayout, config]);
+    }, [id, dashboardLayout, saveLayout, set仪表盘Layout, config]);
 
     // Get a group item as a dashboard item for editing
-    const getItemAsDashboardItem = useCallback((itemId: string): DashboardItem | null => {
+    const getItemAs仪表盘Item = useCallback((itemId: string): 仪表盘Item | null => {
         if (!config?.items) return null;
 
         // Find the item in the group
@@ -111,8 +111,8 @@ export const SortableGroupWidget: React.FC<Props> = ({
             return null;
         }
 
-        // Create a dashboard item from the group item to pass to the edit form
-        const dashboardItem: DashboardItem = {
+        // 创建 a dashboard item from the group item to pass to the edit form
+        const dashboardItem: 仪表盘Item = {
             id: foundItem.id,
             type: ITEM_TYPE.APP_SHORTCUT,
             label: foundItem.name,
@@ -126,18 +126,18 @@ export const SortableGroupWidget: React.FC<Props> = ({
             config: {}
         };
 
-        // Add WoL properties if they exist
+        // 添加 WoL properties if they exist
         if (foundItem.isWol) {
             dashboardItem.config = {
                 ...dashboardItem.config,
                 isWol: foundItem.isWol,
-                macAddress: foundItem.macAddress,
-                broadcastAddress: foundItem.broadcastAddress,
+                mac添加ress: foundItem.mac添加ress,
+                broadcast添加ress: foundItem.broadcast添加ress,
                 port: foundItem.port
             };
         }
 
-        // Add health check properties if they exist
+        // 添加 health check properties if they exist
         if (foundItem.healthUrl) {
             dashboardItem.config = {
                 ...dashboardItem.config,
@@ -150,12 +150,12 @@ export const SortableGroupWidget: React.FC<Props> = ({
     }, [config]);
 
     // Function to update a group item after it has been edited
-    const updateGroupItem = useCallback(async (itemId: string, updatedItem: DashboardItem) => {
+    const updateGroupItem = useCallback(async (itemId: string, updatedItem: 仪表盘Item) => {
         // Ensure config exists with defaults for new groups
         const safeConfig = config || { maxItems: '3', showLabel: true, items: [] };
         const currentItems = safeConfig.items || [];
 
-        // Create an updated GroupItem from the updated DashboardItem
+        // 创建 an updated GroupItem from the updated 仪表盘Item
         const updatedGroupItem: GroupItem = {
             id: itemId,
             name: updatedItem.label,
@@ -165,15 +165,15 @@ export const SortableGroupWidget: React.FC<Props> = ({
             showLabel: updatedItem.showLabel ?? true
         };
 
-        // Add WoL properties if they exist
+        // 添加 WoL properties if they exist
         if (updatedItem.config?.isWol) {
             updatedGroupItem.isWol = updatedItem.config.isWol;
-            updatedGroupItem.macAddress = updatedItem.config.macAddress;
-            updatedGroupItem.broadcastAddress = updatedItem.config.broadcastAddress;
+            updatedGroupItem.mac添加ress = updatedItem.config.mac添加ress;
+            updatedGroupItem.broadcast添加ress = updatedItem.config.broadcast添加ress;
             updatedGroupItem.port = updatedItem.config.port;
         }
 
-        // Add health check properties if they exist
+        // 添加 health check properties if they exist
         if (updatedItem.config?.healthUrl) {
             updatedGroupItem.healthUrl = updatedItem.config.healthUrl;
             updatedGroupItem.healthCheckType = updatedItem.config.healthCheckType;
@@ -200,16 +200,16 @@ export const SortableGroupWidget: React.FC<Props> = ({
             return layoutItem;
         });
 
-        // Save directly to avoid any intermediate state changes
+        // 保存 directly to avoid any intermediate state changes
         await saveLayout(updatedLayout);
 
         // Update local state to reflect the change
-        setDashboardLayout(updatedLayout);
-    }, [id, dashboardLayout, saveLayout, setDashboardLayout, config]);
+        set仪表盘Layout(updatedLayout);
+    }, [id, dashboardLayout, saveLayout, set仪表盘Layout, config]);
 
     // Function to notify about dragging a group item
     const notifyGroupItemDrag = useCallback((isDragging: boolean, itemId?: string) => {
-        // Use a direct event to DashboardGrid
+        // Use a direct event to 仪表盘Grid
         document.dispatchEvent(new CustomEvent('dndkit:group-item-drag', {
             detail: {
                 dragging: isDragging,
@@ -242,8 +242,8 @@ export const SortableGroupWidget: React.FC<Props> = ({
         // Generate a new unique ID for the app shortcut to avoid conflicts
         const newItemId = shortid.generate();
 
-        // Create a new app shortcut from the group item with a NEW ID
-        const newAppShortcut: DashboardItem = {
+        // 创建 a new app shortcut from the group item with a NEW ID
+        const newAppShortcut: 仪表盘Item = {
             id: newItemId, // Use the new ID here
             type: ITEM_TYPE.APP_SHORTCUT,
             label: draggedItem.name,
@@ -256,18 +256,18 @@ export const SortableGroupWidget: React.FC<Props> = ({
             config: {}
         };
 
-        // Add WoL properties if they exist
+        // 添加 WoL properties if they exist
         if (draggedItem.isWol) {
             newAppShortcut.config = {
                 ...newAppShortcut.config,
                 isWol: draggedItem.isWol,
-                macAddress: draggedItem.macAddress,
-                broadcastAddress: draggedItem.broadcastAddress,
+                mac添加ress: draggedItem.mac添加ress,
+                broadcast添加ress: draggedItem.broadcast添加ress,
                 port: draggedItem.port
             };
         }
 
-        // Add health check properties if they exist
+        // 添加 health check properties if they exist
         if (draggedItem.healthUrl) {
             newAppShortcut.config = {
                 ...newAppShortcut.config,
@@ -276,7 +276,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
             };
         }
 
-        // Remove the item from the group
+        // 移除 the item from the group
         const updatedGroupItems = config.items.filter(item => item.id !== itemId);
 
         // Find the group widget in the dashboard layout
@@ -286,7 +286,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
             return;
         }
 
-        // Create updated dashboard layout with both the updated group and the new app shortcut
+        // 创建 updated dashboard layout with both the updated group and the new app shortcut
         const updatedLayout = [...dashboardLayout];
 
         // Update the group widget with the reduced items
@@ -306,10 +306,10 @@ export const SortableGroupWidget: React.FC<Props> = ({
         updatedLayout.splice(groupIndex + 1, 0, newAppShortcut);
 
         // Update the dashboard layout immediately for UI responsiveness
-        setDashboardLayout(updatedLayout);
+        set仪表盘Layout(updatedLayout);
 
         try {
-            // Save the updated layout to server (this includes both the updated group and new item)
+            // 保存 the updated layout to server (this includes both the updated group and new item)
             await saveLayout(updatedLayout);
 
             // No need to refresh dashboard - saveLayout should be sufficient
@@ -320,11 +320,11 @@ export const SortableGroupWidget: React.FC<Props> = ({
         // Reset the state
         setItemBeingDraggedOut(null);
 
-        // We'll let the DashboardGrid's drag end handler clear the backdrop
-    }, [dashboardLayout, config, id, setDashboardLayout, saveLayout, notifyGroupItemDrag]);
+        // We'll let the 仪表盘Grid's drag end handler clear the backdrop
+    }, [dashboardLayout, config, id, set仪表盘Layout, saveLayout, notifyGroupItemDrag]);
 
-    // Add an app shortcut to the group
-    const addAppShortcutToGroup = useCallback((shortcutItem: DashboardItem) => {
+    // 添加 an app shortcut to the group
+    const addAppShortcutToGroup = useCallback((shortcutItem: 仪表盘Item) => {
         if (!dashboardLayout) {
             console.error('Missing dashboardLayout');
             return;
@@ -358,7 +358,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
         // Generate a new unique ID for the group item to avoid conflicts
         const newItemId = shortid.generate();
 
-        // Create a new group item from the app shortcut with a NEW ID
+        // 创建 a new group item from the app shortcut with a NEW ID
         const newGroupItem: GroupItem = {
             id: newItemId, // Use the new ID here
             name: shortcutItem.label || (isPlaceholder ? 'Placeholder' : 'App'),
@@ -368,12 +368,12 @@ export const SortableGroupWidget: React.FC<Props> = ({
             showLabel: shortcutItem.showLabel ?? true
         };
 
-        // Add any additional properties
+        // 添加 any additional properties
         if (shortcutItem.config) {
             if (shortcutItem.config.isWol) {
                 newGroupItem.isWol = shortcutItem.config.isWol;
-                newGroupItem.macAddress = shortcutItem.config.macAddress;
-                newGroupItem.broadcastAddress = shortcutItem.config.broadcastAddress;
+                newGroupItem.mac添加ress = shortcutItem.config.mac添加ress;
+                newGroupItem.broadcast添加ress = shortcutItem.config.broadcast添加ress;
                 newGroupItem.port = shortcutItem.config.port;
             }
 
@@ -383,12 +383,12 @@ export const SortableGroupWidget: React.FC<Props> = ({
             }
         }
 
-        // Create updated group items
+        // 创建 updated group items
         const updatedItems = [...currentItems, newGroupItem];
 
         // Clone the dashboardLayout to avoid mutation
 
-        // Remove the app shortcut from the dashboard layout
+        // 移除 the app shortcut from the dashboard layout
         const updatedLayout = dashboardLayout.filter(item => item.id !== shortcutItem.id);
 
         // Check if the item was actually removed to avoid processing duplicate events
@@ -419,11 +419,11 @@ export const SortableGroupWidget: React.FC<Props> = ({
         updatedLayout[groupIndex] = updatedGroupWidget;
 
         // Update the dashboard layout
-        setDashboardLayout(updatedLayout);
+        set仪表盘Layout(updatedLayout);
 
-        // Save to server
+        // 保存 to server
         saveLayout(updatedLayout);
-    }, [dashboardLayout, id, ensureItems, setDashboardLayout, saveLayout, config]);
+    }, [dashboardLayout, id, ensureItems, set仪表盘Layout, saveLayout, config]);
 
     // Get maximum items allowed in the group
     const getMaxItems = useCallback(() => {
@@ -460,7 +460,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
 
     // Subscribe to all the necessary DnD-kit events
     useEffect(() => {
-        // Event handlers for direct communication from DashboardGrid
+        // Event handlers for direct communication from 仪表盘Grid
         const handleDndKitDragStart = (event: any) => {
             const { active } = event.detail || {};
             if (active?.data?.current?.type === ITEM_TYPE.APP_SHORTCUT) {
@@ -641,7 +641,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
         };
     }, [id, dashboardLayout, addAppShortcutToGroup, isOver, notifyGroupItemDrag, itemBeingDraggedOut, draggingOutStarted, isCurrentDropTarget]);
 
-    // Additional droppable for the entire widget area to expand hitbox
+    // 添加itional droppable for the entire widget area to expand hitbox
     const { setNodeRef: setDroppableRef, isOver: isDroppableOver } = useDroppable({
         id: `group-widget-droppable-${id}`,
         data: {
@@ -691,7 +691,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
     }, [isDragging]);
 
     // Handle editing a specific item in the group
-    const handleItemEdit = useCallback((itemId: string) => {
+    const handleItem编辑 = useCallback((itemId: string) => {
         // First, check if the item is actually still in the group
         if (!config?.items) return;
 
@@ -704,27 +704,27 @@ export const SortableGroupWidget: React.FC<Props> = ({
 
         // Set the selected item id and open the edit modal
         setSelectedItemId(itemId);
-        setOpenEditItemModal(true);
+        setOpen编辑ItemModal(true);
     }, [config]);
 
     // Handle closing the edit modal
-    const handleCloseEditModal = useCallback(() => {
-        setOpenEditItemModal(false);
+    const handle关闭编辑Modal = useCallback(() => {
+        setOpen编辑ItemModal(false);
         setSelectedItemId(null);
     }, []);
 
     // Handle updating the item after edit
-    const handleItemUpdate = useCallback((updatedItem: DashboardItem) => {
+    const handleItemUpdate = useCallback((updatedItem: 仪表盘Item) => {
         if (selectedItemId && config?.items) {
             // Update the group item with the new values
             updateGroupItem(selectedItemId, updatedItem);
         }
-        // Close the modal
-        handleCloseEditModal();
-    }, [selectedItemId, config, updateGroupItem, handleCloseEditModal]);
+        // 关闭 the modal
+        handle关闭编辑Modal();
+    }, [selectedItemId, config, updateGroupItem, handle关闭编辑Modal]);
 
     // Handle deleting a specific item from the group
-    const handleItemDelete = useCallback((itemId: string) => {
+    const handleItem删除 = useCallback((itemId: string) => {
         if (!config?.items) return;
 
         // Find the item in the group
@@ -737,10 +737,10 @@ export const SortableGroupWidget: React.FC<Props> = ({
         console.log(`[SortableGroupWidget] Deleting group item with ID: ${itemId}`);
         console.log('[SortableGroupWidget] Current dashboard layout IDs:', dashboardLayout.map(item => item.id));
 
-        const options: ConfirmationOptions = {
-            title: `Delete ${foundItem.name}?`,
+        const options: 确认ationOptions = {
+            title: `删除 ${foundItem.name}?`,
             confirmAction: async () => {
-                // Remove the item from the group's items only
+                // 移除 the item from the group's items only
                 const updatedItems = config.items?.filter(item => item.id !== itemId) || [];
 
                 console.log('[SortableGroupWidget] Group items after deletion:', updatedItems.map(item => item.id));
@@ -760,18 +760,18 @@ export const SortableGroupWidget: React.FC<Props> = ({
                     return layoutItem;
                 });
 
-                // Save directly to avoid any intermediate state changes
+                // 保存 directly to avoid any intermediate state changes
                 await saveLayout(updatedLayout);
 
                 // Update local state to reflect the change
-                setDashboardLayout(updatedLayout);
+                set仪表盘Layout(updatedLayout);
 
-                console.log('[SortableGroupWidget] Dashboard layout should remain unchanged');
+                console.log('[SortableGroupWidget] 仪表盘 layout should remain unchanged');
             }
         };
 
-        PopupManager.deleteConfirmation(options);
-    }, [config, id, dashboardLayout, saveLayout, setDashboardLayout]);
+        PopupManager.delete确认ation(options);
+    }, [config, id, dashboardLayout, saveLayout, set仪表盘Layout]);
 
     // Handle item duplication - only handles adding to dashboard when group is full
     const handleItemDuplicate = useCallback((groupItem: GroupItem) => {
@@ -781,7 +781,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
         const dashboardItemId = `dash-${shortid.generate()}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
         // Convert the group item to a dashboard item
-        const newDashboardItem: DashboardItem = {
+        const new仪表盘Item: 仪表盘Item = {
             id: dashboardItemId,
             type: ITEM_TYPE.APP_SHORTCUT,
             label: groupItem.name,
@@ -794,21 +794,21 @@ export const SortableGroupWidget: React.FC<Props> = ({
             config: {}
         };
 
-        // Add WoL properties if they exist
+        // 添加 WoL properties if they exist
         if (groupItem.isWol) {
-            newDashboardItem.config = {
-                ...newDashboardItem.config,
+            new仪表盘Item.config = {
+                ...new仪表盘Item.config,
                 isWol: groupItem.isWol,
-                macAddress: groupItem.macAddress,
-                broadcastAddress: groupItem.broadcastAddress,
+                mac添加ress: groupItem.mac添加ress,
+                broadcast添加ress: groupItem.broadcast添加ress,
                 port: groupItem.port
             };
         }
 
-        // Add health check properties if they exist
+        // 添加 health check properties if they exist
         if (groupItem.healthUrl) {
-            newDashboardItem.config = {
-                ...newDashboardItem.config,
+            new仪表盘Item.config = {
+                ...new仪表盘Item.config,
                 healthUrl: groupItem.healthUrl,
                 healthCheckType: groupItem.healthCheckType
             };
@@ -821,22 +821,22 @@ export const SortableGroupWidget: React.FC<Props> = ({
             return;
         }
 
-        // Add the new item after the group using functional update
-        setDashboardLayout(prevLayout => {
+        // 添加 the new item after the group using functional update
+        set仪表盘Layout(prevLayout => {
             const newLayout = [...prevLayout];
-            newLayout.splice(groupIndex + 1, 0, newDashboardItem);
+            newLayout.splice(groupIndex + 1, 0, new仪表盘Item);
             return newLayout;
         });
 
-        // Save to server
+        // 保存 to server
         const updatedLayout = [...dashboardLayout];
-        updatedLayout.splice(groupIndex + 1, 0, newDashboardItem);
+        updatedLayout.splice(groupIndex + 1, 0, new仪表盘Item);
         saveLayout(updatedLayout);
-    }, [config, id, dashboardLayout, setDashboardLayout, saveLayout]);
+    }, [config, id, dashboardLayout, set仪表盘Layout, saveLayout]);
 
     // Get selected dashboard item for editing
-    const selectedDashboardItem = selectedItemId
-        ? getItemAsDashboardItem(selectedItemId)
+    const selected仪表盘Item = selectedItemId
+        ? getItemAs仪表盘Item(selectedItemId)
         : null;
 
     // Extract layout information from the maxItems configuration
@@ -891,12 +891,12 @@ export const SortableGroupWidget: React.FC<Props> = ({
                     name={label}
                     items={config?.items || []}
                     onItemsChange={handleItemsChange}
-                    onRemove={onDelete}
-                    onEdit={onEdit}
-                    isEditing={editMode}
+                    on移除={on删除}
+                    on编辑={on编辑}
+                    is编辑ing={editMode}
                     onItemDragOut={handleItemDragOut}
-                    onItemEdit={handleItemEdit}
-                    onItemDelete={handleItemDelete}
+                    onItem编辑={handleItem编辑}
+                    onItem删除={handleItem删除}
                     onItemDuplicate={handleItemDuplicate}
                     maxItems={getMaxItems()}
                     showLabel={config?.showLabel !== undefined ? config.showLabel : true}
@@ -953,13 +953,13 @@ export const SortableGroupWidget: React.FC<Props> = ({
                         name={label}
                         items={config?.items || []}
                         onItemsChange={handleItemsChange}
-                        onRemove={onDelete}
-                        onEdit={onEdit}
+                        on移除={on删除}
+                        on编辑={on编辑}
                         onDuplicate={onDuplicate}
-                        isEditing={editMode}
+                        is编辑ing={editMode}
                         onItemDragOut={handleItemDragOut}
-                        onItemEdit={handleItemEdit}
-                        onItemDelete={handleItemDelete}
+                        onItem编辑={handleItem编辑}
+                        onItem删除={handleItem删除}
                         onItemDuplicate={handleItemDuplicate}
                         maxItems={getMaxItems()}
                         isHighlighted={isOver || isCurrentDropTarget}
@@ -970,15 +970,15 @@ export const SortableGroupWidget: React.FC<Props> = ({
 
             {/* Modal for editing group items */}
             <CenteredModal
-                open={openEditItemModal}
-                handleClose={handleCloseEditModal}
-                title='Edit App Shortcut'
+                open={open编辑ItemModal}
+                handle关闭={handle关闭编辑Modal}
+                title='编辑 App Shortcut'
             >
-                {selectedDashboardItem && (
-                    <AddEditForm
-                        handleClose={handleCloseEditModal}
-                        existingItem={selectedDashboardItem}
-                        onSubmit={handleItemUpdate}
+                {selected仪表盘Item && (
+                    <添加编辑Form
+                        handle关闭={handle关闭编辑Modal}
+                        existingItem={selected仪表盘Item}
+                        on提交={handleItemUpdate}
                     />
                 )}
             </CenteredModal>

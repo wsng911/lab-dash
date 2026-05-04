@@ -76,7 +76,7 @@ setInterval(async () => {
                     }
                 }
 
-                // Remove from cache regardless of logout success
+                // 移除 from cache regardless of logout success
                 sessionCache.delete(key);
                 expiredCount++;
             } catch (error) {
@@ -130,7 +130,7 @@ const getBaseUrl = (req: Request): string => {
     return `${protocol}://${host}:${port}`;
 };
 
-const getPassword = (req: Request): string | null => {
+const get密码 = (req: Request): string | null => {
     const itemId = validateItemId(req);
     const connectionInfo = getItemConnectionInfo(itemId);
     let password = connectionInfo.password;
@@ -144,7 +144,7 @@ const getPassword = (req: Request): string | null => {
         password = decrypt(password);
         // Check if decryption failed (returns empty string)
         if (!password) {
-            console.warn('Failed to decrypt Pi-hole password. Password may have been encrypted with a different key.');
+            console.warn('Failed to decrypt Pi-hole password. 密码 may have been encrypted with a different key.');
             return '';
         }
     }
@@ -281,7 +281,7 @@ async function authenticatePihole(baseUrl: string, password: string): Promise<{ 
             const errorMessage = error.response?.data?.error?.message || 'Unauthorized';
             const errorHint = error.response?.data?.error?.hint || null;
 
-            // Create a more informative error message
+            // 创建 a more informative error message
             let detailedMessage = 'Authentication failed: Invalid password';
             if (errorHint) {
                 detailedMessage += ` (${errorHint})`;
@@ -327,7 +327,7 @@ async function handleApiWith401Retry(
     const MAX_RETRIES = 2;
 
     try {
-        // Add a small delay to prevent overwhelming Pi-hole with concurrent requests
+        // 添加 a small delay to prevent overwhelming Pi-hole with concurrent requests
         await addRequestDelay(baseUrl);
 
         // First authenticate to get a session
@@ -370,7 +370,7 @@ async function handleApiWith401Retry(
             const cacheKey = getCacheKey(baseUrl, password);
             sessionCache.delete(cacheKey);
 
-            // Add a longer delay before retry to give Pi-hole time to recover
+            // 添加 a longer delay before retry to give Pi-hole time to recover
             const retryDelay = Math.min(2000 + (retryAttempt * 1000), 5000); // 2s, 3s, max 5s
             await new Promise(resolve => setTimeout(resolve, retryDelay));
 
@@ -387,13 +387,13 @@ async function handleApiWith401Retry(
 piholeV6Route.get('/stats', async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);
-        const password = getPassword(req);
+        const password = get密码(req);
 
         if (!password) {
             res.status(400).json({
                 success: false,
                 code: 'PIHOLE_AUTH_ERROR',
-                error: 'Password is required or could not be decrypted',
+                error: '密码 is required or could not be decrypted',
                 requiresReauth: true
             });
             return;
@@ -524,7 +524,7 @@ piholeV6Route.get('/stats', async (req: Request, res: Response) => {
                 adsPercentageToday = apiData.ads_percentage_today;
             }
 
-            // Create the transformed data object that matches the expected format
+            // 创建 the transformed data object that matches the expected format
             const transformedData: {
                 domains_being_blocked: number;
                 dns_queries_today: number;
@@ -576,7 +576,7 @@ piholeV6Route.get('/stats', async (req: Request, res: Response) => {
         let errorMessage = error.response?.data?.error?.message || error.message || 'Failed to get Pi-hole statistics';
         let errorCode = 'PIHOLE_API_ERROR';
 
-        // Add specific handling for rate limiting
+        // 添加 specific handling for rate limiting
         if (statusCode === 429) {
             errorCode = 'TOO_MANY_REQUESTS';
             errorMessage = 'Too many requests to Pi-hole API. The default session limit is 30 minutes. You can manually clear unused sessions or increase the max_sessions setting in Pi-hole.';
@@ -595,13 +595,13 @@ piholeV6Route.get('/stats', async (req: Request, res: Response) => {
 piholeV6Route.get('/blocking-status', async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);
-        const password = getPassword(req);
+        const password = get密码(req);
 
         if (!password) {
             res.status(400).json({
                 success: false,
                 code: 'PIHOLE_AUTH_ERROR',
-                error: 'Password is required or could not be decrypted',
+                error: '密码 is required or could not be decrypted',
                 requiresReauth: true
             });
             return;
@@ -719,7 +719,7 @@ piholeV6Route.get('/blocking-status', async (req: Request, res: Response) => {
         let errorMessage = error.response?.data?.error?.message || error.message || 'Failed to get Pi-hole blocking status';
         let errorCode = 'PIHOLE_API_ERROR';
 
-        // Add specific handling for rate limiting
+        // 添加 specific handling for rate limiting
         if (statusCode === 429) {
             errorCode = 'TOO_MANY_REQUESTS';
             errorMessage = 'Too many requests to Pi-hole API. The default session limit is 30 minutes. You can manually clear unused sessions or increase the max_sessions setting in Pi-hole.';
@@ -740,18 +740,18 @@ piholeV6Route.post('/encrypt-password', async (req: Request, res: Response) => {
         const { password } = req.body;
 
         if (!password) {
-            res.status(400).json({ error: 'Password is required' });
+            res.status(400).json({ error: '密码 is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(password)) {
-            res.status(200).json({ encryptedPassword: password });
+            res.status(200).json({ encrypted密码: password });
             return;
         }
 
-        const encryptedPassword = encrypt(password);
-        res.status(200).json({ encryptedPassword });
+        const encrypted密码 = encrypt(password);
+        res.status(200).json({ encrypted密码 });
     } catch (error) {
         console.error('Pi-hole password encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt password' });
@@ -762,14 +762,14 @@ piholeV6Route.post('/encrypt-password', async (req: Request, res: Response) => {
 piholeV6Route.post('/disable', async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);
-        const password = getPassword(req);
+        const password = get密码(req);
         const seconds = req.query.seconds !== undefined ? parseInt(req.query.seconds as string) : undefined;
 
         if (!password) {
             res.status(400).json({
                 success: false,
                 code: 'PIHOLE_AUTH_ERROR',
-                error: 'Password is required or could not be decrypted',
+                error: '密码 is required or could not be decrypted',
                 requiresReauth: true
             });
             return;
@@ -861,13 +861,13 @@ piholeV6Route.post('/disable', async (req: Request, res: Response) => {
 piholeV6Route.post('/enable', async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);
-        const password = getPassword(req);
+        const password = get密码(req);
 
         if (!password) {
             res.status(400).json({
                 success: false,
                 code: 'PIHOLE_AUTH_ERROR',
-                error: 'Password is required or could not be decrypted',
+                error: '密码 is required or could not be decrypted',
                 requiresReauth: true
             });
             return;
@@ -989,16 +989,16 @@ async function logoutPiholeSession(baseUrl: string, sid: string, csrf: string): 
     }
 }
 
-// Add a route to explicitly logout a session
+// 添加 a route to explicitly logout a session
 piholeV6Route.post('/logout', async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);
-        const password = getPassword(req);
+        const password = get密码(req);
 
         if (!password) {
             res.status(400).json({
                 success: false,
-                error: 'Password is required or could not be decrypted'
+                error: '密码 is required or could not be decrypted'
             });
             return;
         }
@@ -1011,7 +1011,7 @@ piholeV6Route.post('/logout', async (req: Request, res: Response) => {
             // Attempt to logout the session
             await logoutPiholeSession(baseUrl, cachedSession.sid, cachedSession.csrf);
 
-            // Remove from cache regardless of logout success
+            // 移除 from cache regardless of logout success
             sessionCache.delete(cacheKey);
         }
 

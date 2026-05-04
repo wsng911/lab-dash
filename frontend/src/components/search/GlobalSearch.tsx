@@ -2,22 +2,22 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { SearchBar } from './SearchBar';
+import { 搜索Bar } from './搜索Bar';
 import { useAppContext } from '../../context/useAppContext';
 import { theme } from '../../theme/theme';
-import { DashboardItem, ITEM_TYPE } from '../../types';
+import { 仪表盘Item, ITEM_TYPE } from '../../types';
 import { GroupItem } from '../../types/group';
 import { getIconPath } from '../../utils/utils';
 
-type SearchOption = {
+type 搜索Option = {
   label: string;
   icon?: string;
   url?: string;
 };
 
-export const GlobalSearch = () => {
-    const [searchOptions, setSearchOptions] = useState<SearchOption[]>([]);
-    const [searchValue, setSearchValue] = useState('');
+export const Global搜索 = () => {
+    const [searchOptions, set搜索Options] = useState<搜索Option[]>([]);
+    const [searchValue, set搜索Value] = useState('');
     const { dashboardLayout, config, pages } = useAppContext();
     const location = useLocation();
     const isHomePage = location.pathname === '/';
@@ -25,10 +25,10 @@ export const GlobalSearch = () => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
-        const processItemsFromLayout = (layout: DashboardItem[]): SearchOption[] => {
+        const processItemsFromLayout = (layout: 仪表盘Item[]): 搜索Option[] => {
             // Start with items that have direct URLs
             const directOptions = layout
-                .filter((item: DashboardItem) => item.url)
+                .filter((item: 仪表盘Item) => item.url)
                 .map((item) => {
                     let finalUrl = item.url;
 
@@ -48,9 +48,9 @@ export const GlobalSearch = () => {
                 });
 
             // Find group widgets and extract their items
-            const groupWidgetItems: SearchOption[] = [];
+            const groupWidgetItems: 搜索Option[] = [];
 
-            layout.forEach((item: DashboardItem) => {
+            layout.forEach((item: 仪表盘Item) => {
                 // Check if this is a group widget with items
                 if (item.type === ITEM_TYPE.GROUP_WIDGET &&
                     item.config?.items &&
@@ -73,7 +73,7 @@ export const GlobalSearch = () => {
             return [...directOptions, ...groupWidgetItems];
         };
 
-        let allOptions: SearchOption[] = [];
+        let allOptions: 搜索Option[] = [];
 
         if (isHomePage && config && pages) {
             // On home page, include items from all pages (current device type only)
@@ -86,14 +86,14 @@ export const GlobalSearch = () => {
                     ? processItemsFromLayout(page.layout.mobile)
                     : processItemsFromLayout(page.layout.desktop);
 
-                // Add page items to allOptions
+                // 添加 page items to allOptions
                 allOptions.push(...pageItems);
             });
 
             // Deduplicate the entire array based on URL and label combination
             const seen = new Set<string>();
             allOptions = allOptions.filter(option => {
-                // Create a unique key combining URL and label (in case URL is undefined)
+                // 创建 a unique key combining URL and label (in case URL is undefined)
                 const key = `${option.url || 'no-url'}-${option.label}`;
                 if (seen.has(key)) {
                     return false;
@@ -106,10 +106,10 @@ export const GlobalSearch = () => {
             allOptions = processItemsFromLayout(dashboardLayout);
         }
 
-        setSearchOptions(allOptions);
+        set搜索Options(allOptions);
     }, [dashboardLayout, isHomePage, config, pages, isMobile]);
 
-    // Additional focus trigger for route changes
+    // 添加itional focus trigger for route changes
     useEffect(() => {
         // Check if device has coarse pointer (mobile/touch devices)
         const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
@@ -143,7 +143,7 @@ export const GlobalSearch = () => {
             }
         };
 
-        // Add event listener to document
+        // 添加 event listener to document
         document.addEventListener('keydown', handleKeyDown);
 
         // Cleanup
@@ -154,10 +154,10 @@ export const GlobalSearch = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <SearchBar
-                placeholder='Search...'
+            <搜索Bar
+                placeholder='搜索...'
                 searchValue={searchValue}
-                setSearchValue={setSearchValue}
+                set搜索Value={set搜索Value}
                 autocompleteOptions={searchOptions}
                 inputRef={inputRef}
             />

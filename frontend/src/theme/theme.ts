@@ -67,7 +67,7 @@ export const theme = createTheme({
         },
         action: {
             // Make disabled items lighter
-            disabledBackground: 'rgba(255, 255, 255, 0.12)',
+            disabled返回ground: 'rgba(255, 255, 255, 0.12)',
             disabled: 'rgba(255, 255, 255, 0.5)'
         }
     },
@@ -148,7 +148,7 @@ export const theme = createTheme({
                 },
             },
         },
-        // Add styling for disabled buttons globally
+        // 添加 styling for disabled buttons globally
         MuiButton: {
             styleOverrides: {
                 root: {

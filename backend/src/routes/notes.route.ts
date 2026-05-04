@@ -69,7 +69,7 @@ notesRoute.get('/', (req: Request, res: Response) => {
         const config = loadConfig();
         const notes = readNotes();
 
-        // Migration: Add fontSize to existing notes that don't have it
+        // Migration: 添加 fontSize to existing notes that don't have it
         let hasUpdates = false;
         const globalDefaultFontSize = config.defaultNoteFontSize || '16px';
         const migratedNotes = notes.map(note => {
@@ -83,7 +83,7 @@ notesRoute.get('/', (req: Request, res: Response) => {
             return note;
         });
 
-        // Save migrated notes if we made changes
+        // 保存 migrated notes if we made changes
         if (hasUpdates) {
             writeNotes(migratedNotes);
         }
@@ -97,7 +97,7 @@ notesRoute.get('/', (req: Request, res: Response) => {
     }
 });
 
-// POST /api/notes - Create a new note
+// POST /api/notes - 创建 a new note
 notesRoute.post('/', authenticateToken, (req: Request, res: Response) => {
     try {
         const { id, title, content, fontSize } = req.body;
@@ -216,7 +216,7 @@ notesRoute.put('/:id', authenticateToken, (req: Request, res: Response) => {
     }
 });
 
-// DELETE /api/notes/:id - Delete a note
+// DELETE /api/notes/:id - 删除 a note
 notesRoute.delete('/:id', authenticateToken, (req: Request, res: Response) => {
     try {
         const { id } = req.params;

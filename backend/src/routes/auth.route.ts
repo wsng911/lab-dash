@@ -24,13 +24,13 @@ interface User {
 // Helper function to read users from JSON file
 const readUsers = (): User[] => {
     try {
-    // Create directory if it doesn't exist
+    // 创建 directory if it doesn't exist
         const dir = path.dirname(USERS_PATH);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
 
-        // Create file if it doesn't exist
+        // 创建 file if it doesn't exist
         if (!fs.existsSync(USERS_PATH)) {
             fs.writeFileSync(USERS_PATH, JSON.stringify([]));
             return [];
@@ -88,14 +88,14 @@ authRoute.post('/signup', async (req: Request, res: Response) => {
 
         // Validate input
         if (!username || !password) {
-            res.status(400).json({ message: 'Username and password are required' });
+            res.status(400).json({ message: '用户名 and password are required' });
             return;
         }
 
         // Check if username is already taken
         const users = readUsers();
         if (users.some(user => user.username === username)) {
-            res.status(409).json({ message: 'Username already exists' });
+            res.status(409).json({ message: '用户名 already exists' });
             return;
         }
 
@@ -131,7 +131,7 @@ authRoute.post('/login', async (req: Request, res: Response) => {
 
         // Validate input
         if (!username || !password) {
-            res.status(400).json({ message: 'Username and password are required' });
+            res.status(400).json({ message: '用户名 and password are required' });
             return;
         }
 
@@ -407,7 +407,7 @@ authRoute.post('/logout', (req: Request, res: Response) => {
             path: '/'
         });
 
-        // Additionally clear without httpOnly for client-side cookies
+        // 添加itionally clear without httpOnly for client-side cookies
         res.clearCookie('access_token', {
             secure: false,
             path: '/'

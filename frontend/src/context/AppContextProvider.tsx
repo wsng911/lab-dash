@@ -9,7 +9,7 @@ import { PopupManager } from '../components/modals/PopupManager';
 import { ToastManager } from '../components/toast/ToastManager';
 import { initialItems } from '../constants/constants';
 import { theme } from '../theme/theme';
-import { Config, DashboardItem, DashboardLayout, NewItem, Page } from '../types';
+import { Config, 仪表盘Item, 仪表盘Layout, NewItem, Page } from '../types';
 import { checkForUpdates } from '../utils/updateChecker';
 import { getAppVersion } from '../utils/version';
 
@@ -19,8 +19,8 @@ type Props = {
 
 export const AppContextProvider = ({ children }: Props) => {
     const [config, setConfig] = useState<Config>();
-    const [dashboardLayout, setDashboardLayout] = useState<DashboardItem[]>([]);
-    const [editMode, setEditMode] = useState(false);
+    const [dashboardLayout, set仪表盘Layout] = useState<仪表盘Item[]>([]);
+    const [editMode, set编辑Mode] = useState(false);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,7 +34,7 @@ export const AppContextProvider = ({ children }: Props) => {
 
     // Authentication & setup states
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const [username, setUsername] = useState<string | null>(null);
+    const [username, set用户名] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [isFirstTimeSetup, setIsFirstTimeSetup] = useState<boolean | null>(null);
     const [setupComplete, setSetupComplete] = useState<boolean>(false);
@@ -53,7 +53,7 @@ export const AppContextProvider = ({ children }: Props) => {
     const [isInitialLoading, setIsInitialLoading] = useState<boolean>(false);
 
     // Bulk data loading function
-    const loadBulkData = async (items: DashboardItem[]) => {
+    const loadBulkData = async (items: 仪表盘Item[]) => {
         if (items.length === 0) return;
 
         setIsInitialLoading(true);
@@ -77,7 +77,7 @@ export const AppContextProvider = ({ children }: Props) => {
     useEffect(() => {
         const initializeAuth = async () => {
             await checkIfUsersExist();
-            await checkLoginStatus();
+            await checkLogin状态();
             // Don't load layout here - let URL-based initialization handle it
         };
 
@@ -105,7 +105,7 @@ export const AppContextProvider = ({ children }: Props) => {
 
                 // Determine the target page ID based on URL
                 let targetPageId: string | null = null;
-                let selectedLayout: DashboardItem[] = [];
+                let selectedLayout: 仪表盘Item[] = [];
 
                 if (pathname === '/') {
                     // Home page
@@ -113,11 +113,11 @@ export const AppContextProvider = ({ children }: Props) => {
                     selectedLayout = isMobile ? freshConfig.layout.mobile : freshConfig.layout.desktop;
                 } else if (pathname.startsWith('/') && !pathname.includes('/settings') && !pathname.includes('/login')) {
                     // Page route
-                    const pageName = pathname.slice(1); // Remove leading slash
+                    const page名称 = pathname.slice(1); // 移除 leading slash
 
                     // Find the page by slug
                     const page = freshConfig.pages?.find(p =>
-                        p.name.toLowerCase().replace(/\s+/g, '-') === pageName.toLowerCase()
+                        p.name.toLowerCase().replace(/\s+/g, '-') === page名称.toLowerCase()
                     );
 
                     if (page) {
@@ -133,7 +133,7 @@ export const AppContextProvider = ({ children }: Props) => {
 
                 // Set the page ID and layout
                 setCurrentPageId(targetPageId);
-                setDashboardLayout(selectedLayout || []);
+                set仪表盘Layout(selectedLayout || []);
 
                 // Load bulk data for performance optimization
                 if (selectedLayout && selectedLayout.length > 0) {
@@ -164,7 +164,7 @@ export const AppContextProvider = ({ children }: Props) => {
                 if (currentPageId !== null) {
                     setCurrentPageId(null);
                     const selectedLayout = isMobile ? config.layout.mobile : config.layout.desktop;
-                    setDashboardLayout(selectedLayout || []);
+                    set仪表盘Layout(selectedLayout || []);
                     // Load bulk data for home page
                     if (selectedLayout && selectedLayout.length > 0) {
                         loadBulkData(selectedLayout);
@@ -172,17 +172,17 @@ export const AppContextProvider = ({ children }: Props) => {
                 }
             } else if (pathname.startsWith('/') && !pathname.includes('/settings') && !pathname.includes('/login')) {
                 // Page route
-                const pageName = pathname.slice(1); // Remove leading slash
+                const page名称 = pathname.slice(1); // 移除 leading slash
 
                 // Find the page by slug
                 const page = pages.find(p =>
-                    p.name.toLowerCase().replace(/\s+/g, '-') === pageName.toLowerCase()
+                    p.name.toLowerCase().replace(/\s+/g, '-') === page名称.toLowerCase()
                 );
 
                 if (page && currentPageId !== page.id) {
                     setCurrentPageId(page.id);
                     const selectedLayout = isMobile ? page.layout.mobile : page.layout.desktop;
-                    setDashboardLayout(selectedLayout || []);
+                    set仪表盘Layout(selectedLayout || []);
                     // Load bulk data for page
                     if (selectedLayout && selectedLayout.length > 0) {
                         loadBulkData(selectedLayout);
@@ -213,19 +213,19 @@ export const AppContextProvider = ({ children }: Props) => {
                         const currentPage = config.pages.find(page => page.id === currentPageId);
                         if (currentPage) {
                             const selectedLayout = isMobile ? currentPage.layout.mobile : currentPage.layout.desktop;
-                            setDashboardLayout(selectedLayout || []);
+                            set仪表盘Layout(selectedLayout || []);
                             return;
                         }
                     }
                     // Load main dashboard layout
                     const selectedLayout = isMobile ? config.layout.mobile : config.layout.desktop;
-                    setDashboardLayout(selectedLayout || []);
+                    set仪表盘Layout(selectedLayout || []);
                 };
 
                 loadLayoutForCurrentPage();
             } else {
                 // If no config is loaded yet, show empty layout while loading
-                setDashboardLayout([]);
+                set仪表盘Layout([]);
             }
         } else if (config !== undefined && isLoggedIn) {
             // When user logs in, load the dashboard for the current page
@@ -235,13 +235,13 @@ export const AppContextProvider = ({ children }: Props) => {
                     const currentPage = config.pages.find(page => page.id === currentPageId);
                     if (currentPage) {
                         const selectedLayout = isMobile ? currentPage.layout.mobile : currentPage.layout.desktop;
-                        setDashboardLayout(selectedLayout || []);
+                        set仪表盘Layout(selectedLayout || []);
                         return;
                     }
                 }
                 // Load main dashboard layout
                 const selectedLayout = isMobile ? config.layout.mobile : config.layout.desktop;
-                setDashboardLayout(selectedLayout || []);
+                set仪表盘Layout(selectedLayout || []);
             };
 
             loadLayoutForCurrentPage();
@@ -330,7 +330,7 @@ export const AppContextProvider = ({ children }: Props) => {
     };
 
     // Check if user is logged in based on cookies
-    const checkLoginStatus = async () => {
+    const checkLogin状态 = async () => {
 
         try {
             // HTTP-only cookies won't show in document.cookie
@@ -345,8 +345,8 @@ export const AppContextProvider = ({ children }: Props) => {
                 try {
                     // Check if user is admin to verify token is still valid
                     const isAdminRes = await DashApi.checkIsAdmin();
-                    const storedUsername = localStorage.getItem('username');
-                    setUsername(storedUsername);
+                    const stored用户名 = localStorage.getItem('username');
+                    set用户名(stored用户名);
                     setIsAdmin(isAdminRes);
                     setIsLoggedIn(true);
                 } catch (error) {
@@ -362,7 +362,7 @@ export const AppContextProvider = ({ children }: Props) => {
         } catch (error) {
             console.error('Error checking login status:', error);
             setIsLoggedIn(false);
-            setUsername(null);
+            set用户名(null);
             setIsAdmin(false);
         }
     };
@@ -375,10 +375,10 @@ export const AppContextProvider = ({ children }: Props) => {
 
             if (refreshResult.success) {
                 // If token refreshed successfully, get the stored username
-                const storedUsername = localStorage.getItem('username');
+                const stored用户名 = localStorage.getItem('username');
 
                 // Update state based on new token, using isAdmin from refresh response
-                setUsername(storedUsername);
+                set用户名(stored用户名);
                 setIsAdmin(refreshResult.isAdmin || false);
                 setIsLoggedIn(true);
 
@@ -394,21 +394,21 @@ export const AppContextProvider = ({ children }: Props) => {
             } else {
                 // If refresh failed, user is not logged in
                 setIsLoggedIn(false);
-                setUsername(null);
+                set用户名(null);
                 setIsAdmin(false);
                 // Turn off edit mode if it was active
                 if (editMode) {
-                    setEditMode(false);
+                    set编辑Mode(false);
                 }
             }
         } catch (error) {
             console.error('Error during token refresh:', error);
             setIsLoggedIn(false);
-            setUsername(null);
+            set用户名(null);
             setIsAdmin(false);
             // Turn off edit mode if it was active
             if (editMode) {
-                setEditMode(false);
+                set编辑Mode(false);
             }
         }
     };
@@ -437,20 +437,20 @@ export const AppContextProvider = ({ children }: Props) => {
                 const currentPage = res.pages?.find(page => page.id === targetPageId);
                 if (currentPage) {
                     const selectedLayout = isMobile ? currentPage.layout.mobile : currentPage.layout.desktop;
-                    setDashboardLayout(selectedLayout);
+                    set仪表盘Layout(selectedLayout);
                     return selectedLayout;
                 }
             }
 
             // Otherwise load the main dashboard layout
             const selectedLayout = isMobile ? res.layout.mobile : res.layout.desktop;
-            setDashboardLayout(selectedLayout || []);
+            set仪表盘Layout(selectedLayout || []);
             return selectedLayout || [];
         }
         return [];
     };
 
-    const saveLayout = async (items: DashboardItem[]) => {
+    const saveLayout = async (items: 仪表盘Item[]) => {
         // Use existing config state instead of fetching again
         if (!config) {
             console.error('No config available for saving layout');
@@ -485,7 +485,7 @@ export const AppContextProvider = ({ children }: Props) => {
         }
 
         // Otherwise save to main dashboard
-        let updatedLayout: DashboardLayout;
+        let updatedLayout: 仪表盘Layout;
 
         if (config.layout.mobile.length > 3) {
             // has no prev mobile layout, duplicate desktop
@@ -505,7 +505,7 @@ export const AppContextProvider = ({ children }: Props) => {
         }));
     };
 
-    const refreshDashboard = async () => {
+    const refresh仪表盘 = async () => {
         try {
             // getLayout() already calls getConfig() and setConfig(), so we don't need to call it again
             await getLayout();
@@ -514,21 +514,21 @@ export const AppContextProvider = ({ children }: Props) => {
         }
     };
 
-    const addItem = async (itemToAdd: NewItem) => {
+    const addItem = async (itemTo添加: NewItem) => {
 
-        const newItem: DashboardItem = {
+        const newItem: 仪表盘Item = {
             id: `item-${shortid.generate()}`,
-            label: itemToAdd.label,
-            icon: itemToAdd.icon,
-            url: itemToAdd.url,
-            type: itemToAdd.type,
-            showLabel: itemToAdd.showLabel,
-            adminOnly: itemToAdd.adminOnly,
-            config: itemToAdd.config
+            label: itemTo添加.label,
+            icon: itemTo添加.icon,
+            url: itemTo添加.url,
+            type: itemTo添加.type,
+            showLabel: itemTo添加.showLabel,
+            adminOnly: itemTo添加.adminOnly,
+            config: itemTo添加.config
         };
 
-        // Add to current view's layout (affects UI immediately)
-        setDashboardLayout((prevItems) => [...prevItems, newItem]);
+        // 添加 to current view's layout (affects UI immediately)
+        set仪表盘Layout((prevItems) => [...prevItems, newItem]);
 
         try {
             // Refresh config state to ensure we have the latest state including any recent group changes
@@ -572,7 +572,7 @@ export const AppContextProvider = ({ children }: Props) => {
                 }
             };
 
-            // Save the updated layout to the backend
+            // 保存 the updated layout to the backend
             await DashApi.saveConfig(updatedLayout);
         } catch (error) {
             console.error('Failed to add item to both layouts:', error);
@@ -600,7 +600,7 @@ export const AppContextProvider = ({ children }: Props) => {
                         );
 
                         // Update local dashboard layout for immediate UI update
-                        setDashboardLayout(isMobile ? mobileLayout : desktopLayout);
+                        set仪表盘Layout(isMobile ? mobileLayout : desktopLayout);
 
                         return {
                             ...page,
@@ -636,9 +636,9 @@ export const AppContextProvider = ({ children }: Props) => {
             );
 
             // Update local dashboard layout for immediate UI update
-            setDashboardLayout(isMobile ? mobileLayout : desktopLayout);
+            set仪表盘Layout(isMobile ? mobileLayout : desktopLayout);
 
-            // Save both updated layouts to the server
+            // 保存 both updated layouts to the server
             const updatedConfigData = {
                 layout: {
                     desktop: desktopLayout,
@@ -662,7 +662,7 @@ export const AppContextProvider = ({ children }: Props) => {
     };
 
     // Helper function to save layout changes to the server
-    const saveLayoutToServer = async (items: DashboardItem[]) => {
+    const saveLayoutToServer = async (items: 仪表盘Item[]) => {
         try {
             // Use existing config state instead of fetching again
             if (!config) {
@@ -678,7 +678,7 @@ export const AppContextProvider = ({ children }: Props) => {
                 }
             };
 
-            // Save the updated layout to the backend
+            // 保存 the updated layout to the backend
             await DashApi.saveConfig(updatedLayout);
         } catch (error) {
             console.error('Failed to save layout to server:', error);
@@ -692,7 +692,7 @@ export const AppContextProvider = ({ children }: Props) => {
 
             // Ensure backgroundImage is a File before uploading
             if (partialConfig.backgroundImage && typeof partialConfig.backgroundImage === 'object' && 'name' in partialConfig.backgroundImage) {
-                const res = await DashApi.uploadBackgroundImage(partialConfig.backgroundImage);
+                const res = await DashApi.upload返回groundImage(partialConfig.backgroundImage);
 
 
                 if (res?.filePath) {
@@ -703,7 +703,7 @@ export const AppContextProvider = ({ children }: Props) => {
                 }
             }
 
-            // Save updated config to API
+            // 保存 updated config to API
             await DashApi.saveConfig(updatedConfig);
 
             // Update state with only the provided values, ensuring layout is always defined
@@ -787,11 +787,11 @@ export const AppContextProvider = ({ children }: Props) => {
 
     const deletePage = async (pageId: string) => {
         // Find the page to get its name for the confirmation dialog
-        const pageToDelete = pages.find(page => page.id === pageId);
-        const pageName = pageToDelete?.name || 'this page';
+        const pageTo删除 = pages.find(page => page.id === pageId);
+        const page名称 = pageTo删除?.name || 'this page';
 
-        PopupManager.deleteConfirmation({
-            title: `Delete "${pageName}"?`,
+        PopupManager.delete确认ation({
+            title: `删除 "${page名称}"?`,
             text: 'This action cannot be undone. All items on this page will be permanently deleted.',
             confirmAction: async () => {
                 try {
@@ -817,10 +817,10 @@ export const AppContextProvider = ({ children }: Props) => {
                     if (currentPageId === pageId) {
                         setCurrentPageId(null);
                         navigate('/', { replace: true });
-                        await refreshDashboard();
+                        await refresh仪表盘();
                     }
 
-                    ToastManager.success(`Page "${pageName}" deleted successfully`);
+                    ToastManager.success(`Page "${page名称}" deleted successfully`);
                 } catch (error) {
                     console.error('Failed to delete page:', error);
                     ToastManager.error('Failed to delete page. Please try again.');
@@ -830,8 +830,8 @@ export const AppContextProvider = ({ children }: Props) => {
     };
 
     // Helper function to convert page name to URL slug
-    const pageNameToSlug = (pageName: string): string => {
-        return pageName.toLowerCase().replace(/\s+/g, '-');
+    const page名称ToSlug = (page名称: string): string => {
+        return page名称.toLowerCase().replace(/\s+/g, '-');
     };
 
     // Function to move an item from one page to another
@@ -844,7 +844,7 @@ export const AppContextProvider = ({ children }: Props) => {
             const serverConfig = await DashApi.getConfig();
 
             // Helper function to search for item in a layout array (including within group widgets)
-            const searchInLayout = (items: any[]): { item: DashboardItem | null, parentGroupId?: string } => {
+            const searchInLayout = (items: any[]): { item: 仪表盘Item | null, parentGroupId?: string } => {
                 for (const item of items) {
                     // Direct match
                     if (item.id === itemId) {
@@ -856,7 +856,7 @@ export const AppContextProvider = ({ children }: Props) => {
                         const foundGroupItem = item.config.items.find((groupItem: any) => groupItem.id === itemId);
                         if (foundGroupItem) {
                             // Convert group item to dashboard item format
-                            const dashboardItem: DashboardItem = {
+                            const dashboardItem: 仪表盘Item = {
                                 id: foundGroupItem.id,
                                 label: foundGroupItem.name,
                                 url: foundGroupItem.url,
@@ -867,18 +867,18 @@ export const AppContextProvider = ({ children }: Props) => {
                                 config: {}
                             };
 
-                            // Add WoL properties if they exist
+                            // 添加 WoL properties if they exist
                             if (foundGroupItem.isWol) {
                                 dashboardItem.config = {
                                     ...dashboardItem.config,
                                     isWol: foundGroupItem.isWol,
-                                    macAddress: foundGroupItem.macAddress,
-                                    broadcastAddress: foundGroupItem.broadcastAddress,
+                                    mac添加ress: foundGroupItem.mac添加ress,
+                                    broadcast添加ress: foundGroupItem.broadcast添加ress,
                                     port: foundGroupItem.port
                                 };
                             }
 
-                            // Add health check properties if they exist
+                            // 添加 health check properties if they exist
                             if (foundGroupItem.healthUrl) {
                                 dashboardItem.config = {
                                     ...dashboardItem.config,
@@ -895,7 +895,7 @@ export const AppContextProvider = ({ children }: Props) => {
             };
 
             // Find the item in the current layout
-            let itemToMove: DashboardItem | null = null;
+            let itemToMove: 仪表盘Item | null = null;
             let parentGroupId: string | undefined = undefined;
 
             // Check if item is in main dashboard
@@ -933,7 +933,7 @@ export const AppContextProvider = ({ children }: Props) => {
                 return;
             }
 
-            // Create a deep copy of the item to move
+            // 创建 a deep copy of the item to move
             const itemCopy = JSON.parse(JSON.stringify(itemToMove));
 
             // Ensure security flags are preserved for sensitive data restoration
@@ -942,8 +942,8 @@ export const AppContextProvider = ({ children }: Props) => {
                 if (itemToMove.config?._hasApiToken) {
                     itemCopy.config._hasApiToken = true;
                 }
-                if (itemToMove.config?._hasPassword) {
-                    itemCopy.config._hasPassword = true;
+                if (itemToMove.config?._has密码) {
+                    itemCopy.config._has密码 = true;
                 }
 
                 // Handle dual widget security flags
@@ -953,20 +953,20 @@ export const AppContextProvider = ({ children }: Props) => {
                         if (!itemCopy.config.topWidget.config) itemCopy.config.topWidget.config = {};
                         itemCopy.config.topWidget.config._hasApiToken = true;
                     }
-                    if (itemToMove.config?.topWidget?.config?._hasPassword) {
+                    if (itemToMove.config?.topWidget?.config?._has密码) {
                         if (!itemCopy.config.topWidget) itemCopy.config.topWidget = {};
                         if (!itemCopy.config.topWidget.config) itemCopy.config.topWidget.config = {};
-                        itemCopy.config.topWidget.config._hasPassword = true;
+                        itemCopy.config.topWidget.config._has密码 = true;
                     }
                     if (itemToMove.config?.bottomWidget?.config?._hasApiToken) {
                         if (!itemCopy.config.bottomWidget) itemCopy.config.bottomWidget = {};
                         if (!itemCopy.config.bottomWidget.config) itemCopy.config.bottomWidget.config = {};
                         itemCopy.config.bottomWidget.config._hasApiToken = true;
                     }
-                    if (itemToMove.config?.bottomWidget?.config?._hasPassword) {
+                    if (itemToMove.config?.bottomWidget?.config?._has密码) {
                         if (!itemCopy.config.bottomWidget) itemCopy.config.bottomWidget = {};
                         if (!itemCopy.config.bottomWidget.config) itemCopy.config.bottomWidget.config = {};
-                        itemCopy.config.bottomWidget.config._hasPassword = true;
+                        itemCopy.config.bottomWidget.config._has密码 = true;
                     }
                 }
             }
@@ -994,10 +994,10 @@ export const AppContextProvider = ({ children }: Props) => {
                     }
 
                     return item;
-                }).filter(item => item !== null); // Remove null items
+                }).filter(item => item !== null); // 移除 null items
             };
 
-            // Remove item from source and add to target
+            // 移除 item from source and add to target
             if (currentPageId === null) {
                 // Moving from main dashboard
                 const updatedDesktop = removeItemFromLayout(serverConfig.layout.desktop);
@@ -1060,7 +1060,7 @@ export const AppContextProvider = ({ children }: Props) => {
                     // Moving from one page to another page
                     const updatedPages = (serverConfig.pages || []).map((page: any) => {
                         if (page.id === currentPageId) {
-                            // Remove from source page
+                            // 移除 from source page
                             return {
                                 ...page,
                                 layout: {
@@ -1069,7 +1069,7 @@ export const AppContextProvider = ({ children }: Props) => {
                                 }
                             };
                         } else if (page.id === targetPageId) {
-                            // Add to target page
+                            // 添加 to target page
                             return {
                                 ...page,
                                 layout: {
@@ -1087,11 +1087,11 @@ export const AppContextProvider = ({ children }: Props) => {
                 }
             }
 
-            // Save the updated config
+            // 保存 the updated config
             await DashApi.saveConfig(updatePayload);
 
             // Update local state immediately - remove from current view
-            setDashboardLayout(prevLayout => {
+            set仪表盘Layout(prevLayout => {
                 const filtered = prevLayout.filter(item => item.id !== itemId);
                 return filtered;
             });
@@ -1099,12 +1099,12 @@ export const AppContextProvider = ({ children }: Props) => {
             // Use getLayout() which already fetches config and updates state
             await getLayout();
 
-            const targetName = targetPageId === null ? 'Home' : pages.find(p => p.id === targetPageId)?.name || 'Unknown Page';
-            const itemName = itemToMove?.label || itemToMove?.type || 'Item';
+            const target名称 = targetPageId === null ? 'Home' : pages.find(p => p.id === targetPageId)?.name || 'Unknown Page';
+            const item名称 = itemToMove?.label || itemToMove?.type || 'Item';
 
-            // Create navigation action for the toast
+            // 创建 navigation action for the toast
             const navigationAction = {
-                label: targetPageId === null ? 'Open Home' : `Open ${targetName}`,
+                label: targetPageId === null ? 'Open Home' : `Open ${target名称}`,
                 onClick: () => {
                     if (targetPageId === null) {
                         // Navigate to home
@@ -1113,14 +1113,14 @@ export const AppContextProvider = ({ children }: Props) => {
                         // Find the page and navigate to its URL
                         const targetPage = pages.find(p => p.id === targetPageId);
                         if (targetPage) {
-                            const slug = pageNameToSlug(targetPage.name);
+                            const slug = page名称ToSlug(targetPage.name);
                             navigate(`/${slug}`);
                         }
                     }
                 }
             };
 
-            ToastManager.success(`${itemName} moved to page - ${targetName}`, 5000, navigationAction);
+            ToastManager.success(`${item名称} moved to page - ${target名称}`, 5000, navigationAction);
 
         } catch (error) {
             console.error('Failed to move item:', error);
@@ -1144,7 +1144,7 @@ export const AppContextProvider = ({ children }: Props) => {
             // Find the page and navigate to its URL
             const page = pages.find(p => p.id === targetPageId);
             if (page) {
-                const slug = pageNameToSlug(page.name);
+                const slug = page名称ToSlug(page.name);
                 if (location.pathname !== `/${slug}`) {
                     navigate(`/${slug}`, { replace: true });
                 }
@@ -1163,13 +1163,13 @@ export const AppContextProvider = ({ children }: Props) => {
     return (
         <Provider value={{
             dashboardLayout,
-            setDashboardLayout,
-            refreshDashboard,
+            set仪表盘Layout,
+            refresh仪表盘,
             saveLayout,
             addItem,
             updateItem,
             editMode,
-            setEditMode,
+            set编辑Mode,
             config,
             updateConfig,
             // Page management
@@ -1179,7 +1179,7 @@ export const AppContextProvider = ({ children }: Props) => {
             addPage,
             deletePage,
             switchToPage,
-            pageNameToSlug,
+            page名称ToSlug,
             moveItemToPage,
             // Performance optimization
             iconCache,
@@ -1190,7 +1190,7 @@ export const AppContextProvider = ({ children }: Props) => {
             isLoggedIn,
             setIsLoggedIn,
             username,
-            setUsername,
+            set用户名,
             isAdmin,
             setIsAdmin,
             isFirstTimeSetup,
@@ -1198,7 +1198,7 @@ export const AppContextProvider = ({ children }: Props) => {
             setupComplete,
             setSetupComplete,
             checkIfUsersExist,
-            checkLoginStatus,
+            checkLogin状态,
             // Update states
             updateAvailable,
             latestVersion,

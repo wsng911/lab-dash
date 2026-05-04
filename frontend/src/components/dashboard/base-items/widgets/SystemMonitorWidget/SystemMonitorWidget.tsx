@@ -8,7 +8,7 @@ import { DiskUsageBar } from './DiskUsageWidget';
 import { GaugeWidget } from './GaugeWidget';
 import { DashApi } from '../../../../../api/dash-api';
 import { useAppContext } from '../../../../../context/useAppContext';
-import { useInternetStatus } from '../../../../../hooks/useInternetStatus';
+import { useInternet状态 } from '../../../../../hooks/useInternet状态';
 import { useIsMobile } from '../../../../../hooks/useIsMobile';
 import { COLORS } from '../../../../../theme/styles';
 import { theme } from '../../../../../theme/theme';
@@ -18,7 +18,7 @@ import { CenteredModal } from '../../../../modals/CenteredModal';
 // Gauge types for configuration
 export type GaugeType = 'cpu' | 'temp' | 'ram' | 'network' | 'none';
 
-interface SystemMonitorWidgetProps {
+interface System监控WidgetProps {
     config?: {
         temperatureUnit?: string;
         gauges?: GaugeType[];
@@ -26,14 +26,14 @@ interface SystemMonitorWidgetProps {
         dualWidgetPosition?: 'top' | 'bottom';
         showDiskUsage?: boolean;
         showSystemInfo?: boolean;
-        showInternetStatus?: boolean;
+        showInternet状态?: boolean;
         showIP?: boolean;
         ipDisplayType?: 'wan' | 'lan' | 'both';
     };
     editMode?: boolean;
 }
 
-export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetProps) => {
+export const System监控Widget = ({ config, editMode }: System监控WidgetProps) => {
     const { config: globalConfig } = useAppContext();
     const [systemInformation, setSystemInformation] = useState<any>();
     const [memoryInformation, setMemoryInformation] = useState<any>(0);
@@ -52,9 +52,9 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [internetTooltipOpen, setInternetTooltipOpen] = useState(false);
-    const [ipAddress, setIPAddress] = useState<{ wan?: string | null; lan?: string | null } | string | null>(null);
+    const [ip添加ress, setIP添加ress] = useState<{ wan?: string | null; lan?: string | null } | string | null>(null);
 
-    const { internetStatus } = useInternetStatus();
+    const { internet状态 } = useInternet状态();
 
     // Default gauges if not specified in config
     const selectedGauges = config?.gauges || ['cpu', 'temp', 'ram'];
@@ -65,7 +65,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
     // Get display options from config (default to true for backward compatibility)
     const showDiskUsage = config?.showDiskUsage !== false;
     const showSystemInfo = config?.showSystemInfo !== false;
-    const showInternetStatus = config?.showInternetStatus !== false;
+    const showInternet状态 = config?.showInternet状态 !== false;
     const showIP = config?.showIP ?? (config as any)?.showPublicIP ?? false;
 
     const isMobile = useIsMobile();
@@ -427,7 +427,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
         };
     }, [config?.temperatureUnit, config?.networkInterface, editMode]);
 
-    // Close internet tooltip when clicking outside
+    // 关闭 internet tooltip when clicking outside
     useEffect(() => {
         const handleClickOutside = () => {
             if (internetTooltipOpen) {
@@ -446,24 +446,24 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
 
     // Fetch IP addresses when showIP is enabled
     useEffect(() => {
-        if (showIP && internetStatus === 'online') {
+        if (showIP && internet状态 === 'online') {
             const fetchIPs = async () => {
-                const ips = await DashApi.getIPAddresses();
+                const ips = await DashApi.getIP添加resses();
                 const ipType = config?.ipDisplayType || 'wan';
 
                 if (ipType === 'both') {
-                    setIPAddress({ wan: ips.wan, lan: ips.lan });
+                    setIP添加ress({ wan: ips.wan, lan: ips.lan });
                 } else if (ipType === 'lan') {
-                    setIPAddress(ips.lan);
+                    setIP添加ress(ips.lan);
                 } else {
-                    setIPAddress(ips.wan);
+                    setIP添加ress(ips.wan);
                 }
             };
             fetchIPs();
         } else {
-            setIPAddress(null);
+            setIP添加ress(null);
         }
-    }, [showIP, internetStatus, config?.ipDisplayType]);
+    }, [showIP, internet状态, config?.ipDisplayType]);
 
     // Determine layout styles based on dual widget position
     const containerStyles = {
@@ -539,8 +539,8 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                 </div>
             )}
 
-            {/* Internet Status Indicator - only show when not in edit mode and enabled in config */}
-            {!editMode && showInternetStatus && (
+            {/* Internet 状态 Indicator - only show when not in edit mode and enabled in config */}
+            {!editMode && showInternet状态 && (
                 <div
                     onPointerDownCapture={(e) => e.stopPropagation()}
                     onClick={(e) => e.stopPropagation()}
@@ -549,28 +549,28 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                         title={
                             <Box>
                                 <Typography variant='body2' sx={{ textAlign: 'center' }}>
-                                    {internetStatus === 'online' ? 'Internet Connected' : internetStatus === 'offline' ? 'No Internet Connection' : 'Checking Internet...'}
+                                    {internet状态 === 'online' ? 'Internet Connected' : internet状态 === 'offline' ? 'No Internet Connection' : 'Checking Internet...'}
                                 </Typography>
-                                {showIP && ipAddress && internetStatus === 'online' && (
+                                {showIP && ip添加ress && internet状态 === 'online' && (
                                     <Box sx={{ mt: 0.5 }}>
-                                        {typeof ipAddress === 'object' ? (
+                                        {typeof ip添加ress === 'object' ? (
                                             <>
-                                                {ipAddress.wan && (
+                                                {ip添加ress.wan && (
                                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
                                                         <Typography variant='caption'>WAN:</Typography>
-                                                        <Typography variant='caption'>{ipAddress.wan}</Typography>
+                                                        <Typography variant='caption'>{ip添加ress.wan}</Typography>
                                                     </Box>
                                                 )}
-                                                {ipAddress.lan && (
+                                                {ip添加ress.lan && (
                                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
                                                         <Typography variant='caption'>LAN:</Typography>
-                                                        <Typography variant='caption'>{ipAddress.lan}</Typography>
+                                                        <Typography variant='caption'>{ip添加ress.lan}</Typography>
                                                     </Box>
                                                 )}
                                             </>
                                         ) : (
                                             <Typography variant='caption' sx={{ display: 'block', textAlign: 'right' }}>
-                                                {(config?.ipDisplayType || 'wan') === 'wan' ? 'WAN: ' : 'LAN: '}{ipAddress}
+                                                {(config?.ipDisplayType || 'wan') === 'wan' ? 'WAN: ' : 'LAN: '}{ip添加ress}
                                             </Typography>
                                         )}
                                     </Box>
@@ -580,8 +580,8 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                         arrow
                         placement='left'
                         open={internetTooltipOpen}
-                        onClose={() => {
-                            // Add a small delay to prevent immediate closing
+                        on关闭={() => {
+                            // 添加 a small delay to prevent immediate closing
                             setTimeout(() => setInternetTooltipOpen(false), 100);
                         }}
                         disableHoverListener
@@ -610,9 +610,9 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                                 setInternetTooltipOpen(!internetTooltipOpen);
                             }}
                         >
-                            {internetStatus === 'online' ? (
+                            {internet状态 === 'online' ? (
                                 <PiGlobeSimple style={{ color: theme.palette.text.primary, fontSize: '1.4rem' }} />
-                            ) : internetStatus === 'offline' ? (
+                            ) : internet状态 === 'offline' ? (
                                 <PiGlobeSimpleX style={{ color: theme.palette.text.primary, fontSize: '1.4rem' }} />
                             ) : (
                                 <PiGlobeSimple style={{ color: 'gray', fontSize: '1.4rem' }} />
@@ -636,7 +636,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                         // Center each gauge properly
                         display: 'flex',
                         justifyContent: 'center',
-                        // Add negative margin when in dual widget to bring gauges closer
+                        // 添加 negative margin when in dual widget to bring gauges closer
                         ...(isDualWidget && isMobile ? { mx: -0.5 } : {})
                     }}>
                         {renderGauge(gaugeType)}
@@ -646,7 +646,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
             <Box p={1} width={'92%'} mt={isDualWidget ? -2 : -1}>
                 {showDiskUsage && <DiskUsageBar totalSpace={diskInformation?.totalSpace ? diskInformation?.totalSpace : 0} usedSpace={diskInformation?.usedSpace ? diskInformation?.usedSpace : 0} usedPercentage={diskInformation?.usedPercentage ? diskInformation?.usedPercentage : 0}/>}
             </Box>
-            <CenteredModal open={openSystemModal} handleClose={() => setOpenSystemModal(false)} title='System Information' width={isMobile ? '90vw' :'30vw'} height='60vh'>
+            <CenteredModal open={openSystemModal} handle关闭={() => setOpenSystemModal(false)} title='System Information' width={isMobile ? '90vw' :'30vw'} height='60vh'>
                 <Box component={Paper} p={2} sx={{ backgroundColor: COLORS.GRAY }} elevation={0}>
                     {showSystemInfo && (
                         <>
@@ -657,7 +657,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                             <Typography><b>Kernel:</b> {systemInformation?.system?.kernel}</Typography>
                             <Typography><b>Uptime:</b> {convertSecondsToUptime(systemInformation?.system?.uptime)}</Typography>
                             <Typography><b>CPU Temperature:</b> {systemInformation?.cpu?.main ? formatTemperature(systemInformation?.cpu?.main) : 0}°{isFahrenheit ? 'F' : 'C'}</Typography>
-                            <Typography><b>Internet Status:</b> {internetStatus === 'online' ? 'Connected' : internetStatus === 'offline' ? 'Disconnected' : '⏳ Checking...'}</Typography>
+                            <Typography><b>Internet 状态:</b> {internet状态 === 'online' ? 'Connected' : internet状态 === 'offline' ? 'Disconnected' : '⏳ Checking...'}</Typography>
                             <Typography><b>Disk Mount:</b> {diskInformation?.mount}</Typography>
                             <Typography><b>Disk Usage:</b> {`${diskInformation?.usedPercentage?.toFixed(0)}%`}</Typography>
                             <Typography><b>Disk Total:</b> {`${diskInformation?.totalSpace} GB`}</Typography>

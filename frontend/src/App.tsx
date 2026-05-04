@@ -11,9 +11,9 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { BACKEND_URL } from './constants/constants';
 import { useAppContext } from './context/useAppContext';
 import { useMobilePointer } from './hooks/useMobilePointer';
-import { DashboardPage } from './pages/DashboardPage';
+import { 仪表盘Page } from './pages/仪表盘Page';
 import { LoginPage } from './pages/LoginPage';
-import { SettingsPage } from './pages/SettingsPage';
+import { 设置Page } from './pages/设置Page';
 import { styles } from './theme/styles';
 
 const SetupPage = () => {
@@ -78,7 +78,7 @@ export const App = () => {
                 const keyNumber = parseInt(event.key, 10);
 
                 if (keyNumber === 9) {
-                    // Cmd+9 goes to Settings page
+                    // Cmd+9 goes to 设置 page
                     navigate('/settings');
                 } else if (keyNumber === 1) {
                     // Cmd+1 always goes to Home page
@@ -97,7 +97,7 @@ export const App = () => {
             }
         };
 
-        // Add event listener to document with capture to handle it early
+        // 添加 event listener to document with capture to handle it early
         document.addEventListener('keydown', handleKeyDown, true);
 
         // Cleanup
@@ -173,9 +173,9 @@ export const App = () => {
             {!isMobilePointer && <GlobalCustomScrollbar />}
             <Routes>
                 <Route element={<WithNav />}>
-                    <Route path='/' element={isFirstTimeSetup && !setupComplete ? <SetupPage /> : <DashboardPage />}/>
-                    <Route path='/:pageName' element={isFirstTimeSetup && !setupComplete ? <SetupPage /> : <DashboardPage />}/>
-                    <Route path='/settings' element={<SettingsPage />}/>
+                    <Route path='/' element={isFirstTimeSetup && !setupComplete ? <SetupPage /> : <仪表盘Page />}/>
+                    <Route path='/:page名称' element={isFirstTimeSetup && !setupComplete ? <SetupPage /> : <仪表盘Page />}/>
+                    <Route path='/settings' element={<设置Page />}/>
                     <Route path='/login' element={<LoginPage />}/>
                     <Route path='/signup' element={<LoginPage />}/>
                 </Route>

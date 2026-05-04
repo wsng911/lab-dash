@@ -1,7 +1,7 @@
 import fsSync from 'fs';
 import path from 'path';
 
-import { Config, DashboardItem } from '../types';
+import { Config, 仪表盘Item } from '../types';
 import { decrypt, isEncrypted } from './crypto';
 
 const CONFIG_FILE = path.join(__dirname, '../config/config.json');
@@ -19,11 +19,11 @@ export const loadConfig = (): Config => {
 /**
  * Find a dashboard item by its ID across all layouts and pages
  */
-export const findItemById = (itemId: string): DashboardItem | null => {
+export const findItemById = (itemId: string): 仪表盘Item | null => {
     const config = loadConfig();
 
     // Helper function to search for item in a layout array
-    const searchInLayout = (items: any[]): DashboardItem | null => {
+    const searchInLayout = (items: any[]): 仪表盘Item | null => {
         for (const item of items) {
             // Direct match
             if (item.id === itemId) {
@@ -41,7 +41,7 @@ export const findItemById = (itemId: string): DashboardItem | null => {
                         id: itemId,
                         type: positionWidget.type,
                         config: positionWidget.config
-                    } as DashboardItem;
+                    } as 仪表盘Item;
                 }
             }
 
@@ -54,22 +54,22 @@ export const findItemById = (itemId: string): DashboardItem | null => {
         return null;
     };
 
-    // Search in main desktop layout
+    // 搜索 in main desktop layout
     let foundItem = searchInLayout(config.layout.desktop);
     if (foundItem) return foundItem;
 
-    // Search in main mobile layout
+    // 搜索 in main mobile layout
     foundItem = searchInLayout(config.layout.mobile);
     if (foundItem) return foundItem;
 
-    // Search in pages if they exist
+    // 搜索 in pages if they exist
     if (config.pages) {
         for (const page of config.pages) {
-            // Search in page desktop layout
+            // 搜索 in page desktop layout
             foundItem = searchInLayout(page.layout.desktop);
             if (foundItem) return foundItem;
 
-            // Search in page mobile layout
+            // 搜索 in page mobile layout
             foundItem = searchInLayout(page.layout.mobile);
             if (foundItem) return foundItem;
         }
@@ -83,7 +83,7 @@ export const findItemById = (itemId: string): DashboardItem | null => {
  * This function works with the actual stored config (not the filtered frontend config)
  * so it has access to the real password and apiToken values
  */
-export const getConnectionInfo = (item: DashboardItem) => {
+export const getConnectionInfo = (item: 仪表盘Item) => {
     const config = item.config || {};
 
     // Decrypt sensitive values if they are encrypted
@@ -121,9 +121,9 @@ export const getConnectionInfo = (item: DashboardItem) => {
         // For torrent clients
         clientType: config.clientType,
         // For other services
-        displayName: config.displayName,
+        display名称: config.display名称,
         // Security flags (these may or may not be present depending on context)
-        _hasPassword: config._hasPassword,
+        _has密码: config._has密码,
         _hasApiToken: config._hasApiToken
     };
 };

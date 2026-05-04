@@ -1,12 +1,12 @@
 // src/routes/weather.route.ts
 import axios from 'axios';
 import { Request, Response, Router } from 'express';
-import StatusCodes from 'http-status-codes';
+import 状态Codes from 'http-status-codes';
 
 export const weatherRoute = Router();
 
 // Helper function for retry logic with exponential backoff
-const retryWithBackoff = async <T>(
+const retryWith返回off = async <T>(
     fn: () => Promise<T>,
     maxRetries: number = 3,
     baseDelay: number = 1000
@@ -48,7 +48,7 @@ weatherRoute.get('/', async (req: Request, res: Response): Promise<void> => {
     try {
         // Validate required parameters
         if (!req.query.latitude || !req.query.longitude) {
-            res.status(StatusCodes.BAD_REQUEST).json({ error: 'Both latitude and longitude are required parameters' });
+            res.status(状态Codes.BAD_REQUEST).json({ error: 'Both latitude and longitude are required parameters' });
             return;
         }
 
@@ -56,7 +56,7 @@ weatherRoute.get('/', async (req: Request, res: Response): Promise<void> => {
         const longitude = req.query.longitude;
 
         // Fetch weather data from Open-Meteo with retry logic
-        const weatherResponse = await retryWithBackoff(async () => {
+        const weatherResponse = await retryWith返回off(async () => {
             return await axios.get('https://api.open-meteo.com/v1/forecast', {
                 params: {
                     latitude: latitude,
@@ -72,12 +72,12 @@ weatherRoute.get('/', async (req: Request, res: Response): Promise<void> => {
         res.json(weatherResponse.data);
 
     } catch (error) {
-        let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+        let statusCode = 状态Codes.INTERNAL_SERVER_ERROR;
         let errorMessage = 'Error fetching weather data';
 
         if (axios.isAxiosError(error)) {
             if (error.code === 'ECONNABORTED') {
-                statusCode = StatusCodes.GATEWAY_TIMEOUT;
+                statusCode = 状态Codes.GATEWAY_TIMEOUT;
                 errorMessage = 'Weather API timeout after retries';
             } else if (error.response) {
                 statusCode = error.response.status;

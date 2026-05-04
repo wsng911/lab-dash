@@ -33,7 +33,7 @@ export type SysteminformationResponse = {
     current?: number | undefined;
     uptime?: number | undefined;
     timezone?: string | undefined;
-    timezoneName?: string | undefined;
+    timezone名称?: string | undefined;
     platform: string;
     distro: string;
     release: string;

@@ -9,7 +9,7 @@ interface RadarrWidgetConfig {
     port?: number;
     ssl?: boolean;
     _hasApiKey?: boolean;
-    displayName?: string;
+    display名称?: string;
     showLabel?: boolean;
 }
 
@@ -86,7 +86,7 @@ export const RadarrWidget: React.FC<RadarrWidgetProps> = ({ id, config }) => {
         }
     }, [id, config?.host, config?._hasApiKey]);
 
-    // Add ref to track current queue items without causing re-renders
+    // 添加 ref to track current queue items without causing re-renders
     const queueItemsRef = useRef<QueueItem[]>([]);
 
     // Update ref when queue items change
@@ -119,7 +119,7 @@ export const RadarrWidget: React.FC<RadarrWidgetProps> = ({ id, config }) => {
                 if (id && config?.host && config?._hasApiKey) {
                     // Refresh monitored downloads when using dynamic polling
                     if (hasActiveDownloads) {
-                        DashApi.refreshRadarrMonitoredDownloads(id).catch(err =>
+                        DashApi.refreshRadarr监控edDownloads(id).catch(err =>
                             console.error('Failed to refresh Radarr monitored downloads:', err)
                         );
                     }
@@ -131,7 +131,7 @@ export const RadarrWidget: React.FC<RadarrWidgetProps> = ({ id, config }) => {
             }, interval);
         };
 
-        // Add a small delay to ensure config is fully loaded after duplication
+        // 添加 a small delay to ensure config is fully loaded after duplication
         const initialFetchTimeout = setTimeout(() => {
             fetchQueueData();
             fetchStatistics();
@@ -147,7 +147,7 @@ export const RadarrWidget: React.FC<RadarrWidgetProps> = ({ id, config }) => {
         };
     }, [id, config?.host, config?._hasApiKey, fetchQueueData, fetchStatistics]);
 
-    const handleRemoveItem = useCallback(async (itemId: string, removeFromClient: boolean, blocklist: boolean): Promise<boolean> => {
+    const handle移除Item = useCallback(async (itemId: string, removeFromClient: boolean, blocklist: boolean): Promise<boolean> => {
         try {
             await DashApi.removeRadarrQueueItem(id, itemId, removeFromClient, blocklist);
             // Refresh the queue after removal
@@ -161,11 +161,11 @@ export const RadarrWidget: React.FC<RadarrWidgetProps> = ({ id, config }) => {
 
     return (
         <QueueManagementWidget
-            serviceName='Radarr'
+            service名称='Radarr'
             isLoading={isLoading}
             queueItems={queueItems}
             showLabel={config?.showLabel !== false}
-            onRemoveItem={handleRemoveItem}
+            on移除Item={handle移除Item}
             error={error}
             statistics={statistics}
             connectionDetails={config?.host ? {

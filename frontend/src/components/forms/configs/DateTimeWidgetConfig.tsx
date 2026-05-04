@@ -6,7 +6,7 @@ import { CheckboxElement, UseFormReturn } from 'react-hook-form-mui';
 import { DashApi } from '../../../api/dash-api';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface LocationOption {
     id: string;
@@ -17,31 +17,31 @@ interface LocationOption {
 
 interface DateTimeWidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
-    fieldNamePrefix?: string;
+    field名称Prefix?: string;
 }
 
-export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: DateTimeWidgetConfigProps) => {
+export const DateTimeWidgetConfig = ({ formContext, field名称Prefix = '' }: DateTimeWidgetConfigProps) => {
     // Helper to get field name with optional prefix
-    const getFieldName = (baseName: string) => {
-        return fieldNamePrefix ? `${fieldNamePrefix}${baseName}` : baseName;
+    const getField名称 = (base名称: string) => {
+        return field名称Prefix ? `${field名称Prefix}${base名称}` : base名称;
     };
     const isMobile = useIsMobile();
-    const [locationSearch, setLocationSearch] = useState('');
+    const [location搜索, setLocation搜索] = useState('');
     const [locationOptions, setLocationOptions] = useState<LocationOption[]>([]);
     const [selectedLocation, setSelectedLocation] = useState<LocationOption | null>(null);
-    const [isSearching, setIsSearching] = useState(false);
+    const [is搜索ing, setIs搜索ing] = useState(false);
     const [isFetchingTimezone, setIsFetchingTimezone] = useState(false);
     const [timezoneError, setTimezoneError] = useState<string | null>(null);
 
     // Initialize location state if it exists in form values
     useEffect(() => {
-        const locationValue = formContext.getValues(getFieldName('location') as any);
+        const locationValue = formContext.getValues(getField名称('location') as any);
         if (locationValue) {
             setSelectedLocation(locationValue as LocationOption);
-            setLocationSearch(locationValue.name || '');
+            setLocation搜索(locationValue.name || '');
 
             // If location exists but no timezone, try to fetch it
-            const timezone = formContext.getValues(getFieldName('timezone') as any);
+            const timezone = formContext.getValues(getField名称('timezone') as any);
             if (locationValue && !timezone && locationValue.latitude && locationValue.longitude) {
                 fetchTimezoneForLocation(locationValue.latitude, locationValue.longitude);
             }
@@ -59,12 +59,12 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
             if (response && response.data && response.data.timezone) {
                 // Set the timezone in the form
                 const timezone = response.data.timezone;
-                formContext.setValue(getFieldName('timezone') as any, timezone, { shouldDirty: true });
+                formContext.setValue(getField名称('timezone') as any, timezone, { shouldDirty: true });
             } else {
                 setTimezoneError('Failed to fetch timezone: Invalid response format');
 
                 // Set an empty string timezone to ensure the property exists
-                formContext.setValue(getFieldName('timezone') as any, '', { shouldDirty: true });
+                formContext.setValue(getField名称('timezone') as any, '', { shouldDirty: true });
             }
         } catch (error) {
             // More detailed error handling
@@ -75,7 +75,7 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
             }
 
             // Set an empty string timezone to ensure the property exists
-            formContext.setValue(getFieldName('timezone') as any, '', { shouldDirty: true });
+            formContext.setValue(getField名称('timezone') as any, '', { shouldDirty: true });
         } finally {
             setIsFetchingTimezone(false);
         }
@@ -84,17 +84,17 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
     // Debounce location search and fetch results
     useEffect(() => {
         const fetchLocations = async () => {
-            if (locationSearch.length < 2) {
+            if (location搜索.length < 2) {
                 setLocationOptions([]);
                 return;
             }
 
-            setIsSearching(true);
+            setIs搜索ing(true);
             try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationSearch)}&limit=5`);
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location搜索)}&limit=5`);
                 const data = await response.json();
 
-                // Create a Map to track seen names and ensure uniqueness
+                // 创建 a Map to track seen names and ensure uniqueness
                 const uniqueLocations = new Map();
 
                 // Process each location, ensuring uniqueness
@@ -121,25 +121,25 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
                 console.error('Error fetching locations:', error);
                 setLocationOptions([]);
             } finally {
-                setIsSearching(false);
+                setIs搜索ing(false);
             }
         };
 
         const timer = setTimeout(() => {
-            if (locationSearch) {
+            if (location搜索) {
                 fetchLocations();
             }
         }, 500); // 500ms debounce
 
         return () => clearTimeout(timer);
-    }, [locationSearch]);
+    }, [location搜索]);
 
     // When a location is selected, update the form values and fetch timezone
     const handleLocationSelected = (newLocation: LocationOption | null) => {
         if (!newLocation) {
             setSelectedLocation(null);
-            formContext.setValue(getFieldName('location') as any, null);
-            formContext.setValue(getFieldName('timezone') as any, '');
+            formContext.setValue(getField名称('location') as any, null);
+            formContext.setValue(getField名称('timezone') as any, '');
             return;
         }
 
@@ -147,7 +147,7 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
         setSelectedLocation(newLocation);
 
         // Update form with location data
-        formContext.setValue(getFieldName('location') as any, {
+        formContext.setValue(getField名称('location') as any, {
             name: newLocation.name,
             latitude: newLocation.latitude,
             longitude: newLocation.longitude
@@ -169,9 +169,9 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
                         }
                         return option.name;
                     }}
-                    inputValue={locationSearch}
+                    inputValue={location搜索}
                     onInputChange={(_, newValue) => {
-                        setLocationSearch(newValue);
+                        setLocation搜索(newValue);
                     }}
                     onChange={(_, newValue) => {
                         // Handle both string and LocationOption types
@@ -181,15 +181,15 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
                             handleLocationSelected(newValue);
                         }
                     }}
-                    loading={isSearching}
+                    loading={is搜索ing}
                     loadingText={
                         <Typography style={{ color: theme.palette.text.primary }}>
-                            Searching...
+                            搜索ing...
                         </Typography>
                     }
                     noOptionsText={
                         <Typography style={{ color: theme.palette.text.primary }}>
-                            {locationSearch.length < 2 ? 'Type to search...' : 'No locations found'}
+                            {location搜索.length < 2 ? 'Type to search...' : 'No locations found'}
                         </Typography>
                     }
                     fullWidth
@@ -202,7 +202,7 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label='Search location'
+                            label='搜索 location'
                             variant='outlined'
                             helperText={isFetchingTimezone ? 'Fetching timezone...' : (timezoneError || 'Enter a zip code or city')}
                             FormHelperTextProps={{
@@ -233,7 +233,7 @@ export const DateTimeWidgetConfig = ({ formContext, fieldNamePrefix = '' }: Date
             <Grid>
                 <CheckboxElement
                     label='Use 24-hour format'
-                    name={getFieldName('use24Hour')}
+                    name={getField名称('use24Hour')}
                     sx={{
                         ml: 1,
                         color: 'white',

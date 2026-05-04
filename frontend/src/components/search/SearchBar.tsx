@@ -1,14 +1,14 @@
-import CloseIcon from '@mui/icons-material/Close';
+import 关闭Icon from '@mui/icons-material/关闭';
 import { Autocomplete, Box, InputAdornment, TextField, Typography } from '@mui/material';
 import { nanoid } from 'nanoid';
 import React, { Dispatch, RefObject, SetStateAction, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { RemoveScroll } from 'react-remove-scroll';
+import { Fa搜索 } from 'react-icons/fa';
+import { 移除Scroll } from 'react-remove-scroll';
 
 import { useAppContext } from '../../context/useAppContext';
 import { COLORS, styles } from '../../theme/styles';
 
-export type SearchOption = {
+export type 搜索Option = {
   label: string;
   icon?: string;
   url?: string;
@@ -17,15 +17,15 @@ export type SearchOption = {
 type Props = {
   placeholder?: string;
   searchValue: string;
-  setSearchValue: Dispatch<SetStateAction<string>>;
-  autocompleteOptions?: SearchOption[];
+  set搜索Value: Dispatch<SetStateAction<string>>;
+  autocompleteOptions?: 搜索Option[];
   inputRef?: RefObject<HTMLInputElement>;
 };
 
-export const SearchBar = ({
+export const 搜索Bar = ({
     placeholder,
     searchValue,
-    setSearchValue,
+    set搜索Value,
     autocompleteOptions = [],
     inputRef
 }: Props) => {
@@ -35,23 +35,23 @@ export const SearchBar = ({
     // Default to Google if no search provider is configured
     const searchProvider = config?.searchProvider || { name: 'Google', url: 'https://www.google.com/search?q={query}' };
 
-    const getSearchUrl = (query: string) => {
+    const get搜索Url = (query: string) => {
         if (!query.trim()) return '';
         return searchProvider.url.replace('{query}', encodeURIComponent(query));
     };
 
-    const handleChange = (_event: React.SyntheticEvent, newValue: SearchOption | string | null) => {
+    const handleChange = (_event: React.SyntheticEvent, newValue: 搜索Option | string | null) => {
         if (!newValue) return;
 
         if (typeof newValue === 'string') {
-            window.open(getSearchUrl(newValue), '_blank', 'noopener,noreferrer');
+            window.open(get搜索Url(newValue), '_blank', 'noopener,noreferrer');
         } else {
             if (newValue.url) {
                 window.open(newValue.url, '_blank', 'noopener,noreferrer');
             }
         }
 
-        setSearchValue('');
+        set搜索Value('');
     };
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -68,36 +68,36 @@ export const SearchBar = ({
                 const firstOption = filteredOptions[0];
                 if (firstOption.url) {
                     window.open(firstOption.url, '_blank', 'noopener,noreferrer');
-                    setSearchValue('');
+                    set搜索Value('');
                     return;
                 }
             }
 
             // Fallback to search provider if no autocomplete results or empty search
             if (searchValue.trim() !== '') {
-                window.open(getSearchUrl(searchValue), '_blank', 'noopener,noreferrer');
-                setSearchValue('');
+                window.open(get搜索Url(searchValue), '_blank', 'noopener,noreferrer');
+                set搜索Value('');
             }
         }
     };
 
     return (
-        <RemoveScroll enabled={isDropdownOpen} removeScrollBar={false}>
+        <移除Scroll enabled={isDropdownOpen} removeScrollBar={false}>
             <Box sx={styles.center}>
                 <Autocomplete
                     freeSolo
                     value={null}
-                    clearIcon={<CloseIcon sx={{ color: 'text.primary' }} />}
+                    clearIcon={<关闭Icon sx={{ color: 'text.primary' }} />}
                     options={autocompleteOptions}
                     getOptionLabel={(option) =>
                         typeof option === 'string' ? option : option.label
                     }
                     inputValue={searchValue}
                     onInputChange={(_event, newInputValue) => {
-                        setSearchValue(newInputValue);
+                        set搜索Value(newInputValue);
                     }}
                     onOpen={() => setIsDropdownOpen(true)}
-                    onClose={() => setIsDropdownOpen(false)}
+                    on关闭={() => setIsDropdownOpen(false)}
                 filterOptions={(options, state) => {
                     const filtered = options.filter((option) =>
                         option.label.toLowerCase().includes(state.inputValue.toLowerCase())
@@ -106,8 +106,8 @@ export const SearchBar = ({
                     if (filtered.length === 0 && state.inputValue.trim() !== '') {
                         return [
                             {
-                                label: `Search ${searchProvider.name} for "${state.inputValue}"`,
-                                url: getSearchUrl(state.inputValue),
+                                label: `搜索 ${searchProvider.name} for "${state.inputValue}"`,
+                                url: get搜索Url(state.inputValue),
                             },
                         ];
                     }
@@ -151,13 +151,13 @@ export const SearchBar = ({
                         <TextField
                             {...params}
                             inputRef={inputRef}
-                            placeholder={placeholder || `Search with ${searchProvider.name}`}
+                            placeholder={placeholder || `搜索 with ${searchProvider.name}`}
                             onKeyDown={handleKeyDown}
                             InputProps={{
                                 ...params.InputProps,
                                 startAdornment: (
                                     <InputAdornment position='start' sx={{ color: 'text.primary' }}>
-                                        <FaSearch />
+                                        <Fa搜索 />
                                     </InputAdornment>
                                 ),
                                 type: 'text',
@@ -176,7 +176,7 @@ export const SearchBar = ({
                                     borderRadius: 2,
                                     backdropFilter: { xs: 'blur(6px)', sm: 'none' },
                                     // (Optional) Include the -webkit- prefix for Safari support:
-                                    WebkitBackdropFilter: { xs: 'blur(6px)', sm: 'none' },
+                                    Webkit返回dropFilter: { xs: 'blur(6px)', sm: 'none' },
                                 },
                                 '& .MuiOutlinedInput-notchedOutline': {
                                     border: '1px solid rgba(255, 255, 255, 0.3) !important',
@@ -210,6 +210,6 @@ export const SearchBar = ({
                 }}
             />
             </Box>
-        </RemoveScroll>
+        </移除Scroll>
     );
 };

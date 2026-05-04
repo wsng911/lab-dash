@@ -10,8 +10,8 @@ interface Props {
     id: string;
     editMode?: boolean;
     isOverlay?: boolean;
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
     config?: any;
 }
@@ -20,8 +20,8 @@ const SortableMediaRequestManager: React.FC<Props> = ({
     id,
     editMode = false,
     isOverlay = false,
-    onDelete,
-    onEdit,
+    on删除,
+    on编辑,
     onDuplicate,
     config
 }) => {
@@ -40,7 +40,7 @@ const SortableMediaRequestManager: React.FC<Props> = ({
                 visibility: isDragging ? 'hidden' : 'visible',
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
+            <WidgetContainer editMode={editMode} id={id} on删除={on删除} on编辑={on编辑} onDuplicate={onDuplicate}>
                 <MediaRequestManagerWidget
                     id={id}
                     service={config?.service || 'jellyseerr'}
@@ -48,7 +48,7 @@ const SortableMediaRequestManager: React.FC<Props> = ({
                     port={config?.port}
                     ssl={config?.ssl}
                     _hasApiKey={config?._hasApiKey}
-                    displayName={config?.displayName}
+                    display名称={config?.display名称}
                     showLabel={config?.showLabel}
                 />
             </WidgetContainer>

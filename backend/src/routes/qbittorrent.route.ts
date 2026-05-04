@@ -46,18 +46,18 @@ const getBaseUrl = (req: Request): string => {
 async function authenticateQBittorrent(baseUrl: string, username: string, password: string): Promise<string | null> {
     try {
         // Handle encrypted password
-        let decryptedPassword = password;
+        let decrypted密码 = password;
         if (isEncrypted(password)) {
-            decryptedPassword = decrypt(password);
+            decrypted密码 = decrypt(password);
             // Check if decryption failed (returns empty string)
-            if (!decryptedPassword) {
+            if (!decrypted密码) {
                 console.error('qBittorrent password decryption failed');
                 return null;
             }
         }
 
         const response = await axios.post(`${baseUrl}/auth/login`,
-            qs.stringify({ username, password: decryptedPassword }),
+            qs.stringify({ username, password: decrypted密码 }),
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -171,16 +171,16 @@ qbittorrentRoute.post('/login', async (req: Request, res: Response) => {
 
         if (!username || !password) {
             console.error('qBittorrent authentication failed - missing password. Ensure the password is configured for this item.');
-            res.status(400).json({ error: 'Username and password must be configured for this item' });
+            res.status(400).json({ error: '用户名 and password must be configured for this item' });
             return;
         }
 
         // Handle encrypted password
-        let decryptedPassword = password;
+        let decrypted密码 = password;
         if (isEncrypted(password)) {
-            decryptedPassword = decrypt(password);
+            decrypted密码 = decrypt(password);
             // Check if decryption failed (returns empty string)
-            if (!decryptedPassword) {
+            if (!decrypted密码) {
                 console.error('qBittorrent password decryption failed');
                 res.status(400).json({
                     error: 'Failed to decrypt password. It may have been encrypted with a different key. Please update your credentials.'
@@ -191,7 +191,7 @@ qbittorrentRoute.post('/login', async (req: Request, res: Response) => {
 
 
         const response = await axios.post(`${baseUrl}/auth/login`,
-            qs.stringify({ username, password: decryptedPassword }),
+            qs.stringify({ username, password: decrypted密码 }),
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -224,20 +224,20 @@ qbittorrentRoute.post('/encrypt-password', authenticateToken, async (req: Reques
         const { password } = req.body;
 
         if (!password) {
-            res.status(400).json({ error: 'Password is required' });
+            res.status(400).json({ error: '密码 is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(password)) {
-            res.status(200).json({ encryptedPassword: password });
+            res.status(200).json({ encrypted密码: password });
             return;
         }
 
-        const encryptedPassword = encrypt(password);
-        res.status(200).json({ encryptedPassword });
+        const encrypted密码 = encrypt(password);
+        res.status(200).json({ encrypted密码 });
     } catch (error) {
-        console.error('Password encryption error:', error);
+        console.error('密码 encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt password' });
     }
 });
@@ -452,7 +452,7 @@ qbittorrentRoute.post('/logout', authenticateToken, async (req: Request, res: Re
             // Call qBittorrent logout endpoint
             await logoutQBittorrentSession(baseUrl, session.cookie);
 
-            // Delete the session
+            // 删除 the session
             delete sessions[sessionId];
         }
 
@@ -560,7 +560,7 @@ qbittorrentRoute.post('/torrents/stop', authenticateToken, async (req: Request, 
     }
 });
 
-// Delete torrent(s)
+// 删除 torrent(s)
 qbittorrentRoute.post('/torrents/delete', authenticateToken, async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);

@@ -4,20 +4,20 @@ import { UseFormReturn } from 'react-hook-form';
 import { CheckboxElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { DateTimeWidgetConfig } from './DateTimeWidgetConfig';
-import { DiskMonitorWidgetConfig } from './DiskMonitorWidgetConfig';
+import { Disk监控WidgetConfig } from './Disk监控WidgetConfig';
 import { WeatherWidgetConfig } from './WeatherWidgetConfig';
 import { DashApi } from '../../../api/dash-api';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
 import { ITEM_TYPE } from '../../../types';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 const WIDGET_OPTIONS = [
     { id: ITEM_TYPE.DATE_TIME_WIDGET, label: 'Date & Time' },
     { id: ITEM_TYPE.WEATHER_WIDGET, label: 'Weather' },
-    { id: ITEM_TYPE.SYSTEM_MONITOR_WIDGET, label: 'System Monitor' },
-    { id: ITEM_TYPE.DISK_MONITOR_WIDGET, label: 'Disk Monitor' },
+    { id: ITEM_TYPE.SYSTEM_MONITOR_WIDGET, label: 'System 监控' },
+    { id: ITEM_TYPE.DISK_MONITOR_WIDGET, label: 'Disk 监控' },
     { id: ITEM_TYPE.PIHOLE_WIDGET, label: 'Pi-hole' },
     { id: ITEM_TYPE.ADGUARD_WIDGET, label: 'AdGuard Home' }
 ];
@@ -34,7 +34,7 @@ interface WidgetState {
     activePosition: 'top' | 'bottom';
 }
 
-// Create a position-aware form context type
+// 创建 a position-aware form context type
 type PositionFormContext = Omit<UseFormReturn<FormValues>, 'register' | 'watch' | 'setValue' | 'getValues'> & {
     register: (name: string, options?: any) => any;
     watch: (name?: string) => any;
@@ -108,8 +108,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
     };
 
     // Get position-specific field name
-    const getFieldName = (position: 'top' | 'bottom', baseName: string): keyof FormValues => {
-        return `${position}_${baseName}` as keyof FormValues;
+    const getField名称 = (position: 'top' | 'bottom', base名称: string): keyof FormValues => {
+        return `${position}_${base名称}` as keyof FormValues;
     };
 
     // Initialize widget configs from existing data
@@ -162,7 +162,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         networkInterface: topConfig.networkInterface || '',
                         showDiskUsage: topConfig.showDiskUsage !== false,
                         showSystemInfo: topConfig.showSystemInfo !== false,
-                        showInternetStatus: topConfig.showInternetStatus !== false,
+                        showInternet状态: topConfig.showInternet状态 !== false,
                         showIP: topConfig.showIP ?? topConfig.showPublicIP ?? false,
                         ipDisplayType: topConfig.ipDisplayType || 'wan'
                     };
@@ -173,7 +173,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     formContext.setValue('top_networkInterface', topConfig.networkInterface || '');
                     formContext.setValue('top_showDiskUsage', topConfig.showDiskUsage !== false);
                     formContext.setValue('top_showSystemInfo', topConfig.showSystemInfo !== false);
-                    formContext.setValue('top_showInternetStatus', topConfig.showInternetStatus !== false);
+                    formContext.setValue('top_showInternet状态', topConfig.showInternet状态 !== false);
                     formContext.setValue('top_showIP', topConfig.showIP ?? topConfig.showPublicIP ?? false);
                     formContext.setValue('top_ipDisplayType', topConfig.ipDisplayType || 'wan');
                 }
@@ -181,56 +181,56 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     topWidgetFields = {
                         selectedDisks: topConfig.selectedDisks || [],
                         showIcons: topConfig.showIcons !== false,
-                        showName: topConfig.showName !== false,
+                        show名称: topConfig.show名称 !== false,
                         layout: '2x2' // Force 2x2 for dual widgets
                     };
                     formContext.setValue('top_selectedDisks', topConfig.selectedDisks || []);
                     formContext.setValue('top_showIcons', topConfig.showIcons !== false);
-                    formContext.setValue('top_showName', topConfig.showName !== false);
+                    formContext.setValue('top_show名称', topConfig.show名称 !== false);
                     formContext.setValue('top_layout', '2x2');
                 }
                 else if (existingTopWidgetType === ITEM_TYPE.PIHOLE_WIDGET) {
                     // Use masked values for sensitive fields if they exist
                     const maskedApiToken = topConfig._hasApiToken ? '**********' : '';
-                    const maskedPassword = topConfig._hasPassword ? '**********' : '';
+                    const masked密码 = topConfig._has密码 ? '**********' : '';
 
                     topWidgetFields = {
                         piholeHost: topConfig.host || '',
                         piholePort: topConfig.port || '',
                         piholeSsl: topConfig.ssl || false,
                         piholeApiToken: maskedApiToken,
-                        piholePassword: maskedPassword,
-                        piholeName: topConfig.displayName || '',
+                        pihole密码: masked密码,
+                        pihole名称: topConfig.display名称 || '',
                         showLabel: topConfig.showLabel !== undefined ? topConfig.showLabel : true
                     };
                     formContext.setValue('top_piholeHost', topConfig.host || '');
                     formContext.setValue('top_piholePort', topConfig.port !== undefined ? topConfig.port : '');
                     formContext.setValue('top_piholeSsl', topConfig.ssl || false);
                     formContext.setValue('top_piholeApiToken', maskedApiToken);
-                    formContext.setValue('top_piholePassword', maskedPassword);
-                    formContext.setValue('top_piholeName', topConfig.displayName || '');
+                    formContext.setValue('top_pihole密码', masked密码);
+                    formContext.setValue('top_pihole名称', topConfig.display名称 || '');
                     formContext.setValue('top_showLabel', topConfig.showLabel !== undefined ? topConfig.showLabel : true);
                 }
                 else if (existingTopWidgetType === ITEM_TYPE.ADGUARD_WIDGET) {
                     // Use masked values for sensitive fields if they exist
-                    const maskedUsername = topConfig._hasUsername ? '**********' : '';
-                    const maskedPassword = topConfig._hasPassword ? '**********' : '';
+                    const masked用户名 = topConfig._has用户名 ? '**********' : '';
+                    const masked密码 = topConfig._has密码 ? '**********' : '';
 
                     topWidgetFields = {
                         adguardHost: topConfig.host || '',
                         adguardPort: topConfig.port || '80',
                         adguardSsl: topConfig.ssl || false,
-                        adguardUsername: maskedUsername,
-                        adguardPassword: maskedPassword,
-                        adguardName: topConfig.displayName || '',
+                        adguard用户名: masked用户名,
+                        adguard密码: masked密码,
+                        adguard名称: topConfig.display名称 || '',
                         showLabel: topConfig.showLabel !== undefined ? topConfig.showLabel : true
                     };
                     formContext.setValue('top_adguardHost', topConfig.host || '');
                     formContext.setValue('top_adguardPort', topConfig.port !== undefined ? topConfig.port : '80');
                     formContext.setValue('top_adguardSsl', topConfig.ssl || false);
-                    formContext.setValue('top_adguardUsername', maskedUsername);
-                    formContext.setValue('top_adguardPassword', maskedPassword);
-                    formContext.setValue('top_adguardName', topConfig.displayName || '');
+                    formContext.setValue('top_adguard用户名', masked用户名);
+                    formContext.setValue('top_adguard密码', masked密码);
+                    formContext.setValue('top_adguard名称', topConfig.display名称 || '');
                     formContext.setValue('top_showLabel', topConfig.showLabel !== undefined ? topConfig.showLabel : true);
                 }
             }
@@ -292,7 +292,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         networkInterface: bottomConfig.networkInterface || '',
                         showDiskUsage: bottomConfig.showDiskUsage !== false,
                         showSystemInfo: bottomConfig.showSystemInfo !== false,
-                        showInternetStatus: bottomConfig.showInternetStatus !== false,
+                        showInternet状态: bottomConfig.showInternet状态 !== false,
                         showIP: bottomConfig.showIP ?? bottomConfig.showPublicIP ?? false,
                         ipDisplayType: bottomConfig.ipDisplayType || 'wan'
                     };
@@ -303,7 +303,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     formContext.setValue('bottom_networkInterface', bottomConfig.networkInterface || '');
                     formContext.setValue('bottom_showDiskUsage', bottomConfig.showDiskUsage !== false);
                     formContext.setValue('bottom_showSystemInfo', bottomConfig.showSystemInfo !== false);
-                    formContext.setValue('bottom_showInternetStatus', bottomConfig.showInternetStatus !== false);
+                    formContext.setValue('bottom_showInternet状态', bottomConfig.showInternet状态 !== false);
                     formContext.setValue('bottom_showIP', bottomConfig.showIP ?? bottomConfig.showPublicIP ?? false);
                     formContext.setValue('bottom_ipDisplayType', bottomConfig.ipDisplayType || 'wan');
                 }
@@ -311,56 +311,56 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     bottomWidgetFields = {
                         selectedDisks: bottomConfig.selectedDisks || [],
                         showIcons: bottomConfig.showIcons !== false,
-                        showName: bottomConfig.showName !== false,
+                        show名称: bottomConfig.show名称 !== false,
                         layout: '2x2' // Force 2x2 for dual widgets
                     };
                     formContext.setValue('bottom_selectedDisks', bottomConfig.selectedDisks || []);
                     formContext.setValue('bottom_showIcons', bottomConfig.showIcons !== false);
-                    formContext.setValue('bottom_showName', bottomConfig.showName !== false);
+                    formContext.setValue('bottom_show名称', bottomConfig.show名称 !== false);
                     formContext.setValue('bottom_layout', '2x2');
                 }
                 else if (existingBottomWidgetType === ITEM_TYPE.PIHOLE_WIDGET) {
                     // Use masked values for sensitive fields if they exist
                     const maskedApiToken = bottomConfig._hasApiToken ? '**********' : '';
-                    const maskedPassword = bottomConfig._hasPassword ? '**********' : '';
+                    const masked密码 = bottomConfig._has密码 ? '**********' : '';
 
                     bottomWidgetFields = {
                         piholeHost: bottomConfig.host || '',
                         piholePort: bottomConfig.port || '',
                         piholeSsl: bottomConfig.ssl || false,
                         piholeApiToken: maskedApiToken,
-                        piholePassword: maskedPassword,
-                        piholeName: bottomConfig.displayName || '',
+                        pihole密码: masked密码,
+                        pihole名称: bottomConfig.display名称 || '',
                         showLabel: bottomConfig.showLabel !== undefined ? bottomConfig.showLabel : true
                     };
                     formContext.setValue('bottom_piholeHost', bottomConfig.host || '');
                     formContext.setValue('bottom_piholePort', bottomConfig.port !== undefined ? bottomConfig.port : '');
                     formContext.setValue('bottom_piholeSsl', bottomConfig.ssl || false);
                     formContext.setValue('bottom_piholeApiToken', maskedApiToken);
-                    formContext.setValue('bottom_piholePassword', maskedPassword);
-                    formContext.setValue('bottom_piholeName', bottomConfig.displayName || '');
+                    formContext.setValue('bottom_pihole密码', masked密码);
+                    formContext.setValue('bottom_pihole名称', bottomConfig.display名称 || '');
                     formContext.setValue('bottom_showLabel', bottomConfig.showLabel !== undefined ? bottomConfig.showLabel : true);
                 }
                 else if (existingBottomWidgetType === ITEM_TYPE.ADGUARD_WIDGET) {
                     // Use masked values for sensitive fields if they exist
-                    const maskedUsername = bottomConfig._hasUsername ? '**********' : '';
-                    const maskedPassword = bottomConfig._hasPassword ? '**********' : '';
+                    const masked用户名 = bottomConfig._has用户名 ? '**********' : '';
+                    const masked密码 = bottomConfig._has密码 ? '**********' : '';
 
                     bottomWidgetFields = {
                         adguardHost: bottomConfig.host || '',
                         adguardPort: bottomConfig.port || '80',
                         adguardSsl: bottomConfig.ssl || false,
-                        adguardUsername: maskedUsername,
-                        adguardPassword: maskedPassword,
-                        adguardName: bottomConfig.displayName || '',
+                        adguard用户名: masked用户名,
+                        adguard密码: masked密码,
+                        adguard名称: bottomConfig.display名称 || '',
                         showLabel: bottomConfig.showLabel !== undefined ? bottomConfig.showLabel : true
                     };
                     formContext.setValue('bottom_adguardHost', bottomConfig.host || '');
                     formContext.setValue('bottom_adguardPort', bottomConfig.port !== undefined ? bottomConfig.port : '80');
                     formContext.setValue('bottom_adguardSsl', bottomConfig.ssl || false);
-                    formContext.setValue('bottom_adguardUsername', maskedUsername);
-                    formContext.setValue('bottom_adguardPassword', maskedPassword);
-                    formContext.setValue('bottom_adguardName', bottomConfig.displayName || '');
+                    formContext.setValue('bottom_adguard用户名', masked用户名);
+                    formContext.setValue('bottom_adguard密码', masked密码);
+                    formContext.setValue('bottom_adguard名称', bottomConfig.display名称 || '');
                     formContext.setValue('bottom_showLabel', bottomConfig.showLabel !== undefined ? bottomConfig.showLabel : true);
                 }
             }
@@ -376,7 +376,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         // Now mark as initialized
         initializedRef.current = true;
 
-        // Add a delayed check to verify widget state after initialization
+        // 添加 a delayed check to verify widget state after initialization
         setTimeout(() => {
             // Verification happens silently now
         }, 500);
@@ -390,12 +390,12 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         if (widgetType && widgetType === ITEM_TYPE.WEATHER_WIDGET) {
             // Handle temperature unit - ensure it has a default value
             const tempUnit = fields.temperatureUnit || 'fahrenheit';
-            formContext.setValue(getFieldName(position, 'temperatureUnit'), tempUnit);
+            formContext.setValue(getField名称(position, 'temperatureUnit'), tempUnit);
 
             // Handle location with special care
             try {
                 if (fields.location !== undefined) {
-                    formContext.setValue(getFieldName(position, 'location'), fields.location);
+                    formContext.setValue(getField名称(position, 'location'), fields.location);
                 }
             } catch (error) {
                 console.error(`Error setting ${position} location`);
@@ -404,7 +404,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         else if (widgetType && widgetType === ITEM_TYPE.DATE_TIME_WIDGET) {
             try {
                 if (fields.location !== undefined) {
-                    formContext.setValue(getFieldName(position, 'location'), fields.location);
+                    formContext.setValue(getField名称(position, 'location'), fields.location);
                 }
             } catch (error) {
                 console.error(`Error setting ${position} location`);
@@ -412,107 +412,107 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
 
             // Handle timezone
             if (fields.timezone !== undefined) {
-                formContext.setValue(getFieldName(position, 'timezone'), fields.timezone);
+                formContext.setValue(getField名称(position, 'timezone'), fields.timezone);
             }
 
             // Handle use24Hour
             if (fields.use24Hour !== undefined) {
-                formContext.setValue(getFieldName(position, 'use24Hour'), fields.use24Hour);
+                formContext.setValue(getField名称(position, 'use24Hour'), fields.use24Hour);
             }
         }
         else if (widgetType && widgetType === ITEM_TYPE.SYSTEM_MONITOR_WIDGET) {
             if (fields.temperatureUnit) {
-                formContext.setValue(getFieldName(position, 'temperatureUnit'), fields.temperatureUnit);
+                formContext.setValue(getField名称(position, 'temperatureUnit'), fields.temperatureUnit);
             }
 
             if (fields.gauge1) {
-                formContext.setValue(getFieldName(position, 'gauge1'), fields.gauge1);
+                formContext.setValue(getField名称(position, 'gauge1'), fields.gauge1);
             }
 
             if (fields.gauge2) {
-                formContext.setValue(getFieldName(position, 'gauge2'), fields.gauge2);
+                formContext.setValue(getField名称(position, 'gauge2'), fields.gauge2);
             }
 
             if (fields.gauge3) {
-                formContext.setValue(getFieldName(position, 'gauge3'), fields.gauge3);
+                formContext.setValue(getField名称(position, 'gauge3'), fields.gauge3);
             }
 
             if (fields.networkInterface !== undefined) {
-                formContext.setValue(getFieldName(position, 'networkInterface'), fields.networkInterface);
+                formContext.setValue(getField名称(position, 'networkInterface'), fields.networkInterface);
             }
         }
         else if (widgetType && widgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
             if (fields.selectedDisks !== undefined) {
-                formContext.setValue(getFieldName(position, 'selectedDisks'), fields.selectedDisks);
+                formContext.setValue(getField名称(position, 'selectedDisks'), fields.selectedDisks);
             }
 
             if (fields.showIcons !== undefined) {
-                formContext.setValue(getFieldName(position, 'showIcons'), fields.showIcons);
+                formContext.setValue(getField名称(position, 'showIcons'), fields.showIcons);
             }
 
-            if (fields.showName !== undefined) {
-                formContext.setValue(getFieldName(position, 'showName'), fields.showName);
+            if (fields.show名称 !== undefined) {
+                formContext.setValue(getField名称(position, 'show名称'), fields.show名称);
             }
 
             // Always force 2x2 layout for dual widgets
-            formContext.setValue(getFieldName(position, 'layout'), '2x2');
+            formContext.setValue(getField名称(position, 'layout'), '2x2');
         }
         else if (widgetType && widgetType === ITEM_TYPE.PIHOLE_WIDGET) {
             if (fields.piholeHost !== undefined) {
-                formContext.setValue(getFieldName(position, 'piholeHost'), fields.piholeHost);
+                formContext.setValue(getField名称(position, 'piholeHost'), fields.piholeHost);
             }
 
             if (fields.piholePort !== undefined) {
-                formContext.setValue(getFieldName(position, 'piholePort'), fields.piholePort);
+                formContext.setValue(getField名称(position, 'piholePort'), fields.piholePort);
             }
 
             if (fields.piholeSsl !== undefined) {
-                formContext.setValue(getFieldName(position, 'piholeSsl'), fields.piholeSsl);
+                formContext.setValue(getField名称(position, 'piholeSsl'), fields.piholeSsl);
             }
 
             if (fields.piholeApiToken !== undefined) {
-                formContext.setValue(getFieldName(position, 'piholeApiToken'), fields.piholeApiToken);
+                formContext.setValue(getField名称(position, 'piholeApiToken'), fields.piholeApiToken);
             }
 
-            if (fields.piholePassword !== undefined) {
-                formContext.setValue(getFieldName(position, 'piholePassword'), fields.piholePassword);
+            if (fields.pihole密码 !== undefined) {
+                formContext.setValue(getField名称(position, 'pihole密码'), fields.pihole密码);
             }
 
-            if (fields.piholeName !== undefined) {
-                formContext.setValue(getFieldName(position, 'piholeName'), fields.piholeName);
+            if (fields.pihole名称 !== undefined) {
+                formContext.setValue(getField名称(position, 'pihole名称'), fields.pihole名称);
             }
 
             if (fields.showLabel !== undefined) {
-                formContext.setValue(getFieldName(position, 'showLabel'), fields.showLabel);
+                formContext.setValue(getField名称(position, 'showLabel'), fields.showLabel);
             }
         }
         else if (widgetType && widgetType === ITEM_TYPE.ADGUARD_WIDGET) {
             if (fields.adguardHost !== undefined) {
-                formContext.setValue(getFieldName(position, 'adguardHost'), fields.adguardHost);
+                formContext.setValue(getField名称(position, 'adguardHost'), fields.adguardHost);
             }
 
             if (fields.adguardPort !== undefined) {
-                formContext.setValue(getFieldName(position, 'adguardPort'), fields.adguardPort);
+                formContext.setValue(getField名称(position, 'adguardPort'), fields.adguardPort);
             }
 
             if (fields.adguardSsl !== undefined) {
-                formContext.setValue(getFieldName(position, 'adguardSsl'), fields.adguardSsl);
+                formContext.setValue(getField名称(position, 'adguardSsl'), fields.adguardSsl);
             }
 
-            if (fields.adguardUsername !== undefined) {
-                formContext.setValue(getFieldName(position, 'adguardUsername'), fields.adguardUsername);
+            if (fields.adguard用户名 !== undefined) {
+                formContext.setValue(getField名称(position, 'adguard用户名'), fields.adguard用户名);
             }
 
-            if (fields.adguardPassword !== undefined) {
-                formContext.setValue(getFieldName(position, 'adguardPassword'), fields.adguardPassword);
+            if (fields.adguard密码 !== undefined) {
+                formContext.setValue(getField名称(position, 'adguard密码'), fields.adguard密码);
             }
 
-            if (fields.adguardName !== undefined) {
-                formContext.setValue(getFieldName(position, 'adguardName'), fields.adguardName);
+            if (fields.adguard名称 !== undefined) {
+                formContext.setValue(getField名称(position, 'adguard名称'), fields.adguard名称);
             }
 
             if (fields.showLabel !== undefined) {
-                formContext.setValue(getFieldName(position, 'showLabel'), fields.showLabel);
+                formContext.setValue(getField名称(position, 'showLabel'), fields.showLabel);
             }
         }
 
@@ -533,8 +533,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 temperatureUnit: 'fahrenheit',
                 location: null
             };
-            formContext.setValue(getFieldName(position, 'temperatureUnit'), 'fahrenheit');
-            formContext.setValue(getFieldName(position, 'location'), null);
+            formContext.setValue(getField名称(position, 'temperatureUnit'), 'fahrenheit');
+            formContext.setValue(getField名称(position, 'location'), null);
         }
         else if (widgetType === ITEM_TYPE.DATE_TIME_WIDGET) {
             defaultFields = {
@@ -542,9 +542,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 timezone: '',
                 use24Hour: false
             };
-            formContext.setValue(getFieldName(position, 'location'), null);
-            formContext.setValue(getFieldName(position, 'timezone'), '');
-            formContext.setValue(getFieldName(position, 'use24Hour'), false);
+            formContext.setValue(getField名称(position, 'location'), null);
+            formContext.setValue(getField名称(position, 'timezone'), '');
+            formContext.setValue(getField名称(position, 'use24Hour'), false);
         }
         else if (widgetType === ITEM_TYPE.SYSTEM_MONITOR_WIDGET) {
             defaultFields = {
@@ -555,32 +555,32 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 networkInterface: '',
                 showDiskUsage: true,
                 showSystemInfo: true,
-                showInternetStatus: true,
+                showInternet状态: true,
                 showIP: false,
                 ipDisplayType: 'wan'
             };
-            formContext.setValue(getFieldName(position, 'temperatureUnit'), 'fahrenheit');
-            formContext.setValue(getFieldName(position, 'gauge1'), 'cpu');
-            formContext.setValue(getFieldName(position, 'gauge2'), 'temp');
-            formContext.setValue(getFieldName(position, 'gauge3'), 'ram');
-            formContext.setValue(getFieldName(position, 'networkInterface'), '');
-            formContext.setValue(getFieldName(position, 'showDiskUsage'), true);
-            formContext.setValue(getFieldName(position, 'showSystemInfo'), true);
-            formContext.setValue(getFieldName(position, 'showInternetStatus'), true);
-            formContext.setValue(getFieldName(position, 'showIP'), false);
-            formContext.setValue(getFieldName(position, 'ipDisplayType'), 'wan');
+            formContext.setValue(getField名称(position, 'temperatureUnit'), 'fahrenheit');
+            formContext.setValue(getField名称(position, 'gauge1'), 'cpu');
+            formContext.setValue(getField名称(position, 'gauge2'), 'temp');
+            formContext.setValue(getField名称(position, 'gauge3'), 'ram');
+            formContext.setValue(getField名称(position, 'networkInterface'), '');
+            formContext.setValue(getField名称(position, 'showDiskUsage'), true);
+            formContext.setValue(getField名称(position, 'showSystemInfo'), true);
+            formContext.setValue(getField名称(position, 'showInternet状态'), true);
+            formContext.setValue(getField名称(position, 'showIP'), false);
+            formContext.setValue(getField名称(position, 'ipDisplayType'), 'wan');
         }
         else if (widgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
             defaultFields = {
                 selectedDisks: [],
                 showIcons: true,
-                showName: true,
+                show名称: true,
                 layout: '2x2'
             };
-            formContext.setValue(getFieldName(position, 'selectedDisks'), []);
-            formContext.setValue(getFieldName(position, 'showIcons'), true);
-            formContext.setValue(getFieldName(position, 'showName'), true);
-            formContext.setValue(getFieldName(position, 'layout'), '2x2');
+            formContext.setValue(getField名称(position, 'selectedDisks'), []);
+            formContext.setValue(getField名称(position, 'showIcons'), true);
+            formContext.setValue(getField名称(position, 'show名称'), true);
+            formContext.setValue(getField名称(position, 'layout'), '2x2');
         }
         else if (widgetType === ITEM_TYPE.PIHOLE_WIDGET) {
             defaultFields = {
@@ -588,35 +588,35 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 piholePort: '',
                 piholeSsl: false,
                 piholeApiToken: '',
-                piholePassword: '',
-                piholeName: '',
+                pihole密码: '',
+                pihole名称: '',
                 showLabel: true
             };
-            formContext.setValue(getFieldName(position, 'piholeHost'), '');
-            formContext.setValue(getFieldName(position, 'piholePort'), '');
-            formContext.setValue(getFieldName(position, 'piholeSsl'), false);
-            formContext.setValue(getFieldName(position, 'piholeApiToken'), '');
-            formContext.setValue(getFieldName(position, 'piholePassword'), '');
-            formContext.setValue(getFieldName(position, 'piholeName'), '');
-            formContext.setValue(getFieldName(position, 'showLabel'), true);
+            formContext.setValue(getField名称(position, 'piholeHost'), '');
+            formContext.setValue(getField名称(position, 'piholePort'), '');
+            formContext.setValue(getField名称(position, 'piholeSsl'), false);
+            formContext.setValue(getField名称(position, 'piholeApiToken'), '');
+            formContext.setValue(getField名称(position, 'pihole密码'), '');
+            formContext.setValue(getField名称(position, 'pihole名称'), '');
+            formContext.setValue(getField名称(position, 'showLabel'), true);
         }
         else if (widgetType === ITEM_TYPE.ADGUARD_WIDGET) {
             defaultFields = {
                 adguardHost: '',
                 adguardPort: '80',
                 adguardSsl: false,
-                adguardUsername: '',
-                adguardPassword: '',
-                adguardName: '',
+                adguard用户名: '',
+                adguard密码: '',
+                adguard名称: '',
                 showLabel: true
             };
-            formContext.setValue(getFieldName(position, 'adguardHost'), '');
-            formContext.setValue(getFieldName(position, 'adguardPort'), '80');
-            formContext.setValue(getFieldName(position, 'adguardSsl'), false);
-            formContext.setValue(getFieldName(position, 'adguardUsername'), '');
-            formContext.setValue(getFieldName(position, 'adguardPassword'), '');
-            formContext.setValue(getFieldName(position, 'adguardName'), '');
-            formContext.setValue(getFieldName(position, 'showLabel'), true);
+            formContext.setValue(getField名称(position, 'adguardHost'), '');
+            formContext.setValue(getField名称(position, 'adguardPort'), '80');
+            formContext.setValue(getField名称(position, 'adguardSsl'), false);
+            formContext.setValue(getField名称(position, 'adguard用户名'), '');
+            formContext.setValue(getField名称(position, 'adguard密码'), '');
+            formContext.setValue(getField名称(position, 'adguard名称'), '');
+            formContext.setValue(getField名称(position, 'showLabel'), true);
         }
 
         // Update widget state with default fields
@@ -638,11 +638,11 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
 
         if (widgetType === ITEM_TYPE.WEATHER_WIDGET) {
             // Get temperature unit value
-            const tempUnit = formContext.getValues(getFieldName(position, 'temperatureUnit'));
+            const tempUnit = formContext.getValues(getField名称(position, 'temperatureUnit'));
             fields.temperatureUnit = tempUnit || 'fahrenheit';
 
             // Get location data and ensure it has proper structure
-            const locationValue = formContext.getValues(getFieldName(position, 'location'));
+            const locationValue = formContext.getValues(getField名称(position, 'location'));
 
             // Ensure location object is properly structured
             if (locationValue && typeof locationValue === 'object' && 'name' in locationValue) {
@@ -667,17 +667,17 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         }
         else if (widgetType === ITEM_TYPE.DATE_TIME_WIDGET) {
             // Get timezone value
-            const timezone = formContext.getValues(getFieldName(position, 'timezone'));
+            const timezone = formContext.getValues(getField名称(position, 'timezone'));
 
             // Ensure timezone is properly stored as a string, never null
             fields.timezone = timezone || '';
 
             // Get use24Hour value
-            const use24Hour = formContext.getValues(getFieldName(position, 'use24Hour'));
+            const use24Hour = formContext.getValues(getField名称(position, 'use24Hour'));
             fields.use24Hour = use24Hour || false;
 
             // Get location data and ensure it has proper structure
-            const locationValue = formContext.getValues(getFieldName(position, 'location'));
+            const locationValue = formContext.getValues(getField名称(position, 'location'));
 
             // Ensure location object is properly structured
             if (locationValue && typeof locationValue === 'object' && 'name' in locationValue) {
@@ -701,40 +701,40 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             }
         }
         else if (widgetType === ITEM_TYPE.SYSTEM_MONITOR_WIDGET) {
-            fields.temperatureUnit = formContext.getValues(getFieldName(position, 'temperatureUnit'));
-            fields.gauge1 = formContext.getValues(getFieldName(position, 'gauge1'));
-            fields.gauge2 = formContext.getValues(getFieldName(position, 'gauge2'));
-            fields.gauge3 = formContext.getValues(getFieldName(position, 'gauge3'));
-            fields.networkInterface = formContext.getValues(getFieldName(position, 'networkInterface'));
-            fields.showDiskUsage = formContext.getValues(getFieldName(position, 'showDiskUsage'));
-            fields.showSystemInfo = formContext.getValues(getFieldName(position, 'showSystemInfo'));
-            fields.showInternetStatus = formContext.getValues(getFieldName(position, 'showInternetStatus'));
-            fields.showIP = formContext.getValues(getFieldName(position, 'showIP'));
-            fields.ipDisplayType = formContext.getValues(getFieldName(position, 'ipDisplayType'));
+            fields.temperatureUnit = formContext.getValues(getField名称(position, 'temperatureUnit'));
+            fields.gauge1 = formContext.getValues(getField名称(position, 'gauge1'));
+            fields.gauge2 = formContext.getValues(getField名称(position, 'gauge2'));
+            fields.gauge3 = formContext.getValues(getField名称(position, 'gauge3'));
+            fields.networkInterface = formContext.getValues(getField名称(position, 'networkInterface'));
+            fields.showDiskUsage = formContext.getValues(getField名称(position, 'showDiskUsage'));
+            fields.showSystemInfo = formContext.getValues(getField名称(position, 'showSystemInfo'));
+            fields.showInternet状态 = formContext.getValues(getField名称(position, 'showInternet状态'));
+            fields.showIP = formContext.getValues(getField名称(position, 'showIP'));
+            fields.ipDisplayType = formContext.getValues(getField名称(position, 'ipDisplayType'));
         }
         else if (widgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
-            fields.selectedDisks = formContext.getValues(getFieldName(position, 'selectedDisks'));
-            fields.showIcons = formContext.getValues(getFieldName(position, 'showIcons'));
-            fields.showName = formContext.getValues(getFieldName(position, 'showName'));
+            fields.selectedDisks = formContext.getValues(getField名称(position, 'selectedDisks'));
+            fields.showIcons = formContext.getValues(getField名称(position, 'showIcons'));
+            fields.show名称 = formContext.getValues(getField名称(position, 'show名称'));
             fields.layout = '2x2'; // Always 2x2 for dual widgets
         }
         else if (widgetType === ITEM_TYPE.PIHOLE_WIDGET) {
-            fields.piholeHost = formContext.getValues(getFieldName(position, 'piholeHost'));
-            fields.piholePort = formContext.getValues(getFieldName(position, 'piholePort'));
-            fields.piholeSsl = formContext.getValues(getFieldName(position, 'piholeSsl'));
-            fields.piholeApiToken = formContext.getValues(getFieldName(position, 'piholeApiToken'));
-            fields.piholePassword = formContext.getValues(getFieldName(position, 'piholePassword'));
-            fields.piholeName = formContext.getValues(getFieldName(position, 'piholeName'));
-            fields.showLabel = formContext.getValues(getFieldName(position, 'showLabel'));
+            fields.piholeHost = formContext.getValues(getField名称(position, 'piholeHost'));
+            fields.piholePort = formContext.getValues(getField名称(position, 'piholePort'));
+            fields.piholeSsl = formContext.getValues(getField名称(position, 'piholeSsl'));
+            fields.piholeApiToken = formContext.getValues(getField名称(position, 'piholeApiToken'));
+            fields.pihole密码 = formContext.getValues(getField名称(position, 'pihole密码'));
+            fields.pihole名称 = formContext.getValues(getField名称(position, 'pihole名称'));
+            fields.showLabel = formContext.getValues(getField名称(position, 'showLabel'));
         }
         else if (widgetType === ITEM_TYPE.ADGUARD_WIDGET) {
-            fields.adguardHost = formContext.getValues(getFieldName(position, 'adguardHost'));
-            fields.adguardPort = formContext.getValues(getFieldName(position, 'adguardPort'));
-            fields.adguardSsl = formContext.getValues(getFieldName(position, 'adguardSsl'));
-            fields.adguardUsername = formContext.getValues(getFieldName(position, 'adguardUsername'));
-            fields.adguardPassword = formContext.getValues(getFieldName(position, 'adguardPassword'));
-            fields.adguardName = formContext.getValues(getFieldName(position, 'adguardName'));
-            fields.showLabel = formContext.getValues(getFieldName(position, 'showLabel'));
+            fields.adguardHost = formContext.getValues(getField名称(position, 'adguardHost'));
+            fields.adguardPort = formContext.getValues(getField名称(position, 'adguardPort'));
+            fields.adguardSsl = formContext.getValues(getField名称(position, 'adguardSsl'));
+            fields.adguard用户名 = formContext.getValues(getField名称(position, 'adguard用户名'));
+            fields.adguard密码 = formContext.getValues(getField名称(position, 'adguard密码'));
+            fields.adguard名称 = formContext.getValues(getField名称(position, 'adguard名称'));
+            fields.showLabel = formContext.getValues(getField名称(position, 'showLabel'));
         }
 
         // Update the state with captured values
@@ -757,8 +757,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             // Explicitly check for timezone values before switching tabs
             const currentWidgetType = currentPosition === 'top' ? topWidgetType : bottomWidgetType;
             if (currentWidgetType === ITEM_TYPE.DATE_TIME_WIDGET) {
-                const timezoneFieldName = getFieldName(currentPosition, 'timezone');
-                const timezone = formContext.getValues(timezoneFieldName);
+                const timezoneField名称 = getField名称(currentPosition, 'timezone');
+                const timezone = formContext.getValues(timezoneField名称);
 
                 // Explicitly set the timezone in the widget state
                 setWidgetState(prevState => {
@@ -802,7 +802,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         }
     };
 
-    // Add a useEffect to sync form values with widget state when page changes
+    // 添加 a useEffect to sync form values with widget state when page changes
     useEffect(() => {
         const position = currentPage === 0 ? 'top' : 'bottom';
         const fields = position === 'top' ?
@@ -841,9 +841,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         return () => subscription.unsubscribe();
     }, [currentPage, widgetState.topWidgetFields, widgetState.bottomWidgetFields]);
 
-    // Save final configurations when form is submitted
+    // 保存 final configurations when form is submitted
     useEffect(() => {
-        const handleFormSubmit = async () => {
+        const handleForm提交 = async () => {
             // Capture widget types immediately before they can be lost
             const currentTopWidgetType = formContext.getValues('topWidgetType');
             const currentBottomWidgetType = formContext.getValues('bottomWidgetType');
@@ -860,7 +860,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             const topWidget = currentTopWidgetType ? await buildWidgetConfigWithType('top', currentTopWidgetType) : undefined;
             const bottomWidget = currentBottomWidgetType ? await buildWidgetConfigWithType('bottom', currentBottomWidgetType) : undefined;
 
-            // Create the final dual widget config
+            // 创建 the final dual widget config
             const dualWidgetConfig = {
                 topWidget,
                 bottomWidget
@@ -870,15 +870,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             (formContext as any).setValue('config', dualWidgetConfig);
         };
 
-        // Add event listener to form submit
+        // 添加 event listener to form submit
         const formElement = document.querySelector('form');
         if (formElement) {
-            formElement.addEventListener('submit', handleFormSubmit);
+            formElement.addEventListener('submit', handleForm提交);
             return () => {
-                formElement.removeEventListener('submit', handleFormSubmit);
+                formElement.removeEventListener('submit', handleForm提交);
             };
         }
-    }, [formContext, currentPage]); // Removed widgetState dependency to prevent unnecessary re-renders
+    }, [formContext, currentPage]); // 移除d widgetState dependency to prevent unnecessary re-renders
 
     // Build widget config with explicit widget type (to avoid form reset issues)
     const buildWidgetConfigWithType = async (position: 'top' | 'bottom', widgetType: string) => {
@@ -911,13 +911,13 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         if (widgetType === ITEM_TYPE.WEATHER_WIDGET) {
             // Get values directly from form for critical fields
             // Force get the temperature unit from the form directly
-            const temperatureUnitField = getFieldName(position, 'temperatureUnit');
+            const temperatureUnitField = getField名称(position, 'temperatureUnit');
             const temperatureUnit = formContext.getValues(temperatureUnitField);
 
             // Get it from fields object as fallback
             const finalTempUnit = temperatureUnit || (fields && fields.temperatureUnit) || 'fahrenheit';
 
-            const location = formContext.getValues(getFieldName(position, 'location'));
+            const location = formContext.getValues(getField名称(position, 'location'));
 
             // Ensure location has the correct structure
             let processedLocation = null;
@@ -946,10 +946,10 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         }
         else if (widgetType === ITEM_TYPE.DATE_TIME_WIDGET) {
             // Get location directly from form
-            const location = formContext.getValues(getFieldName(position, 'location'));
+            const location = formContext.getValues(getField名称(position, 'location'));
 
             // Explicitly retrieve timezone with a fallback empty string
-            const timezone = formContext.getValues(getFieldName(position, 'timezone')) || '';
+            const timezone = formContext.getValues(getField名称(position, 'timezone')) || '';
 
             // Ensure location has the correct structure
             let processedLocation = null;
@@ -972,7 +972,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             }
 
             // Get use24Hour value
-            const use24Hour = formContext.getValues(getFieldName(position, 'use24Hour')) || false;
+            const use24Hour = formContext.getValues(getField名称(position, 'use24Hour')) || false;
 
             // Always include the timezone field, even if it's an empty string (never undefined or null)
             config = {
@@ -983,16 +983,16 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         }
         else if (widgetType === ITEM_TYPE.SYSTEM_MONITOR_WIDGET) {
             // Get values directly from form for critical fields
-            const temperatureUnit = formContext.getValues(getFieldName(position, 'temperatureUnit'));
-            const gauge1 = formContext.getValues(getFieldName(position, 'gauge1'));
-            const gauge2 = formContext.getValues(getFieldName(position, 'gauge2'));
-            const gauge3 = formContext.getValues(getFieldName(position, 'gauge3'));
-            const networkInterface = formContext.getValues(getFieldName(position, 'networkInterface'));
-            const showDiskUsage = formContext.getValues(getFieldName(position, 'showDiskUsage'));
-            const showSystemInfo = formContext.getValues(getFieldName(position, 'showSystemInfo'));
-            const showInternetStatus = formContext.getValues(getFieldName(position, 'showInternetStatus'));
-            const showIP = formContext.getValues(getFieldName(position, 'showIP'));
-            const ipDisplayType = formContext.getValues(getFieldName(position, 'ipDisplayType'));
+            const temperatureUnit = formContext.getValues(getField名称(position, 'temperatureUnit'));
+            const gauge1 = formContext.getValues(getField名称(position, 'gauge1'));
+            const gauge2 = formContext.getValues(getField名称(position, 'gauge2'));
+            const gauge3 = formContext.getValues(getField名称(position, 'gauge3'));
+            const networkInterface = formContext.getValues(getField名称(position, 'networkInterface'));
+            const showDiskUsage = formContext.getValues(getField名称(position, 'showDiskUsage'));
+            const showSystemInfo = formContext.getValues(getField名称(position, 'showSystemInfo'));
+            const showInternet状态 = formContext.getValues(getField名称(position, 'showInternet状态'));
+            const showIP = formContext.getValues(getField名称(position, 'showIP'));
+            const ipDisplayType = formContext.getValues(getField名称(position, 'ipDisplayType'));
 
             config = {
                 temperatureUnit: temperatureUnit || 'fahrenheit',
@@ -1004,26 +1004,26 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 networkInterface: networkInterface || fields.networkInterface || '',
                 showDiskUsage: showDiskUsage !== false,
                 showSystemInfo: showSystemInfo !== false,
-                showInternetStatus: showInternetStatus !== false,
+                showInternet状态: showInternet状态 !== false,
                 showIP: showIP || false,
                 ipDisplayType: ipDisplayType || 'wan'
             };
         }
         else if (widgetType === ITEM_TYPE.PIHOLE_WIDGET) {
             // Get values directly from form for critical fields
-            const host = formContext.getValues(getFieldName(position, 'piholeHost'));
-            const port = formContext.getValues(getFieldName(position, 'piholePort'));
-            const ssl = formContext.getValues(getFieldName(position, 'piholeSsl'));
-            const apiToken = formContext.getValues(getFieldName(position, 'piholeApiToken'));
-            const password = formContext.getValues(getFieldName(position, 'piholePassword'));
-            const displayName = formContext.getValues(getFieldName(position, 'piholeName'));
-            const showLabel = formContext.getValues(getFieldName(position, 'showLabel'));
+            const host = formContext.getValues(getField名称(position, 'piholeHost'));
+            const port = formContext.getValues(getField名称(position, 'piholePort'));
+            const ssl = formContext.getValues(getField名称(position, 'piholeSsl'));
+            const apiToken = formContext.getValues(getField名称(position, 'piholeApiToken'));
+            const password = formContext.getValues(getField名称(position, 'pihole密码'));
+            const display名称 = formContext.getValues(getField名称(position, 'pihole名称'));
+            const showLabel = formContext.getValues(getField名称(position, 'showLabel'));
 
 
 
             // Check if we have existing sensitive data from the original config
             let hasExistingApiToken = false;
-            let hasExistingPassword = false;
+            let hasExisting密码 = false;
 
             // For dual widgets, we need to check the position-specific config
             if (existingItem && existingItem.config) {
@@ -1031,7 +1031,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 const positionWidget = position === 'top' ? dualConfig.topWidget : dualConfig.bottomWidget;
                 if (positionWidget?.config) {
                     hasExistingApiToken = !!positionWidget.config._hasApiToken;
-                    hasExistingPassword = !!positionWidget.config._hasPassword;
+                    hasExisting密码 = !!positionWidget.config._has密码;
                 }
             }
 
@@ -1040,7 +1040,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 hasExistingApiToken = true;
             }
             if (password === '**********') {
-                hasExistingPassword = true;
+                hasExisting密码 = true;
             }
 
 
@@ -1050,13 +1050,13 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 host: host || '',
                 port: port || '',
                 ssl: ssl || false,
-                displayName: displayName || '',
+                display名称: display名称 || '',
                 showLabel: showLabel !== undefined ? showLabel : true
             };
 
             // Handle credential encryption - only encrypt if not masked
             let encryptedApiToken = '';
-            let encryptedPassword = '';
+            let encrypted密码 = '';
 
             // Only process API token if it's not the masked value
             if (apiToken && typeof apiToken === 'string' && apiToken !== '**********') {
@@ -1070,7 +1070,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             // Only process password if it's not the masked value
             if (password && typeof password === 'string' && password !== '**********') {
                 try {
-                    encryptedPassword = await DashApi.encryptPiholePassword(password);
+                    encrypted密码 = await DashApi.encryptPihole密码(password);
                 } catch (error) {
                     console.error('Error encrypting Pi-hole password:', error);
                 }
@@ -1084,54 +1084,54 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 configObj._hasApiToken = true;
             }
 
-            if (encryptedPassword) {
-                configObj.password = encryptedPassword;
-            } else if (hasExistingPassword) {
+            if (encrypted密码) {
+                configObj.password = encrypted密码;
+            } else if (hasExisting密码) {
                 // If we have an existing password but no new password provided, set the flag
-                configObj._hasPassword = true;
+                configObj._has密码 = true;
             }
             config = configObj;
         }
         else if (widgetType === ITEM_TYPE.ADGUARD_WIDGET) {
             // Get values directly from form for critical fields
-            const host = formContext.getValues(getFieldName(position, 'adguardHost'));
-            const port = formContext.getValues(getFieldName(position, 'adguardPort'));
-            const ssl = formContext.getValues(getFieldName(position, 'adguardSsl'));
-            const username = formContext.getValues(getFieldName(position, 'adguardUsername'));
-            const password = formContext.getValues(getFieldName(position, 'adguardPassword'));
-            const displayName = formContext.getValues(getFieldName(position, 'adguardName'));
-            const showLabel = formContext.getValues(getFieldName(position, 'showLabel'));
+            const host = formContext.getValues(getField名称(position, 'adguardHost'));
+            const port = formContext.getValues(getField名称(position, 'adguardPort'));
+            const ssl = formContext.getValues(getField名称(position, 'adguardSsl'));
+            const username = formContext.getValues(getField名称(position, 'adguard用户名'));
+            const password = formContext.getValues(getField名称(position, 'adguard密码'));
+            const display名称 = formContext.getValues(getField名称(position, 'adguard名称'));
+            const showLabel = formContext.getValues(getField名称(position, 'showLabel'));
 
             // Check if we have existing sensitive data from the original config
-            let hasExistingUsername = false;
-            let hasExistingPassword = false;
+            let hasExisting用户名 = false;
+            let hasExisting密码 = false;
 
             // For dual widgets, we need to check the position-specific config
             if (existingItem && existingItem.config) {
                 const dualConfig = existingItem.config;
                 const positionWidget = position === 'top' ? dualConfig.topWidget : dualConfig.bottomWidget;
                 if (positionWidget?.config) {
-                    hasExistingUsername = !!positionWidget.config._hasUsername;
-                    hasExistingPassword = !!positionWidget.config._hasPassword;
+                    hasExisting用户名 = !!positionWidget.config._has用户名;
+                    hasExisting密码 = !!positionWidget.config._has密码;
                 }
             }
 
             // Also check if the current form values are masked (indicating existing data)
             if (username === '**********') {
-                hasExistingUsername = true;
+                hasExisting用户名 = true;
             }
             if (password === '**********') {
-                hasExistingPassword = true;
+                hasExisting密码 = true;
             }
 
             // Handle credential encryption - only encrypt if not masked
-            let encryptedUsername = '';
-            let encryptedPassword = '';
+            let encrypted用户名 = '';
+            let encrypted密码 = '';
 
             // Only process username if it's not the masked value
             if (username && typeof username === 'string' && username !== '**********') {
                 try {
-                    encryptedUsername = await DashApi.encryptAdGuardUsername(username);
+                    encrypted用户名 = await DashApi.encryptAdGuard用户名(username);
                 } catch (error) {
                     console.error('Error encrypting AdGuard username:', error);
                 }
@@ -1140,7 +1140,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             // Only process password if it's not the masked value
             if (password && typeof password === 'string' && password !== '**********') {
                 try {
-                    encryptedPassword = await DashApi.encryptAdGuardPassword(password);
+                    encrypted密码 = await DashApi.encryptAdGuard密码(password);
                 } catch (error) {
                     console.error('Error encrypting AdGuard password:', error);
                 }
@@ -1151,34 +1151,34 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 host: host || '',
                 port: port || '80',
                 ssl: ssl || false,
-                displayName: displayName || '',
+                display名称: display名称 || '',
                 showLabel: showLabel !== undefined ? showLabel : true
             };
 
             // Include encrypted credentials if they were provided
-            if (encryptedUsername && encryptedPassword) {
-                configObj.username = encryptedUsername;
-                configObj.password = encryptedPassword;
+            if (encrypted用户名 && encrypted密码) {
+                configObj.username = encrypted用户名;
+                configObj.password = encrypted密码;
             } else {
                 // If we have existing credentials but no new ones provided, set the flags
-                if (hasExistingUsername) {
-                    configObj._hasUsername = true;
+                if (hasExisting用户名) {
+                    configObj._has用户名 = true;
                 }
-                if (hasExistingPassword) {
-                    configObj._hasPassword = true;
+                if (hasExisting密码) {
+                    configObj._has密码 = true;
                 }
             }
             config = configObj;
         }
         else if (widgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
             // Get values directly from form for critical fields
-            const selectedDisks = formContext.getValues(getFieldName(position, 'selectedDisks')) as Array<{ mount: string; customName: string; showMountPath?: boolean }> | undefined;
-            const showIcons = formContext.getValues(getFieldName(position, 'showIcons'));
-            const showName = formContext.getValues(getFieldName(position, 'showName'));
+            const selectedDisks = formContext.getValues(getField名称(position, 'selectedDisks')) as Array<{ mount: string; custom名称: string; showMountPath?: boolean }> | undefined;
+            const showIcons = formContext.getValues(getField名称(position, 'showIcons'));
+            const show名称 = formContext.getValues(getField名称(position, 'show名称'));
 
             // Validate that at least one disk is selected
             if (!selectedDisks || !Array.isArray(selectedDisks) || selectedDisks.length === 0) {
-                formContext.setError(getFieldName(position, 'selectedDisks'), {
+                formContext.setError(getField名称(position, 'selectedDisks'), {
                     type: 'required',
                     message: 'At least one disk must be selected'
                 });
@@ -1188,7 +1188,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             config = {
                 selectedDisks: selectedDisks || [],
                 showIcons: showIcons !== false,
-                showName: showName !== false,
+                show名称: show名称 !== false,
                 layout: '2x2' // Always 2x2 for dual widgets
             };
         }
@@ -1209,42 +1209,42 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         applyWidgetFieldsToForm(position, fields);
     }, [widgetState.activePosition]);
 
-    // Create position-aware wrappers for each widget configuration component
+    // 创建 position-aware wrappers for each widget configuration component
     const createPositionedFormContext = (position: 'top' | 'bottom'): PositionFormContext => {
         return {
             ...formContext,
             register: (name: string, options?: any) => {
-                const fieldName = getFieldName(position, name);
-                return formContext.register(fieldName, options);
+                const field名称 = getField名称(position, name);
+                return formContext.register(field名称, options);
             },
             watch: (name?: string) => {
                 if (!name) return formContext.watch();
-                const fieldName = getFieldName(position, name);
-                return formContext.watch(fieldName);
+                const field名称 = getField名称(position, name);
+                return formContext.watch(field名称);
             },
             setValue: (name: string, value: any, options?: any) => {
-                const fieldName = getFieldName(position, name);
-                return formContext.setValue(fieldName, value, options);
+                const field名称 = getField名称(position, name);
+                return formContext.setValue(field名称, value, options);
             },
             getValues: (name?: string) => {
                 if (!name) return formContext.getValues();
-                const fieldName = getFieldName(position, name);
-                return formContext.getValues(fieldName);
+                const field名称 = getField名称(position, name);
+                return formContext.getValues(field名称);
             }
         };
     };
 
-    // Create a special location-aware context for the WeatherWidgetConfig
+    // 创建 a special location-aware context for the WeatherWidgetConfig
     const createLocationAwareContext = (position: 'top' | 'bottom'): PositionFormContext => {
         const baseContext = createPositionedFormContext(position);
         return {
             ...baseContext,
             setValue: (name: string, value: any, options?: any) => {
                 if (name === 'location') {
-                    return formContext.setValue(getFieldName(position, 'location'), value, options);
+                    return formContext.setValue(getField名称(position, 'location'), value, options);
                 }
                 else if (name === 'temperatureUnit') {
-                    formContext.setValue(getFieldName(position, 'temperatureUnit'), value, options);
+                    formContext.setValue(getField名称(position, 'temperatureUnit'), value, options);
 
                     // Also update the widgetState directly to keep everything in sync
                     setWidgetState(prevState => {
@@ -1264,20 +1264,20 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             },
             watch: (name?: string) => {
                 if (name === 'location') {
-                    return formContext.watch(getFieldName(position, 'location'));
+                    return formContext.watch(getField名称(position, 'location'));
                 }
                 else if (name === 'temperatureUnit') {
-                    const fieldValue = formContext.watch(getFieldName(position, 'temperatureUnit'));
+                    const fieldValue = formContext.watch(getField名称(position, 'temperatureUnit'));
                     return fieldValue || 'fahrenheit';
                 }
                 return baseContext.watch(name);
             },
             getValues: (name?: string) => {
                 if (name === 'location') {
-                    return formContext.getValues(getFieldName(position, 'location'));
+                    return formContext.getValues(getField名称(position, 'location'));
                 }
                 else if (name === 'temperatureUnit') {
-                    const fieldValue = formContext.getValues(getFieldName(position, 'temperatureUnit'));
+                    const fieldValue = formContext.getValues(getField名称(position, 'temperatureUnit'));
                     return fieldValue || 'fahrenheit';
                 }
                 return baseContext.getValues(name);
@@ -1285,24 +1285,24 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         };
     };
 
-    // Create a custom component for System Monitor fields to properly use hooks
-    const SystemMonitorFields = ({ position }: { position: 'top' | 'bottom' }) => {
+    // 创建 a custom component for System 监控 fields to properly use hooks
+    const System监控Fields = ({ position }: { position: 'top' | 'bottom' }) => {
         // Access the widget state and form context from parent component
         const fields = position === 'top' ?
             widgetState.topWidgetFields :
             widgetState.bottomWidgetFields;
 
         // Store field names in variables to ensure stability
-        const gauge1FieldName = getFieldName(position, 'gauge1');
-        const gauge2FieldName = getFieldName(position, 'gauge2');
-        const gauge3FieldName = getFieldName(position, 'gauge3');
-        const networkInterfaceFieldName = getFieldName(position, 'networkInterface');
-        const temperatureUnitFieldName = getFieldName(position, 'temperatureUnit');
+        const gauge1Field名称 = getField名称(position, 'gauge1');
+        const gauge2Field名称 = getField名称(position, 'gauge2');
+        const gauge3Field名称 = getField名称(position, 'gauge3');
+        const networkInterfaceField名称 = getField名称(position, 'networkInterface');
+        const temperatureUnitField名称 = getField名称(position, 'temperatureUnit');
 
         // Watch the temperature unit directly from the form
-        const watchedTemperatureUnit = formContext.watch(temperatureUnitFieldName);
+        const watchedTemperatureUnit = formContext.watch(temperatureUnitField名称);
         const [temperatureUnit, setTemperatureUnit] = useState<string>(() => {
-            const currentValue = formContext.getValues(temperatureUnitFieldName);
+            const currentValue = formContext.getValues(temperatureUnitField名称);
             return typeof currentValue === 'string' ? currentValue : 'fahrenheit';
         });
 
@@ -1317,9 +1317,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         const [networkInterfaces, setNetworkInterfaces] = useState<Array<{id: string, label: string}>>([]);
 
         // Immediately check form values for pre-existing network gauge selections
-        const initialGauge1 = formContext.getValues(gauge1FieldName);
-        const initialGauge2 = formContext.getValues(gauge2FieldName);
-        const initialGauge3 = formContext.getValues(gauge3FieldName);
+        const initialGauge1 = formContext.getValues(gauge1Field名称);
+        const initialGauge2 = formContext.getValues(gauge2Field名称);
+        const initialGauge3 = formContext.getValues(gauge3Field名称);
 
         // Use state to store the gauge values locally
         const [gaugeValues, setGaugeValues] = useState({
@@ -1356,8 +1356,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             if (!value) return;
 
             // Update form value
-            const fieldName = getFieldName(position, gauge);
-            formContext.setValue(fieldName, value);
+            const field名称 = getField名称(position, gauge);
+            formContext.setValue(field名称, value);
 
             // Update local state
             setGaugeValues(prev => ({
@@ -1381,16 +1381,16 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                             setNetworkInterfaces(interfaces);
 
                             // Get the current network interface value from form
-                            const currentInterface = formContext.getValues(networkInterfaceFieldName);
+                            const currentInterface = formContext.getValues(networkInterfaceField名称);
 
                             // If there's no current interface selected but we need one, set it
                             if (!currentInterface && interfaces.length > 0) {
                                 const activeInterface = systemInfo.network?.iface;
 
                                 if (activeInterface && interfaces.some((iface: { id: string }) => iface.id === activeInterface)) {
-                                    formContext.setValue(networkInterfaceFieldName, activeInterface);
+                                    formContext.setValue(networkInterfaceField名称, activeInterface);
                                 } else {
-                                    formContext.setValue(networkInterfaceFieldName, interfaces[0].id);
+                                    formContext.setValue(networkInterfaceField名称, interfaces[0].id);
                                 }
                             }
                         }
@@ -1418,11 +1418,11 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         Temperature Unit:
                     </Typography>
                     <RadioGroup
-                        name={temperatureUnitFieldName}
+                        name={temperatureUnitField名称}
                         value={temperatureUnit}
                         onChange={(e) => {
                             setTemperatureUnit(e.target.value);
-                            formContext.setValue(temperatureUnitFieldName, e.target.value);
+                            formContext.setValue(temperatureUnitField名称, e.target.value);
                         }}
                         sx={{
                             flexDirection: 'row',
@@ -1466,7 +1466,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Box sx={{ mt: 2 }}>
                     <SelectElement
                         label='Left Gauge'
-                        name={gauge1FieldName}
+                        name={gauge1Field名称}
                         options={[
                             { id: 'cpu', label: 'CPU Usage' },
                             { id: 'temp', label: 'CPU Temperature' },
@@ -1487,7 +1487,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Box sx={{ mt: 2 }}>
                     <SelectElement
                         label='Middle Gauge'
-                        name={gauge2FieldName}
+                        name={gauge2Field名称}
                         options={[
                             { id: 'cpu', label: 'CPU Usage' },
                             { id: 'temp', label: 'CPU Temperature' },
@@ -1508,7 +1508,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Box sx={{ mt: 2 }}>
                     <SelectElement
                         label='Right Gauge'
-                        name={gauge3FieldName}
+                        name={gauge3Field名称}
                         options={[
                             { id: 'cpu', label: 'CPU Usage' },
                             { id: 'temp', label: 'CPU Temperature' },
@@ -1532,7 +1532,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     <Box sx={{ mt: 2 }}>
                         <SelectElement
                             label='Network Interface'
-                            name={networkInterfaceFieldName}
+                            name={networkInterfaceField名称}
                             options={networkInterfaces.length > 0 ? networkInterfaces : [{ id: '', label: 'No network interfaces available' }]}
                             required
                             fullWidth
@@ -1555,7 +1555,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Box sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
                         label='Show Disk Usage'
-                        name={getFieldName(position, 'showDiskUsage')}
+                        name={getField名称(position, 'showDiskUsage')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -1567,7 +1567,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Box sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
                         label='Show System Info Button'
-                        name={getFieldName(position, 'showSystemInfo')}
+                        name={getField名称(position, 'showSystemInfo')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -1578,8 +1578,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
 
                 <Box sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
-                        label='Show Internet Status'
-                        name={getFieldName(position, 'showInternetStatus')}
+                        label='Show Internet 状态'
+                        name={getField名称(position, 'showInternet状态')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -1591,7 +1591,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Box sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
                         label='Show IP in Tooltip'
-                        name={getFieldName(position, 'showIP')}
+                        name={getField名称(position, 'showIP')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -1600,11 +1600,11 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     />
                 </Box>
 
-                {formContext.watch(getFieldName(position, 'showIP')) && (
+                {formContext.watch(getField名称(position, 'showIP')) && (
                     <Box sx={{ width: '100%', mb: 2 }}>
                         <SelectElement
                             label='IP Display Type'
-                            name={getFieldName(position, 'ipDisplayType')}
+                            name={getField名称(position, 'ipDisplayType')}
                             options={[
                                 { id: 'wan', label: 'WAN (Public IP)' },
                                 { id: 'lan', label: 'LAN (Local IP)' },
@@ -1623,14 +1623,14 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         );
     };
 
-    // Create a custom wrapper for WeatherWidgetConfig to ensure temperature unit is properly set
+    // 创建 a custom wrapper for WeatherWidgetConfig to ensure temperature unit is properly set
     const WeatherConfigWrapper = ({ position }: { position: 'top' | 'bottom' }) => {
-        // Create a context with only location handling, we'll handle temperature ourselves
+        // 创建 a context with only location handling, we'll handle temperature ourselves
         const positionContext = createLocationAwareContext(position);
 
-        // Create local state that tracks the temperature unit value
+        // 创建 local state that tracks the temperature unit value
         const [tempUnit, setTempUnit] = useState(() => {
-            const value = formContext.getValues(getFieldName(position, 'temperatureUnit')) || 'fahrenheit';
+            const value = formContext.getValues(getField名称(position, 'temperatureUnit')) || 'fahrenheit';
             return value as string;
         });
 
@@ -1642,7 +1642,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             setTempUnit(newValue);
 
             // Update form context
-            formContext.setValue(getFieldName(position, 'temperatureUnit'), newValue);
+            formContext.setValue(getField名称(position, 'temperatureUnit'), newValue);
 
             // Update widget state
             setWidgetState(prev => {
@@ -1657,7 +1657,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             });
         };
 
-        // Create a modified version of formContext for WeatherWidgetConfig that omits temperature unit handling
+        // 创建 a modified version of formContext for WeatherWidgetConfig that omits temperature unit handling
         const modifiedContext = {
             ...positionContext,
             // Override register to not handle temperatureUnit
@@ -1706,7 +1706,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         Temperature Unit:
                     </Typography>
                     <RadioGroup
-                        name={getFieldName(position, 'temperatureUnit')}
+                        name={getField名称(position, 'temperatureUnit')}
                         value={tempUnit}
                         onChange={handleTempUnitChange}
                         sx={{
@@ -1763,30 +1763,30 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             <Box sx={{ width: '100%' }}>
                 <DateTimeWidgetConfig
                     formContext={formContext as any}
-                    fieldNamePrefix={position === 'top' ? 'top_' : 'bottom_'}
+                    field名称Prefix={position === 'top' ? 'top_' : 'bottom_'}
                 />
             </Box>
         );
     };
 
-    // Create a custom wrapper for PiholeWidgetConfig to ensure API token and password fields work correctly
+    // 创建 a custom wrapper for PiholeWidgetConfig to ensure API token and password fields work correctly
     const PiholeConfigWrapper = ({ position }: { position: 'top' | 'bottom' }) => {
         // Track field values with local state
         const [host, setHost] = useState('');
         const [port, setPort] = useState('');
         const [apiToken, setApiToken] = useState('');
-        const [password, setPassword] = useState('');
+        const [password, set密码] = useState('');
         const [formInitialized, setFormInitialized] = useState(false);
 
         // Track if we have existing sensitive data (similar to regular PiholeWidgetConfig)
         const [hasExistingApiToken, setHasExistingApiToken] = useState(false);
-        const [hasExistingPassword, setHasExistingPassword] = useState(false);
+        const [hasExisting密码, setHasExisting密码] = useState(false);
 
         // Field names for easier reference
-        const hostField = getFieldName(position, 'piholeHost');
-        const portField = getFieldName(position, 'piholePort');
-        const apiTokenField = getFieldName(position, 'piholeApiToken');
-        const passwordField = getFieldName(position, 'piholePassword');
+        const hostField = getField名称(position, 'piholeHost');
+        const portField = getField名称(position, 'piholePort');
+        const apiTokenField = getField名称(position, 'piholeApiToken');
+        const passwordField = getField名称(position, 'pihole密码');
 
         // Initialize masked values for existing items (similar to regular PiholeWidgetConfig)
         useEffect(() => {
@@ -1810,15 +1810,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         }
                     }
 
-                    if (config._hasPassword) {
-                        setHasExistingPassword(true);
+                    if (config._has密码) {
+                        setHasExisting密码(true);
                         // Set masked value in form if not already set
-                        const currentPassword = formContext.getValues(passwordField);
-                        if (!currentPassword) {
+                        const current密码 = formContext.getValues(passwordField);
+                        if (!current密码) {
                             formContext.setValue(passwordField, '**********');
-                            setPassword('**********');
+                            set密码('**********');
                         } else {
-                            setPassword(typeof currentPassword === 'string' ? currentPassword : '');
+                            set密码(typeof current密码 === 'string' ? current密码 : '');
                         }
                     }
                 }
@@ -1833,14 +1833,14 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             const initialHost = formContext.getValues(hostField);
             const initialPort = formContext.getValues(portField);
             const initialApiToken = formContext.getValues(apiTokenField);
-            const initialPassword = formContext.getValues(passwordField);
+            const initial密码 = formContext.getValues(passwordField);
 
             // Convert to strings, handling any non-string values
             const hostStr = typeof initialHost === 'string' ? initialHost : '';
             const portStr = typeof initialPort === 'string' ? initialPort : '';
             // For sensitive fields, use the values as they are (already masked from form initialization)
             const tokenStr = typeof initialApiToken === 'string' ? initialApiToken : '';
-            const passwordStr = typeof initialPassword === 'string' ? initialPassword : '';
+            const passwordStr = typeof initial密码 === 'string' ? initial密码 : '';
 
             // Set local state
             setHost(hostStr);
@@ -1853,11 +1853,11 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 formContext.setValue(apiTokenField, tokenStr);
                 formContext.setValue(passwordField, '');
                 setApiToken(tokenStr);
-                setPassword('');
+                set密码('');
             } else {
                 // Otherwise use whatever values we have (including masked values)
                 setApiToken(tokenStr);
-                setPassword(passwordStr);
+                set密码(passwordStr);
             }
 
             // Clear any validation errors since we've just loaded the values
@@ -1904,7 +1904,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
 
             // If token has a non-masked value, clear password and its validation errors
             if (newValue && newValue !== '**********') {
-                setPassword('');
+                set密码('');
                 formContext.setValue(passwordField, '', {
                     shouldValidate: false,
                     shouldDirty: true
@@ -1917,10 +1917,10 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         };
 
         // Handle password change
-        const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handle密码Change = (e: React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value;
 
-            setPassword(newValue);
+            set密码(newValue);
             formContext.setValue(passwordField, newValue, {
                 shouldValidate: false,
                 shouldDirty: true
@@ -2017,8 +2017,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 </Grid>
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <TextFieldElement
-                        name={getFieldName(position, 'piholeName')}
-                        label='Display Name'
+                        name={getField名称(position, 'pihole名称')}
+                        label='Display 名称'
                         variant='outlined'
                         placeholder='Pi-hole'
                         fullWidth
@@ -2049,14 +2049,14 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         autoComplete='off'
                         required={!password && !hasExistingApiToken}
                         disabled={Boolean(password && password !== '**********')}
-                        error={!apiToken && !password && !hasExistingApiToken && !hasExistingPassword}
+                        error={!apiToken && !password && !hasExistingApiToken && !hasExisting密码}
                         value={apiToken}
                         onChange={handleApiTokenChange}
                         helperText={
-                            password && password !== '**********' ? 'Password already provided' :
+                            password && password !== '**********' ? '密码 already provided' :
                                 hasExistingApiToken && apiToken === '**********' ? 'Current API token is set (shown as ********). Clear field to remove or enter new token to replace.' :
-                                    !apiToken && !password && !hasExistingApiToken && !hasExistingPassword ? 'Enter API token or password below' :
-                                        'Enter the API token from Pi-hole Settings > API/Web interface'
+                                    !apiToken && !password && !hasExistingApiToken && !hasExisting密码 ? 'Enter API token or password below' :
+                                        'Enter the API token from Pi-hole 设置 > API/Web interface'
                         }
                         sx={{
                             width: '100%',
@@ -2081,20 +2081,20 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     {/* Use a regular TextField for better control */}
                     <TextField
                         name={passwordField}
-                        label='Password (Pi-hole v6)'
+                        label='密码 (Pi-hole v6)'
                         type='password'
                         variant='outlined'
                         fullWidth
                         autoComplete='off'
-                        required={!apiToken && !hasExistingPassword}
+                        required={!apiToken && !hasExisting密码}
                         disabled={Boolean(apiToken && apiToken !== '**********')}
-                        error={!apiToken && !password && !hasExistingApiToken && !hasExistingPassword}
+                        error={!apiToken && !password && !hasExistingApiToken && !hasExisting密码}
                         value={password}
-                        onChange={handlePasswordChange}
+                        onChange={handle密码Change}
                         helperText={
                             apiToken && apiToken !== '**********' ? 'API Token already provided' :
-                                hasExistingPassword && password === '**********' &&
-                                    !apiToken && !password && !hasExistingApiToken && !hasExistingPassword ? 'Enter password or API token above' :
+                                hasExisting密码 && password === '**********' &&
+                                    !apiToken && !password && !hasExistingApiToken && !hasExisting密码 ? 'Enter password or API token above' :
                                     'Enter your Pi-hole admin password'
                         }
                         sx={{
@@ -2119,7 +2119,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
                         label='Use SSL'
-                        name={getFieldName(position, 'piholeSsl')}
+                        name={getField名称(position, 'piholeSsl')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -2129,8 +2129,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 </Grid>
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
-                        label='Show Name'
-                        name={getFieldName(position, 'showLabel')}
+                        label='Show 名称'
+                        name={getField名称(position, 'showLabel')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -2142,24 +2142,24 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         );
     };
 
-    // Create a custom wrapper for AdGuardWidgetConfig to ensure username and password fields work correctly
+    // 创建 a custom wrapper for AdGuardWidgetConfig to ensure username and password fields work correctly
     const AdGuardConfigWrapper = ({ position }: { position: 'top' | 'bottom' }) => {
         // Track field values with local state
         const [host, setHost] = useState('');
         const [port, setPort] = useState('');
-        const [username, setUsername] = useState('');
-        const [password, setPassword] = useState('');
+        const [username, set用户名] = useState('');
+        const [password, set密码] = useState('');
         const [formInitialized, setFormInitialized] = useState(false);
 
         // Track if we have existing sensitive data (similar to regular AdGuardWidgetConfig)
-        const [hasExistingUsername, setHasExistingUsername] = useState(false);
-        const [hasExistingPassword, setHasExistingPassword] = useState(false);
+        const [hasExisting用户名, setHasExisting用户名] = useState(false);
+        const [hasExisting密码, setHasExisting密码] = useState(false);
 
         // Field names for easier reference
-        const hostField = getFieldName(position, 'adguardHost');
-        const portField = getFieldName(position, 'adguardPort');
-        const usernameField = getFieldName(position, 'adguardUsername');
-        const passwordField = getFieldName(position, 'adguardPassword');
+        const hostField = getField名称(position, 'adguardHost');
+        const portField = getField名称(position, 'adguardPort');
+        const usernameField = getField名称(position, 'adguard用户名');
+        const passwordField = getField名称(position, 'adguard密码');
 
         // Initialize masked values for existing items (similar to regular AdGuardWidgetConfig)
         useEffect(() => {
@@ -2171,27 +2171,27 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     const config = positionWidget.config;
 
                     // Check if existing item has sensitive data using security flags
-                    if (config._hasUsername) {
-                        setHasExistingUsername(true);
+                    if (config._has用户名) {
+                        setHasExisting用户名(true);
                         // Set masked value in form if not already set
-                        const currentUsername = formContext.getValues(usernameField);
-                        if (!currentUsername) {
+                        const current用户名 = formContext.getValues(usernameField);
+                        if (!current用户名) {
                             formContext.setValue(usernameField, '**********');
-                            setUsername('**********');
+                            set用户名('**********');
                         } else {
-                            setUsername(typeof currentUsername === 'string' ? currentUsername : '');
+                            set用户名(typeof current用户名 === 'string' ? current用户名 : '');
                         }
                     }
 
-                    if (config._hasPassword) {
-                        setHasExistingPassword(true);
+                    if (config._has密码) {
+                        setHasExisting密码(true);
                         // Set masked value in form if not already set
-                        const currentPassword = formContext.getValues(passwordField);
-                        if (!currentPassword) {
+                        const current密码 = formContext.getValues(passwordField);
+                        if (!current密码) {
                             formContext.setValue(passwordField, '**********');
-                            setPassword('**********');
+                            set密码('**********');
                         } else {
-                            setPassword(typeof currentPassword === 'string' ? currentPassword : '');
+                            set密码(typeof current密码 === 'string' ? current密码 : '');
                         }
                     }
                 }
@@ -2205,21 +2205,21 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             // Get initial values from form context
             const initialHost = formContext.getValues(hostField);
             const initialPort = formContext.getValues(portField);
-            const initialUsername = formContext.getValues(usernameField);
-            const initialPassword = formContext.getValues(passwordField);
+            const initial用户名 = formContext.getValues(usernameField);
+            const initial密码 = formContext.getValues(passwordField);
 
             // Convert to strings, handling any non-string values
             const hostStr = typeof initialHost === 'string' ? initialHost : '';
             const portStr = typeof initialPort === 'string' ? initialPort : '80';
             // For sensitive fields, use the values as they are (already masked from form initialization)
-            const usernameStr = typeof initialUsername === 'string' ? initialUsername : '';
-            const passwordStr = typeof initialPassword === 'string' ? initialPassword : '';
+            const usernameStr = typeof initial用户名 === 'string' ? initial用户名 : '';
+            const passwordStr = typeof initial密码 === 'string' ? initial密码 : '';
 
             // Set local state
             setHost(hostStr);
             setPort(portStr);
-            setUsername(usernameStr);
-            setPassword(passwordStr);
+            set用户名(usernameStr);
+            set密码(passwordStr);
 
             // Clear any validation errors since we've just loaded the values
             formContext.clearErrors(hostField);
@@ -2254,9 +2254,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         };
 
         // Handle username change
-        const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handle用户名Change = (e: React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value;
-            setUsername(newValue);
+            set用户名(newValue);
             formContext.setValue(usernameField, newValue, {
                 shouldValidate: false,
                 shouldDirty: true
@@ -2265,9 +2265,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         };
 
         // Handle password change
-        const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handle密码Change = (e: React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value;
-            setPassword(newValue);
+            set密码(newValue);
             formContext.setValue(passwordField, newValue, {
                 shouldValidate: false,
                 shouldDirty: true
@@ -2276,14 +2276,14 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         };
 
         // Helper function to determine if field should be required
-        const isUsernameRequired = () => {
-            // Username is required if password is provided (both are needed for Basic Auth)
-            return Boolean(password && password !== '**********') || hasExistingPassword;
+        const is用户名Required = () => {
+            // 用户名 is required if password is provided (both are needed for Basic Auth)
+            return Boolean(password && password !== '**********') || hasExisting密码;
         };
 
-        const isPasswordRequired = () => {
-            // Password is required if username is provided (both are needed for Basic Auth)
-            return Boolean(username && username !== '**********') || hasExistingUsername;
+        const is密码Required = () => {
+            // 密码 is required if username is provided (both are needed for Basic Auth)
+            return Boolean(username && username !== '**********') || hasExisting用户名;
         };
 
         // Clear validation errors when component unmounts to prevent stale errors
@@ -2363,8 +2363,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 </Grid>
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <TextFieldElement
-                        name={getFieldName(position, 'adguardName')}
-                        label='Display Name'
+                        name={getField名称(position, 'adguard名称')}
+                        label='Display 名称'
                         variant='outlined'
                         placeholder='AdGuard Home'
                         fullWidth
@@ -2387,16 +2387,16 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <TextField
                         name={usernameField}
-                        label='Username'
+                        label='用户名'
                         variant='outlined'
                         fullWidth
                         autoComplete='off'
-                        required={isUsernameRequired()}
+                        required={is用户名Required()}
                         value={username}
-                        onChange={handleUsernameChange}
-                        error={isUsernameRequired() && !username}
+                        onChange={handle用户名Change}
+                        error={is用户名Required() && !username}
                         helperText={
-                            hasExistingUsername && username === '**********' ? 'Current username is set (shown as ********). Clear field to remove or enter new username to replace.' :
+                            hasExisting用户名 && username === '**********' ? 'Current username is set (shown as ********). Clear field to remove or enter new username to replace.' :
                                 'Enter your AdGuard Home admin username'
                         }
                         sx={{
@@ -2421,17 +2421,17 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <TextField
                         name={passwordField}
-                        label='Password'
+                        label='密码'
                         type='password'
                         variant='outlined'
                         fullWidth
                         autoComplete='off'
-                        required={isPasswordRequired()}
+                        required={is密码Required()}
                         value={password}
-                        onChange={handlePasswordChange}
-                        error={isPasswordRequired() && !password}
+                        onChange={handle密码Change}
+                        error={is密码Required() && !password}
                         helperText={
-                            hasExistingPassword && password === '**********' ? 'Current password is set (shown as ********). Clear field to remove or enter new password to replace.' :
+                            hasExisting密码 && password === '**********' ? 'Current password is set (shown as ********). Clear field to remove or enter new password to replace.' :
                                 'Enter your AdGuard Home admin password'
                         }
                         sx={{
@@ -2456,7 +2456,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
                         label='Use SSL'
-                        name={getFieldName(position, 'adguardSsl')}
+                        name={getField名称(position, 'adguardSsl')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -2466,8 +2466,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 </Grid>
                 <Grid sx={{ width: '100%', mb: 2 }}>
                     <CheckboxElement
-                        label='Show Name'
-                        name={getFieldName(position, 'showLabel')}
+                        label='Show 名称'
+                        name={getField名称(position, 'showLabel')}
                         sx={{
                             ml: 1,
                             color: 'white',
@@ -2479,12 +2479,12 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         );
     };
 
-    const DiskMonitorConfigWrapper = ({ position }: { position: 'top' | 'bottom' }) => {
+    const Disk监控ConfigWrapper = ({ position }: { position: 'top' | 'bottom' }) => {
         return (
             <Box sx={{ width: '100%' }}>
-                <DiskMonitorWidgetConfig
+                <Disk监控WidgetConfig
                     formContext={formContext as any}
-                    fieldNamePrefix={position === 'top' ? 'top_' : 'bottom_'}
+                    field名称Prefix={position === 'top' ? 'top_' : 'bottom_'}
                 />
             </Box>
         );
@@ -2504,7 +2504,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             return (
                 <Box sx={{ width: '100%' }}>
                     {/* Use the custom component for system monitor fields */}
-                    <SystemMonitorFields position={position} />
+                    <System监控Fields position={position} />
                 </Box>
             );
         case ITEM_TYPE.PIHOLE_WIDGET:
@@ -2512,7 +2512,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         case ITEM_TYPE.ADGUARD_WIDGET:
             return <AdGuardConfigWrapper position={position} />;
         case ITEM_TYPE.DISK_MONITOR_WIDGET:
-            return <DiskMonitorConfigWrapper position={position} />;
+            return <Disk监控ConfigWrapper position={position} />;
         default:
             return null;
         }

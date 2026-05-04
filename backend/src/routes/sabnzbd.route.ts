@@ -30,9 +30,9 @@ const getBaseUrl = (req: Request): string => {
     
     // Clean the host to remove any protocol prefix
     let host = connectionInfo.host || 'localhost';
-    // Remove http:// or https:// if present
+    // 移除 http:// or https:// if present
     host = host.replace(/^https?:\/\//, '');
-    // Remove any trailing slashes
+    // 移除 any trailing slashes
     host = host.replace(/\/+$/, '');
     
     const port = connectionInfo.port || '8080';
@@ -172,18 +172,18 @@ sabnzbdRoute.post('/encrypt-password', authenticateToken, async (req: Request, r
         const { password } = req.body;
 
         if (!password) {
-            res.status(400).json({ error: 'Password (API key) is required' });
+            res.status(400).json({ error: '密码 (API key) is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(password)) {
-            res.status(200).json({ encryptedPassword: password });
+            res.status(200).json({ encrypted密码: password });
             return;
         }
 
-        const encryptedPassword = encrypt(password);
-        res.status(200).json({ encryptedPassword });
+        const encrypted密码 = encrypt(password);
+        res.status(200).json({ encrypted密码 });
     } catch (error) {
         console.error('SABnzbd password encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt password' });

@@ -3,10 +3,10 @@ import React from 'react';
 
 import { AdGuardWidget } from './AdGuardWidget/AdGuardWidget';
 import { DateTimeWidget } from './DateTimeWidget';
-import { DiskMonitorWidget } from './DiskMonitorWidget';
+import { Disk监控Widget } from './Disk监控Widget';
 import { DualWidgetContainer } from './DualWidgetContainer';
 import { PiholeWidget } from './PiholeWidget/PiholeWidget';
-import { SystemMonitorWidget } from './SystemMonitorWidget/SystemMonitorWidget';
+import { System监控Widget } from './System监控Widget/System监控Widget';
 import { WeatherWidget } from './WeatherWidget';
 import { DUAL_WIDGET_SECTION_HEIGHT } from '../../../../constants/widget-dimensions';
 import { COLORS } from '../../../../theme/styles';
@@ -26,8 +26,8 @@ export interface DualWidgetProps {
     };
     editMode?: boolean;
     id?: string;
-    onEdit?: () => void;
-    onDelete?: () => void;
+    on编辑?: () => void;
+    on删除?: () => void;
     onDuplicate?: () => void;
     url?: string;
 }
@@ -36,8 +36,8 @@ export const DualWidget: React.FC<DualWidgetProps> = ({
     config,
     editMode = false,
     id,
-    onEdit,
-    onDelete,
+    on编辑,
+    on删除,
     onDuplicate,
     url
 }) => {
@@ -69,7 +69,7 @@ export const DualWidget: React.FC<DualWidgetProps> = ({
             case ITEM_TYPE.DATE_TIME_WIDGET:
                 return <DateTimeWidget config={widgetConfig.config} />;
             case ITEM_TYPE.SYSTEM_MONITOR_WIDGET:
-                return <SystemMonitorWidget
+                return <System监控Widget
                     config={{
                         ...widgetConfig.config,
                         dualWidgetPosition: position
@@ -87,7 +87,7 @@ export const DualWidget: React.FC<DualWidgetProps> = ({
                     id={id ? `${id}-${position}` : undefined}
                 />;
             case ITEM_TYPE.DISK_MONITOR_WIDGET:
-                return <DiskMonitorWidget
+                return <Disk监控Widget
                     config={{
                         ...widgetConfig.config,
                         dualWidgetPosition: position
@@ -134,8 +134,8 @@ export const DualWidget: React.FC<DualWidgetProps> = ({
         <DualWidgetContainer
             editMode={editMode}
             id={id}
-            onEdit={onEdit}
-            onDelete={onDelete}
+            on编辑={on编辑}
+            on删除={on删除}
             onDuplicate={onDuplicate}
             url={url}
         >

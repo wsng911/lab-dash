@@ -10,8 +10,8 @@ interface Props {
     id: string;
     editMode?: boolean;
     isOverlay?: boolean;
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
     config?: any;
 }
@@ -20,8 +20,8 @@ export const SortableSabnzbd: React.FC<Props> = ({
     id,
     editMode = false,
     isOverlay = false,
-    onDelete,
-    onEdit,
+    on删除,
+    on编辑,
     onDuplicate,
     config
 }) => {
@@ -40,7 +40,7 @@ export const SortableSabnzbd: React.FC<Props> = ({
                 visibility: isDragging ? 'hidden' : 'visible',
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
+            <WidgetContainer editMode={editMode} id={id} on删除={on删除} on编辑={on编辑} onDuplicate={onDuplicate}>
                 <SabnzbdWidget config={config} id={id} />
             </WidgetContainer>
         </Grid2>

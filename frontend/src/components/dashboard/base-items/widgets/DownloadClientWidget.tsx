@@ -1,4 +1,4 @@
-import { ArrowDownward, ArrowUpward, CheckCircle, Delete, Download, MoreVert, Pause, PlayArrow, Stop, Upload, Warning } from '@mui/icons-material';
+import { ArrowDownward, ArrowUpward, CheckCircle, 删除, Download, MoreVert, Pause, PlayArrow, Stop, Upload, Warning } from '@mui/icons-material';
 import { Box, Button, CardContent, CircularProgress, Grid, IconButton, LinearProgress, Link, Menu, MenuItem, TextField, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -35,7 +35,7 @@ export type DownloadInfo = {
 };
 
 export type DownloadClientWidgetProps = {
-    clientName: string;
+    client名称: string;
     isLoading: boolean;
     isAuthenticated: boolean;
     authError: string;
@@ -51,7 +51,7 @@ export type DownloadClientWidgetProps = {
     showLabel?: boolean;
     onResumeTorrent?: (hash: string) => Promise<boolean>;
     onPauseTorrent?: (hash: string) => Promise<boolean>;
-    onDeleteTorrent?: (hash: string, deleteFiles: boolean) => Promise<boolean>;
+    on删除Torrent?: (hash: string, deleteFiles: boolean) => Promise<boolean>;
 };
 
 // Format bytes to appropriate size unit
@@ -92,7 +92,7 @@ const formatEta = (seconds?: number): string => {
 };
 
 // Format status text for tooltip display
-const formatStatusText = (state: string): string => {
+const format状态Text = (state: string): string => {
     switch (state) {
     case 'downloading': return 'Downloading';
     case 'uploading': return 'Uploading';
@@ -110,7 +110,7 @@ const formatStatusText = (state: string): string => {
 };
 
 // Get status icon based on torrent state
-const getStatusIcon = (state: string) => {
+const get状态Icon = (state: string) => {
     switch (state) {
     case 'downloading': return <Download sx={{ color: 'white' }} fontSize='small' />;
     case 'uploading':
@@ -129,14 +129,14 @@ const getStatusIcon = (state: string) => {
 
 interface DownloadItemProps {
     torrent: DownloadInfo;
-    clientName: string;
+    client名称: string;
     isAdmin: boolean;
     onResume?: (hash: string) => Promise<boolean>;
     onPause?: (hash: string) => Promise<boolean>;
-    onDelete?: (hash: string, deleteFiles: boolean) => Promise<boolean>;
+    on删除?: (hash: string, deleteFiles: boolean) => Promise<boolean>;
 }
 
-const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmin, onResume, onPause, onDelete }) => {
+const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, client名称, isAdmin, onResume, onPause, on删除 }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -148,7 +148,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
         setMenuOpen(true);
     };
 
-    const handleMenuClose = () => {
+    const handleMenu关闭 = () => {
         setMenuAnchorEl(null);
         setMenuOpen(false);
     };
@@ -164,7 +164,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                 setIsActionLoading(false);
             }
         }
-        handleMenuClose();
+        handleMenu关闭();
     };
 
     const handlePause = async () => {
@@ -178,21 +178,21 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                 setIsActionLoading(false);
             }
         }
-        handleMenuClose();
+        handleMenu关闭();
     };
 
-    const handleDelete = async () => {
-        if (onDelete) {
-            handleMenuClose();
+    const handle删除 = async () => {
+        if (on删除) {
+            handleMenu关闭();
 
             PopupManager.threeButtonDialog({
-                title: `Remove "${torrent.name}"?`,
-                confirmText: 'Delete Files',
+                title: `移除 "${torrent.name}"?`,
+                confirmText: '删除 Files',
                 confirmAction: async () => {
-                    // Delete torrent and files
+                    // 删除 torrent and files
                     setIsActionLoading(true);
                     try {
-                        await onDelete(torrent.hash, true);
+                        await on删除(torrent.hash, true);
                     } catch (error) {
                         console.error('Failed to delete torrent with files:', error);
                     } finally {
@@ -201,10 +201,10 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                 },
                 denyText: 'Keep Files',
                 denyAction: async () => {
-                    // Delete torrent only, keep files
+                    // 删除 torrent only, keep files
                     setIsActionLoading(true);
                     try {
-                        await onDelete(torrent.hash, false);
+                        await on删除(torrent.hash, false);
                     } catch (error) {
                         console.error('Failed to delete torrent (keeping files):', error);
                     } finally {
@@ -219,7 +219,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
     const isPausedOrStopped = torrent.state.includes('paused') || torrent.state === 'stopped' || torrent.state === 'error';
 
     // Show menu button only if admin and actions are available and not in edit mode
-    const showMenuButton = isAdmin && !editMode && (onResume || onPause || onDelete);
+    const showMenuButton = isAdmin && !editMode && (onResume || onPause || on删除);
 
     return (
         <Box sx={{
@@ -237,13 +237,13 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <Tooltip
-                    title={formatStatusText(torrent.state)}
+                    title={format状态Text(torrent.state)}
                     placement='top'
                     enterDelay={500}
                     arrow
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {getStatusIcon(torrent.state)}
+                        {get状态Icon(torrent.state)}
                     </Box>
                 </Tooltip>
                 <Tooltip
@@ -299,7 +299,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                 <Menu
                     anchorEl={menuAnchorEl}
                     open={menuOpen}
-                    onClose={handleMenuClose}
+                    on关闭={handleMenu关闭}
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'right',
@@ -310,7 +310,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                     }}
 
                 >
-                    {(clientName === 'qBittorrent' || clientName === 'Transmission') ? (
+                    {(client名称 === 'qBittorrent' || client名称 === 'Transmission') ? (
                         // For qBittorrent and Transmission: Use Start/Stop terminology
                         <>
                             {/* Show Start option for torrents that can be started */}
@@ -344,7 +344,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                                 </MenuItem>
                             )}
                         </>
-                    ) : clientName === 'SABnzbd' ? (
+                    ) : client名称 === 'SABnzbd' ? (
                         // For SABnzbd: Use Resume/Pause terminology with SABnzbd-specific states
                         <>
                             {/* Show Resume option for non-downloading SABnzbd items */}
@@ -410,9 +410,9 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                         </>
                     )}
 
-                    <MenuItem onClick={handleDelete} disabled={!onDelete} sx={{ fontSize: '0.9rem', py: 1 }}>
-                        <Delete fontSize='small' sx={{ mr: 1 }} />
-                        Remove
+                    <MenuItem onClick={handle删除} disabled={!on删除} sx={{ fontSize: '0.9rem', py: 1 }}>
+                        <删除 fontSize='small' sx={{ mr: 1 }} />
+                        移除
                     </MenuItem>
                 </Menu>
             </Box>
@@ -447,7 +447,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                     )}
 
                     {(torrent.state === 'stopped' || torrent.state === 'error' || torrent.state.includes('paused')) &&
-                    `${(clientName === 'qBittorrent' || clientName === 'Transmission') ? 'Stopped' : 'Paused'}`}
+                    `${(client名称 === 'qBittorrent' || client名称 === 'Transmission') ? 'Stopped' : 'Paused'}`}
                 </Typography>
                 <Typography
                     variant='caption'
@@ -461,7 +461,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
 };
 
 export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
-    clientName,
+    client名称,
     isLoading,
     isAuthenticated,
     authError,
@@ -473,12 +473,12 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
     showLabel,
     onResumeTorrent,
     onPauseTorrent,
-    onDeleteTorrent
+    on删除Torrent
 }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { isAdmin, editMode } = useAppContext();
 
-    // Create base URL for torrent client web UI
+    // 创建 base URL for torrent client web UI
     const getBaseUrl = () => {
         if (!loginCredentials.host) return '';
 
@@ -532,8 +532,8 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                     {showLabel && (
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
                             <img
-                                src={`${BACKEND_URL}/icons/${clientName.toLowerCase().includes('qbittorrent') ? 'qbittorrent.svg' : clientName.toLowerCase().includes('transmission') ? 'transmission.svg' : clientName.toLowerCase().includes('sabnzbd') ? 'sabnzbd.svg' : clientName.toLowerCase().includes('nzbget') ? 'nzbget.svg' : 'deluge.svg'}`}
-                                alt={clientName}
+                                src={`${BACKEND_URL}/icons/${client名称.toLowerCase().includes('qbittorrent') ? 'qbittorrent.svg' : client名称.toLowerCase().includes('transmission') ? 'transmission.svg' : client名称.toLowerCase().includes('sabnzbd') ? 'sabnzbd.svg' : client名称.toLowerCase().includes('nzbget') ? 'nzbget.svg' : 'deluge.svg'}`}
+                                alt={client名称}
                                 style={{
                                     width: '24px',
                                     height: '24px',
@@ -541,7 +541,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                 }}
                             />
                             <Typography variant='h6' align='center' gutterBottom sx={{ color: 'white', mb: 0 }}>
-                                {clientName}
+                                {client名称}
                             </Typography>
                         </Box>
                     )}
@@ -612,8 +612,8 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                             onClick={handleOpenWebUI}
                         >
                             <img
-                                src={`${BACKEND_URL}/icons/${clientName.toLowerCase().includes('qbittorrent') ? 'qbittorrent.svg' : clientName.toLowerCase().includes('transmission') ? 'transmission.svg' : clientName.toLowerCase().includes('sabnzbd') ? 'sabnzbd.svg' : clientName.toLowerCase().includes('nzbget') ? 'nzbget.svg' : 'deluge.svg'}`}
-                                alt={clientName}
+                                src={`${BACKEND_URL}/icons/${client名称.toLowerCase().includes('qbittorrent') ? 'qbittorrent.svg' : client名称.toLowerCase().includes('transmission') ? 'transmission.svg' : client名称.toLowerCase().includes('sabnzbd') ? 'sabnzbd.svg' : client名称.toLowerCase().includes('nzbget') ? 'nzbget.svg' : 'deluge.svg'}`}
+                                alt={client名称}
                                 style={{
                                     width: '24px',
                                     height: '24px',
@@ -621,7 +621,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                 }}
                             />
                             <Typography variant={isMobile ? 'subtitle1' : 'h6'} sx={{ color: 'white' }}>
-                                {clientName}
+                                {client名称}
                             </Typography>
                         </Box>
                     </Box>
@@ -674,11 +674,11 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                         <DownloadItem
                                             key={torrent.hash}
                                             torrent={torrent}
-                                            clientName={clientName}
+                                            client名称={client名称}
                                             isAdmin={isAdmin}
                                             onResume={onResumeTorrent}
                                             onPause={onPauseTorrent}
-                                            onDelete={onDeleteTorrent}
+                                            on删除={on删除Torrent}
                                         />
                                     ))
                                 ) : (
@@ -728,7 +728,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                                             fontSize: isMobile ? '0.7rem' : '.8rem'
                                                         }}
                                                     >
-                                                        Sample File Name.mkv
+                                                        Sample File 名称.mkv
                                                     </Typography>
                                                     <Typography
                                                         variant='caption'
@@ -772,7 +772,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                         Current:
                                     </Typography>
                                     <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary' }}>
-                                        {clientName === 'SABnzbd' ? 'This month:' : 'Session:'}
+                                        {client名称 === 'SABnzbd' ? 'This month:' : 'Session:'}
                                     </Typography>
                                 </Box>
 
@@ -791,7 +791,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                     </Box>
                                 </Box>
 
-                                {clientName !== 'SABnzbd' && (
+                                {client名称 !== 'SABnzbd' && (
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                                             <ArrowUpward sx={{ color: 'text.primary', fontSize: '0.75rem', mr: 0.3 }} />

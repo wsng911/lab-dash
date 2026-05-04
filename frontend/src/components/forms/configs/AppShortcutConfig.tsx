@@ -5,8 +5,8 @@ import { CheckboxElement, SelectElement, TextFieldElement } from 'react-hook-for
 
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
-import { IconSearch } from '../IconSearch';
+import { FormValues } from '../添加编辑Form/types';
+import { Icon搜索 } from '../Icon搜索';
 
 const HEALTH_CHECK_TYPES = [
     { id: 'http', label: 'HTTP Request' },
@@ -19,7 +19,7 @@ interface AppShortcutConfigProps {
 }
 
 export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortcutConfigProps) => {
-    const [editingWolShortcut, setEditingWolShortcut] = useState(false);
+    const [editingWolShortcut, set编辑ingWolShortcut] = useState(false);
     const [previousHealthUrl, setPreviousHealthUrl] = useState('');
     const [previousHealthCheckType, setPreviousHealthCheckType] = useState<'http' | 'ping'>('http');
     const isWol = formContext.watch('isWol', false);
@@ -40,7 +40,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
 
     // Initialize WOL editing state when the component mounts or isWol changes
     useEffect(() => {
-        setEditingWolShortcut(isWol || false);
+        set编辑ingWolShortcut(isWol || false);
     }, [isWol]);
 
     // Update URL field validation requirements whenever health URL changes
@@ -72,8 +72,8 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
         <>
             <Grid>
                 <TextFieldElement
-                    name='shortcutName'
-                    label='Shortcut Name'
+                    name='shortcut名称'
+                    label='Shortcut 名称'
                     required
                     variant='outlined'
                     sx={{
@@ -195,7 +195,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                     <Grid>
                         <TextFieldElement
                             name='healthUrl'
-                            label={healthCheckType === 'http' ? 'Health Check URL' : 'Hostname or IP Address'}
+                            label={healthCheckType === 'http' ? 'Health Check URL' : 'Hostname or IP 添加ress'}
                             helperText={'Optional'}
                             variant='outlined'
                             sx={{
@@ -234,8 +234,8 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                 <>
                     <Grid>
                         <TextFieldElement
-                            name='macAddress'
-                            label='MAC Address'
+                            name='mac添加ress'
+                            label='MAC 添加ress'
                             required
                             variant='outlined'
                             rules={{
@@ -267,8 +267,8 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                     </Grid>
                     <Grid>
                         <TextFieldElement
-                            name='broadcastAddress'
-                            label='Broadcast Address (Optional)'
+                            name='broadcast添加ress'
+                            label='Broadcast 添加ress (Optional)'
                             variant='outlined'
                             helperText='The broadcast address for your network'
                             rules={{
@@ -333,7 +333,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
             )}
 
             <Grid>
-                <IconSearch
+                <Icon搜索
                     control={formContext.control}
                     errors={formContext.formState.errors}
                     onCustomIconSelect={onCustomIconSelect}
@@ -341,7 +341,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
             </Grid>
             <Grid>
                 <CheckboxElement
-                    label='Show Name'
+                    label='Show 名称'
                     name='showLabel'
                     sx={{ ml: 1, color: 'white', '& .MuiSvgIcon-root': { fontSize: 30 } }}
                 />

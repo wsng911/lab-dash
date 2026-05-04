@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { DashApi } from '../api/dash-api';
 import { TWO_MIN_IN_MS } from '../constants/constants';
 
-export function useServiceStatus(
+export function useService状态(
     pingUrl: string | null | undefined,
     healthCheckType: 'http' | 'ping' = 'http',
     intervalMs = TWO_MIN_IN_MS
@@ -15,7 +15,7 @@ export function useServiceStatus(
 
         let timer: NodeJS.Timeout | null = null;
 
-        async function checkStatus() {
+        async function check状态() {
             try {
                 if (!pingUrl) return;
                 const status = await DashApi.checkServiceHealth(pingUrl, healthCheckType);
@@ -25,8 +25,8 @@ export function useServiceStatus(
             }
         }
 
-        checkStatus();
-        timer = setInterval(checkStatus, intervalMs);
+        check状态();
+        timer = setInterval(check状态, intervalMs);
 
         return () => {
             if (timer) clearInterval(timer);

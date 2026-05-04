@@ -11,10 +11,10 @@ import { WidgetContainer } from '../WidgetContainer';
 interface JellyfinSession {
     Id: string;
     UserId: string;
-    UserName: string;
+    User名称: string;
     Client: string;
     ApplicationVersion: string;
-    DeviceName: string;
+    Device名称: string;
     DeviceType: string;
     PlayState?: {
         IsPaused: boolean;
@@ -23,12 +23,12 @@ interface JellyfinSession {
     };
     NowPlayingItem?: {
         Id: string;
-        Name: string;
+        名称: string;
         Type: string;
         RunTimeTicks: number;
         ProductionYear?: number;
-        SeriesName?: string;
-        SeasonName?: string;
+        Series名称?: string;
+        Season名称?: string;
         IndexNumber?: number;
         ParentIndexNumber?: number;
         ImageTags?: {
@@ -40,7 +40,7 @@ interface JellyfinSession {
 interface MediaServerWidgetProps {
     config?: {
         clientType?: 'jellyfin' | 'plex' | 'emby';
-        displayName?: string;
+        display名称?: string;
         host?: string;
         port?: string;
         ssl?: boolean;
@@ -51,8 +51,8 @@ interface MediaServerWidgetProps {
     };
     editMode?: boolean;
     id?: string;
-    onEdit?: () => void;
-    onDelete?: () => void;
+    on编辑?: () => void;
+    on删除?: () => void;
     onDuplicate?: () => void;
 }
 
@@ -110,7 +110,7 @@ const getMediaIcon = (type: string) => {
 };
 
 // Get session status icon
-const getStatusIcon = (session: JellyfinSession) => {
+const get状态Icon = (session: JellyfinSession) => {
     if (session.PlayState?.IsPaused) {
         return <Pause sx={{ color: 'white' }} fontSize='small' />;
     }
@@ -121,13 +121,13 @@ const getStatusIcon = (session: JellyfinSession) => {
 const getDisplayTitle = (item: JellyfinSession['NowPlayingItem']): string => {
     if (!item) return '';
 
-    if (item.Type === 'Episode' && item.SeriesName) {
+    if (item.Type === 'Episode' && item.Series名称) {
         const season = item.ParentIndexNumber ? `S${item.ParentIndexNumber}` : '';
         const episode = item.IndexNumber ? `E${item.IndexNumber}` : '';
-        return `${item.SeriesName} ${season}${episode}`;
+        return `${item.Series名称} ${season}${episode}`;
     }
 
-    return item.Name;
+    return item.名称;
 };
 
 interface SessionItemProps {
@@ -139,7 +139,7 @@ interface SessionItemProps {
 const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const displayTitle = getDisplayTitle(session.NowPlayingItem);
-    const subtitle = session.NowPlayingItem?.Type === 'Episode' ? session.NowPlayingItem.Name : '';
+    const subtitle = session.NowPlayingItem?.Type === 'Episode' ? session.NowPlayingItem.名称 : '';
 
     // Construct image URL for Jellyfin
     const getImageUrl = (item: JellyfinSession['NowPlayingItem'], serverConfig: any): string | undefined => {
@@ -233,7 +233,7 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
                             >
                                 {session.PlayState?.IsPaused ? 'Paused' : 'Playing'}
                             </Typography>
-                            {getStatusIcon(session)}
+                            {get状态Icon(session)}
                         </Box>
                     </Box>
 
@@ -258,7 +258,7 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
                             <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'white' }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <Person sx={{ color: 'white', fontSize: '1rem', mr: 0.3 }} />
-                                    <span>{session.UserName}</span>
+                                    <span>{session.User名称}</span>
                                 </Box>
                             </Typography>
                             <Typography
@@ -282,7 +282,7 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
                             {session.NowPlayingItem?.RunTimeTicks && session.PlayState?.PositionTicks ? (
                                 `${formatProgress(session.PlayState.PositionTicks, session.NowPlayingItem.RunTimeTicks)} / ${formatDuration(session.NowPlayingItem.RunTimeTicks)}`
                             ) : (
-                                session.DeviceName
+                                session.Device名称
                             )}
                         </Typography>
                     </Box>
@@ -296,8 +296,8 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
     config,
     editMode = false,
     id,
-    onEdit,
-    onDelete,
+    on编辑,
+    on删除,
     onDuplicate
 }) => {
     const [sessions, setSessions] = useState<JellyfinSession[]>([]);
@@ -411,9 +411,9 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
         };
     }, [config, id, fetchSessions, fetchLibraryStats]);
 
-    const clientName = config?.displayName || (config?.clientType === 'plex' ? 'Plex' : config?.clientType === 'emby' ? 'Emby' : 'Jellyfin');
+    const client名称 = config?.display名称 || (config?.clientType === 'plex' ? 'Plex' : config?.clientType === 'emby' ? 'Emby' : 'Jellyfin');
 
-    // Create base URL for media server web UI
+    // 创建 base URL for media server web UI
     const getBaseUrl = () => {
         if (!config?.host) return '';
 
@@ -450,8 +450,8 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
             <WidgetContainer
                 editMode={editMode}
                 id={id}
-                onEdit={onEdit}
-                onDelete={onDelete}
+                on编辑={on编辑}
+                on删除={on删除}
                 onDuplicate={onDuplicate}
             >
                 <CardContent sx={{
@@ -474,7 +474,7 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
                                 <img
                                     src={`${BACKEND_URL}/icons/${config?.clientType === 'plex' ? 'plex.svg' : config?.clientType === 'emby' ? 'emby.svg' : 'jellyfin.svg'}`}
-                                    alt={clientName}
+                                    alt={client名称}
                                     style={{
                                         width: '24px',
                                         height: '24px',
@@ -482,7 +482,7 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                                     }}
                                 />
                                 <Typography variant='h6' align='center' gutterBottom sx={{ color: 'white', mb: 0 }}>
-                                    {clientName}
+                                    {client名称}
                                 </Typography>
                             </Box>
                         )}
@@ -504,8 +504,8 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
         <WidgetContainer
             editMode={editMode}
             id={id}
-            onEdit={onEdit}
-            onDelete={onDelete}
+            on编辑={on编辑}
+            on删除={on删除}
             onDuplicate={onDuplicate}
         >
             <CardContent sx={{
@@ -539,7 +539,7 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                             >
                                 <img
                                     src={`${BACKEND_URL}/icons/${config?.clientType === 'plex' ? 'plex.svg' : config?.clientType === 'emby' ? 'emby.svg' : 'jellyfin.svg'}`}
-                                    alt={clientName}
+                                    alt={client名称}
                                     style={{
                                         width: '24px',
                                         height: '24px',
@@ -547,7 +547,7 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                                     }}
                                 />
                                 <Typography variant={isMobile ? 'subtitle1' : 'h6'} sx={{ color: 'white' }}>
-                                    {clientName}
+                                    {client名称}
                                 </Typography>
                             </Box>
                         </Box>

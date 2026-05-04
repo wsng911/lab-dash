@@ -1,5 +1,5 @@
-import { Add } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
+import { 添加 } from '@mui/icons-material';
+import 关闭Icon from '@mui/icons-material/关闭';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Avatar, Badge, Button, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -10,24 +10,24 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaHeart, FaInfoCircle, FaSync } from 'react-icons/fa';
+import { Fa编辑, FaHeart, FaInfoCircle, FaSync } from 'react-icons/fa';
 import { FaArrowRightFromBracket, FaGear, FaHouse, FaTrashCan, FaUser } from 'react-icons/fa6';
 import { PiGlobeSimple, PiGlobeSimpleX } from 'react-icons/pi';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { DashApi } from '../../api/dash-api';
 import { useAppContext } from '../../context/useAppContext';
-import { useInternetStatus } from '../../hooks/useInternetStatus';
+import { useInternet状态 } from '../../hooks/useInternet状态';
 import { COLORS, styles } from '../../theme/styles';
 import { theme } from '../../theme/theme';
-import { DashboardItem, ITEM_TYPE } from '../../types';
+import { 仪表盘Item, ITEM_TYPE } from '../../types';
 import { getAppVersion } from '../../utils/version';
-import { AddEditForm } from '../forms/AddEditForm/AddEditForm';
+import { 添加编辑Form } from '../forms/添加编辑Form/添加编辑Form';
 import { Logo } from '../Logo';
 import { CenteredModal } from '../modals/CenteredModal';
 import { UpdateModal } from '../modals/UpdateModal';
 import { VersionModal } from '../modals/VersionModal';
-import { GlobalSearch } from '../search/GlobalSearch';
+import { Global搜索 } from '../search/Global搜索';
 import { ToastManager } from '../toast/ToastManager';
 
 const DrawerHeader = styled('div')(({ theme: muiTheme }) => ({
@@ -48,29 +48,29 @@ type Props = {
 
 export const ResponsiveAppBar = ({ children }: Props) => {
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [openAddModal, setOpenAddModal] = useState(false);
-    const [openEditPageModal, setOpenEditPageModal] = useState(false);
-    const [selectedPageForEdit, setSelectedPageForEdit] = useState<any>(null);
+    const [open添加Modal, setOpen添加Modal] = useState(false);
+    const [open编辑PageModal, setOpen编辑PageModal] = useState(false);
+    const [selectedPageFor编辑, setSelectedPageFor编辑] = useState<any>(null);
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
     const [openVersionModal, setOpenVersionModal] = useState(false);
     const [internetTooltipOpen, setInternetTooltipOpen] = useState(false);
-    const [ipAddress, setIPAddress] = useState<{ wan?: string | null; lan?: string | null } | string | null>(null);
-    const [originalLayoutSnapshot, setOriginalLayoutSnapshot] = useState<DashboardItem[] | null>(null);
+    const [ip添加ress, setIP添加ress] = useState<{ wan?: string | null; lan?: string | null } | string | null>(null);
+    const [originalLayoutSnapshot, setOriginalLayoutSnapshot] = useState<仪表盘Item[] | null>(null);
 
-    const { internetStatus } = useInternetStatus();
+    const { internet状态 } = useInternet状态();
 
     const {
         dashboardLayout,
         saveLayout,
-        refreshDashboard,
+        refresh仪表盘,
         editMode,
-        setEditMode,
+        set编辑Mode,
         config,
         updateConfig,
         isLoggedIn,
         username,
         setIsLoggedIn,
-        setUsername,
+        set用户名,
         isAdmin,
         setIsAdmin,
         updateAvailable,
@@ -91,7 +91,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     const navigate = useNavigate();
     const currentPath = location.pathname;
 
-    // Close internet tooltip when clicking outside
+    // 关闭 internet tooltip when clicking outside
     useEffect(() => {
         const handleClickOutside = () => {
             if (internetTooltipOpen) {
@@ -115,53 +115,53 @@ export const ResponsiveAppBar = ({ children }: Props) => {
 
     // Fetch IP addresses when showIP is enabled
     useEffect(() => {
-        if (showIP && internetStatus === 'online') {
+        if (showIP && internet状态 === 'online') {
             const fetchIPs = async () => {
-                const ips = await DashApi.getIPAddresses();
+                const ips = await DashApi.getIP添加resses();
                 const ipType = config?.ipDisplayType || 'wan';
 
                 if (ipType === 'both') {
-                    setIPAddress({ wan: ips.wan, lan: ips.lan });
+                    setIP添加ress({ wan: ips.wan, lan: ips.lan });
                 } else if (ipType === 'lan') {
-                    setIPAddress(ips.lan);
+                    setIP添加ress(ips.lan);
                 } else {
-                    setIPAddress(ips.wan);
+                    setIP添加ress(ips.wan);
                 }
             };
             fetchIPs();
         } else {
-            setIPAddress(null);
+            setIP添加ress(null);
         }
-    }, [showIP, internetStatus, config?.ipDisplayType]);
+    }, [showIP, internet状态, config?.ipDisplayType]);
 
-    const handleClose = () => setOpenAddModal(false);
-    const handleCloseEditPage = () => {
-        setOpenEditPageModal(false);
-        setSelectedPageForEdit(null);
+    const handle关闭 = () => setOpen添加Modal(false);
+    const handle关闭编辑Page = () => {
+        setOpen编辑PageModal(false);
+        setSelectedPageFor编辑(null);
     };
-    const handleOpenEditPage = (page: any) => {
-        setSelectedPageForEdit(page);
-        setOpenEditPageModal(true);
-        handleCloseDrawer();
+    const handleOpen编辑Page = (page: any) => {
+        setSelectedPageFor编辑(page);
+        setOpen编辑PageModal(true);
+        handle关闭Drawer();
     };
-    const handleCloseUpdateModal = () => setOpenUpdateModal(false);
-    const handleCloseVersionModal = async () => {
+    const handle关闭UpdateModal = () => setOpenUpdateModal(false);
+    const handle关闭VersionModal = async () => {
         setOpenVersionModal(false);
         if (isAdmin && recentlyUpdated) {
             await handleVersionViewed();
         }
     };
 
-    const handleEditCancel = () => {
-        handleCloseDrawer();
-        setEditMode(false);
-        refreshDashboard();
+    const handle编辑取消 = () => {
+        handle关闭Drawer();
+        set编辑Mode(false);
+        refresh仪表盘();
     };
 
-    const handleSave = async () => {
-        handleCloseDrawer();
-        setEditMode(false);
-        setOpenAddModal(false);
+    const handle保存 = async () => {
+        handle关闭Drawer();
+        set编辑Mode(false);
+        setOpen添加Modal(false);
 
         // Only save if there were actual changes made
         if (originalLayoutSnapshot) {
@@ -187,16 +187,16 @@ export const ResponsiveAppBar = ({ children }: Props) => {
         setOpenDrawer(true);
     };
 
-    const handleCloseDrawer = () => {
+    const handle关闭Drawer = () => {
         setOpenDrawer(false);
     };
 
-    const handleMenuClose = () => {
+    const handleMenu关闭 = () => {
         // Menu close logic if needed
     };
 
     const handleLogin = () => {
-        handleMenuClose();
+        handleMenu关闭();
         navigate('/login', { state: { from: location.pathname } });
     };
 
@@ -204,25 +204,25 @@ export const ResponsiveAppBar = ({ children }: Props) => {
         try {
             // Turn off edit mode if it's active
             if (editMode) {
-                setEditMode(false);
+                set编辑Mode(false);
             }
 
             await DashApi.logout();
 
             // Reset all auth-related state variables in the correct order
             setIsAdmin(false);
-            setUsername(null);
+            set用户名(null);
             setIsLoggedIn(false);
 
             localStorage.removeItem('username');
-            handleMenuClose();
+            handleMenu关闭();
 
             // Force refresh dashboard
-            refreshDashboard();
+            refresh仪表盘();
 
             // Navigate to home page
             navigate('/');
-            handleCloseDrawer();
+            handle关闭Drawer();
             ToastManager.success('Logged out');
         } catch (error) {
             console.error('Logout error:', error);
@@ -231,24 +231,24 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     };
 
     const handleProfile = () => {
-        handleMenuClose();
+        handleMenu关闭();
         // Navigate to user profile page if you have one
         // navigate('/profile');
     };
 
     const handleOpenUpdateModal = () => {
         setOpenUpdateModal(true);
-        handleCloseDrawer();
+        handle关闭Drawer();
     };
 
     const handleOpenVersionModal = () => {
         setOpenVersionModal(true);
-        handleCloseDrawer();
+        handle关闭Drawer();
     };
 
-    const handleSetEditMode = (value: boolean) => {
-        setEditMode(value);
-        handleCloseDrawer();
+    const handleSet编辑Mode = (value: boolean) => {
+        set编辑Mode(value);
+        handle关闭Drawer();
 
         if (window.location.pathname.includes('/settings')) {
             navigate('/');
@@ -264,17 +264,17 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     };
 
     const handlePageUpdate = async (updatedItem: any) => {
-        if (!selectedPageForEdit || !config) return;
+        if (!selectedPageFor编辑 || !config) return;
 
         try {
             // Get the new page name and adminOnly from the form data
-            const newPageName = updatedItem.label;
+            const newPage名称 = updatedItem.label;
             const newAdminOnly = updatedItem.adminOnly;
 
             // Update the page in the config
             const updatedPages = pages.map(page =>
-                page.id === selectedPageForEdit.id
-                    ? { ...page, name: newPageName, adminOnly: newAdminOnly }
+                page.id === selectedPageFor编辑.id
+                    ? { ...page, name: newPage名称, adminOnly: newAdminOnly }
                     : page
             );
 
@@ -282,9 +282,9 @@ export const ResponsiveAppBar = ({ children }: Props) => {
             await updateConfig({ pages: updatedPages });
 
             // Refresh the dashboard to reflect changes
-            await refreshDashboard();
+            await refresh仪表盘();
 
-            handleCloseEditPage();
+            handle关闭编辑Page();
             ToastManager.success('Page updated successfully');
         } catch (error) {
             console.error('Error updating page:', error);
@@ -293,8 +293,8 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     };
 
     // Helper function to convert page name to URL slug
-    const pageNameToSlug = (pageName: string): string => {
-        return pageName.toLowerCase().replace(/\s+/g, '-');
+    const page名称ToSlug = (page名称: string): string => {
+        return page名称.toLowerCase().replace(/\s+/g, '-');
     };
 
     return (
@@ -314,7 +314,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
             }}>
                 <Container maxWidth={false} sx={{
                     margin: 0,
-                    padding: { xs: '0 16px', sm: '0 16px' }, // Added padding on mobile
+                    padding: { xs: '0 16px', sm: '0 16px' }, // 添加ed padding on mobile
                     width: '100%',
                     minWidth: '100%',
                     maxWidth: 'none' // Override any max-width constraints
@@ -323,7 +323,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                         justifyContent: 'space-between',
                         width: '100%',
                         minHeight: { xs: 56, sm: 64 }, // Standard AppBar heights
-                        px: 0, // Remove default padding since Container handles it
+                        px: 0, // 移除 default padding since Container handles it
                         // Ensure proper spacing on mobile
                         alignItems: 'center'
                     }}>
@@ -363,7 +363,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                 <Typography
                                     variant='h5'
                                     sx={{
-                                        mr: 0, // Remove right margin to allow more space
+                                        mr: 0, // 移除 right margin to allow more space
                                         flexGrow: 0,
                                         flexShrink: 1,
                                         display: { xs: 'block', md: 'none' },
@@ -385,7 +385,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                         </Link>
                         { !currentPath.includes('/settings') && !currentPath.includes('/login') && !currentPath.includes('/signup') && config?.search &&
                             <Box sx={{ width: '100%', display: { xs: 'none', sm: 'flex' }, justifyContent: 'center', flexGrow: 1 }}>
-                                <GlobalSearch />
+                                <Global搜索 />
                             </Box>
                         }
 
@@ -404,7 +404,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         {/* Done button for sm screens and higher */}
                                         <Button
                                             variant='contained'
-                                            onClick={handleSave}
+                                            onClick={handle保存}
                                             sx={{
                                                 display: { xs: 'none', sm: 'flex' },
                                                 backgroundColor: COLORS.LIGHT_GRAY_TRANSPARENT,
@@ -420,10 +420,10 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         >
                                             Done
                                         </Button>
-                                        {/* Add Item button */}
-                                        <Tooltip title='Add Item' placement='bottom' arrow>
-                                            <IconButton onClick={() => setOpenAddModal(true)}>
-                                                <Add sx={{ color: 'white', fontSize: '2rem' }}/>
+                                        {/* 添加 Item button */}
+                                        <Tooltip title='添加 Item' placement='bottom' arrow>
+                                            <IconButton onClick={() => setOpen添加Modal(true)}>
+                                                <添加 sx={{ color: 'white', fontSize: '2rem' }}/>
                                             </IconButton>
                                         </Tooltip>
                                     </>
@@ -434,28 +434,28 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         title={
                                             <Box>
                                                 <Typography variant='body2' sx={{ textAlign: 'center' }}>
-                                                    {internetStatus === 'online' ? 'Internet Connected' : internetStatus === 'offline' ? 'No Internet Connection' : 'Checking Internet...'}
+                                                    {internet状态 === 'online' ? 'Internet Connected' : internet状态 === 'offline' ? 'No Internet Connection' : 'Checking Internet...'}
                                                 </Typography>
-                                                {showIP && ipAddress && internetStatus === 'online' && (
+                                                {showIP && ip添加ress && internet状态 === 'online' && (
                                                     <Box sx={{ mt: 0.5 }}>
-                                                        {typeof ipAddress === 'object' ? (
+                                                        {typeof ip添加ress === 'object' ? (
                                                             <>
-                                                                {ipAddress.wan && (
+                                                                {ip添加ress.wan && (
                                                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
                                                                         <Typography variant='caption'>WAN:</Typography>
-                                                                        <Typography variant='caption'>{ipAddress.wan}</Typography>
+                                                                        <Typography variant='caption'>{ip添加ress.wan}</Typography>
                                                                     </Box>
                                                                 )}
-                                                                {ipAddress.lan && (
+                                                                {ip添加ress.lan && (
                                                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
                                                                         <Typography variant='caption'>LAN:</Typography>
-                                                                        <Typography variant='caption'>{ipAddress.lan}</Typography>
+                                                                        <Typography variant='caption'>{ip添加ress.lan}</Typography>
                                                                     </Box>
                                                                 )}
                                                             </>
                                                         ) : (
                                                             <Typography variant='caption' sx={{ display: 'block', textAlign: 'right' }}>
-                                                                {(config?.ipDisplayType || 'wan') === 'wan' ? 'WAN: ' : 'LAN: '}{ipAddress}
+                                                                {(config?.ipDisplayType || 'wan') === 'wan' ? 'WAN: ' : 'LAN: '}{ip添加ress}
                                                             </Typography>
                                                         )}
                                                     </Box>
@@ -465,8 +465,8 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         placement='left'
                                         arrow
                                         open={Boolean(internetTooltipOpen)}
-                                        onClose={() => {
-                                            // Add a small delay to prevent immediate closing
+                                        on关闭={() => {
+                                            // 添加 a small delay to prevent immediate closing
                                             setTimeout(() => setInternetTooltipOpen(false), 100);
                                         }}
                                         disableHoverListener
@@ -489,9 +489,9 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                                 setInternetTooltipOpen(!internetTooltipOpen);
                                             }}
                                         >
-                                            {internetStatus === 'online' ? (
+                                            {internet状态 === 'online' ? (
                                                 <PiGlobeSimple style={{ color: 'white', fontSize: '1.7rem' }} />
-                                            ) : internetStatus === 'offline' ? (
+                                            ) : internet状态 === 'offline' ? (
                                                 <PiGlobeSimpleX style={{ color: 'white', fontSize: '1.7rem' }} />
                                             ) : (
                                                 <PiGlobeSimple style={{ color: 'gray', fontSize: '1.7rem' }} />
@@ -549,7 +549,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
 
                             <Drawer
                                 open={openDrawer}
-                                onClose={handleCloseDrawer}
+                                on关闭={handle关闭Drawer}
                                 anchor='right'
                                 sx={{
                                     '& .MuiDrawer-paper': {
@@ -571,8 +571,8 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                     role='presentation'
                                 >
                                     <DrawerHeader>
-                                        <IconButton onClick={handleCloseDrawer}>
-                                            <CloseIcon sx={{ fontSize: 34, color: 'text.primary' }} />
+                                        <IconButton onClick={handle关闭Drawer}>
+                                            <关闭Icon sx={{ fontSize: 34, color: 'text.primary' }} />
                                         </IconButton>
                                     </DrawerHeader>
                                     <Divider />
@@ -583,7 +583,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                             <ListItemButton
                                                 onClick={() => {
                                                     navigate('/');
-                                                    handleCloseDrawer();
+                                                    handle关闭Drawer();
                                                 }}
                                                 sx={{
                                                     backgroundColor: (currentPageId === null || currentPageId === '') ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
@@ -599,13 +599,13 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         {isLoggedIn && isAdmin && (
                                             <ListItem disablePadding>
                                                 <ListItemButton onClick={() => {
-                                                    handleSetEditMode(true);
-                                                    handleCloseDrawer();
+                                                    handleSet编辑Mode(true);
+                                                    handle关闭Drawer();
                                                 }}>
                                                     <ListItemIcon>
-                                                        {<FaEdit style={{ color: theme.palette.text.primary, fontSize: 22 }}/> }
+                                                        {<Fa编辑 style={{ color: theme.palette.text.primary, fontSize: 22 }}/> }
                                                     </ListItemIcon>
-                                                    <ListItemText primary={'Edit Dashboard'} />
+                                                    <ListItemText primary={'编辑 仪表盘'} />
                                                 </ListItemButton>
                                             </ListItem>
                                         )}
@@ -617,9 +617,9 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                                     <ListItem key={page.id} disablePadding>
                                                         <ListItemButton
                                                             onClick={() => {
-                                                                const slug = pageNameToSlug(page.name);
+                                                                const slug = page名称ToSlug(page.name);
                                                                 navigate(`/${slug}`);
-                                                                handleCloseDrawer();
+                                                                handle关闭Drawer();
                                                             }}
                                                             sx={{
                                                                 backgroundColor: currentPageId === page.id ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
@@ -632,11 +632,11 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                                                         size='small'
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
-                                                                            handleOpenEditPage(page);
+                                                                            handleOpen编辑Page(page);
                                                                         }}
                                                                         sx={{ ml: 1 }}
                                                                     >
-                                                                        <FaEdit style={{ fontSize: 18, color: 'white' }} />
+                                                                        <Fa编辑 style={{ fontSize: 18, color: 'white' }} />
                                                                     </IconButton>
                                                                     <IconButton
                                                                         size='small'
@@ -665,13 +665,13 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         <Divider />
 
                                         {isLoggedIn && isAdmin && (
-                                            <NavLink to='/settings' style={{ width: '100%', color: 'white' }} onClick={() => {handleCloseDrawer(); setEditMode(false);}}>
+                                            <NavLink to='/settings' style={{ width: '100%', color: 'white' }} onClick={() => {handle关闭Drawer(); set编辑Mode(false);}}>
                                                 <ListItem disablePadding>
                                                     <ListItemButton>
                                                         <ListItemIcon>
                                                             {<FaGear style={{ color: theme.palette.text.primary, fontSize: 22 }}/> }
                                                         </ListItemIcon>
-                                                        <ListItemText primary={'Settings'} />
+                                                        <ListItemText primary={'设置'} />
                                                     </ListItemButton>
                                                 </ListItem>
                                             </NavLink>
@@ -681,7 +681,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         <ListItem disablePadding>
                                             <ListItemButton
                                                 onClick={() => {
-                                                    handleCloseDrawer();
+                                                    handle关闭Drawer();
                                                     window.open('https://buymeacoffee.com/anthonygress', '_blank', 'noopener,noreferrer');
                                                 }}
                                             >
@@ -787,7 +787,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
 
                                                 {/* Logout Button */}
                                                 <ListItem disablePadding>
-                                                    <ListItemButton onClick={() => {handleCloseDrawer(); handleLogout();}}>
+                                                    <ListItemButton onClick={() => {handle关闭Drawer(); handleLogout();}}>
                                                         <ListItemIcon>
                                                             <FaArrowRightFromBracket style={{ color: theme.palette.text.primary, fontSize: 22 }} />
                                                         </ListItemIcon>
@@ -798,7 +798,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         ) : (
                                             // Login Button for Non-Logged in Users
                                             <ListItem disablePadding>
-                                                <ListItemButton onClick={() => {handleCloseDrawer(); setEditMode(false); handleLogin();}}>
+                                                <ListItemButton onClick={() => {handle关闭Drawer(); set编辑Mode(false); handleLogin();}}>
                                                     <ListItemIcon>
                                                         <FaUser style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
                                                     </ListItemIcon>
@@ -812,35 +812,35 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                         </Box>
                     </Toolbar>
                 </Container>
-                <CenteredModal open={openAddModal} handleClose={handleClose} title='Add Item'>
-                    <AddEditForm handleClose={handleClose}/>
+                <CenteredModal open={open添加Modal} handle关闭={handle关闭} title='添加 Item'>
+                    <添加编辑Form handle关闭={handle关闭}/>
                 </CenteredModal>
-                <CenteredModal open={openEditPageModal} handleClose={handleCloseEditPage} title='Edit Page'>
-                    <AddEditForm
-                        handleClose={handleCloseEditPage}
-                        existingItem={selectedPageForEdit ? {
-                            id: selectedPageForEdit.id,
+                <CenteredModal open={open编辑PageModal} handle关闭={handle关闭编辑Page} title='编辑 Page'>
+                    <添加编辑Form
+                        handle关闭={handle关闭编辑Page}
+                        existingItem={selectedPageFor编辑 ? {
+                            id: selectedPageFor编辑.id,
                             type: ITEM_TYPE.PAGE,
-                            label: selectedPageForEdit.name,
+                            label: selectedPageFor编辑.name,
                             url: '',
                             icon: undefined,
                             config: {},
-                            adminOnly: selectedPageForEdit.adminOnly || false
+                            adminOnly: selectedPageFor编辑.adminOnly || false
                         } : null}
-                        onSubmit={handlePageUpdate}
+                        on提交={handlePageUpdate}
                     />
                 </CenteredModal>
                 {/* Update Modal - Replaced with component */}
                 <UpdateModal
                     open={openUpdateModal}
-                    handleClose={handleCloseUpdateModal}
+                    handle关闭={handle关闭UpdateModal}
                     latestVersion={latestVersion}
                     isAdmin={isAdmin}
                 />
                 {/* Version Modal */}
                 <VersionModal
                     open={openVersionModal}
-                    handleClose={handleCloseVersionModal}
+                    handle关闭={handle关闭VersionModal}
                 />
             </AppBar>
             <Box sx={{
@@ -867,7 +867,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                             px: 3,
                             gap: 2
                         }}>
-                            <Button variant='contained' onClick={handleSave}  sx={{ backgroundColor: COLORS.LIGHT_GRAY_TRANSPARENT, color: 'black', borderRadius: '999px', height: '1.7rem', width: '4.5rem' }}>Done</Button>
+                            <Button variant='contained' onClick={handle保存}  sx={{ backgroundColor: COLORS.LIGHT_GRAY_TRANSPARENT, color: 'black', borderRadius: '999px', height: '1.7rem', width: '4.5rem' }}>Done</Button>
                         </Box>
                         : null
                 }
@@ -879,7 +879,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                         justifyContent: 'center',
                         width: '100%',
                     }} mt={.5}>
-                        <GlobalSearch />
+                        <Global搜索 />
                     </Box>
                 )}
 

@@ -16,12 +16,12 @@ type AdGuardWidgetConfig = {
     host?: string;
     port?: string;
     ssl?: boolean;
-    _hasUsername?: boolean;
-    _hasPassword?: boolean;
+    _has用户名?: boolean;
+    _has密码?: boolean;
     username?: string; // For backward compatibility with existing configs
     password?: string; // For backward compatibility with existing configs
     showLabel?: boolean;
-    displayName?: string;
+    display名称?: string;
 };
 
 type AdGuardStats = {
@@ -54,7 +54,7 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
         // Initialize with a proper check of the config
         if (config) {
             // Check for either security flags OR actual encrypted credentials
-            const hasCredentials = (!!config._hasUsername && !!config._hasPassword) ||
+            const hasCredentials = (!!config._has用户名 && !!config._has密码) ||
                                    (!!config.username && !!config.password);
             return !!config.host && hasCredentials;
         }
@@ -66,10 +66,10 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
         host: config?.host || 'localhost',
         port: config?.port || '3000', // AdGuard Home default web interface port
         ssl: config?.ssl || false,
-        _hasUsername: config?._hasUsername || false,
-        _hasPassword: config?._hasPassword || false,
+        _has用户名: config?._has用户名 || false,
+        _has密码: config?._has密码 || false,
         showLabel: config?.showLabel,
-        displayName: config?.displayName || 'AdGuard Home'
+        display名称: config?.display名称 || 'AdGuard Home'
     });
 
     // State for disable/enable blocking functionality (matching Pi-hole naming)
@@ -80,16 +80,16 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
     const [disableTimer, setDisableTimer] = useState<TimeoutId | null>(null);
     const [remainingTime, setRemainingTime] = useState<string>('');
 
-    // Add a state to track authentication failures
+    // 添加 a state to track authentication failures
     const [authFailed, setAuthFailed] = useState(false);
 
-    // Add a ref to store the refresh interval
+    // 添加 a ref to store the refresh interval
     const refreshIntervalRef = useRef<TimeoutId | null>(null);
 
-    // Add a ref to store the status check interval
+    // 添加 a ref to store the status check interval
     const statusCheckIntervalRef = useRef<TimeoutId | null>(null);
 
-    // Add a ref to track component mounted state to prevent updates after unmount
+    // 添加 a ref to track component mounted state to prevent updates after unmount
     const isMountedRef = useRef<boolean>(true);
 
     // Helper function to get the base URL for navigation
@@ -172,15 +172,15 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                 host: config.host || 'localhost',
                 port: config.port !== undefined ? config.port : (adguardConfig.port || '3000'), // AdGuard Home default web interface port
                 ssl: config.ssl || false,
-                _hasUsername: config._hasUsername || false,
-                _hasPassword: config._hasPassword || false,
+                _has用户名: config._has用户名 || false,
+                _has密码: config._has密码 || false,
                 showLabel: config.showLabel,
-                displayName: config.displayName || 'AdGuard Home'
+                display名称: config.display名称 || 'AdGuard Home'
             };
 
             setAdguardConfig(newConfig);
 
-            const newIsConfigured = !!config.host && (!!config._hasUsername && !!config._hasPassword);
+            const newIsConfigured = !!config.host && (!!config._has用户名 && !!config._has密码);
             setIsConfigured(newIsConfigured);
         }
     }, [config, id]);
@@ -194,7 +194,7 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
             isFirstRender.current = false;
 
             // Force configuration validation on mount
-            const isValid = !!adguardConfig.host && (!!adguardConfig._hasUsername && !!adguardConfig._hasPassword);
+            const isValid = !!adguardConfig.host && (!!adguardConfig._has用户名 && !!adguardConfig._has密码);
             if (isValid !== isConfigured) {
                 setIsConfigured(isValid);
             }
@@ -516,7 +516,7 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                                 }}
                             />
                             <Typography variant='h6' sx={{ mb: 0, fontSize: '1rem', ml: 0.5 }}>
-                                {adguardConfig.displayName}
+                                {adguardConfig.display名称}
                             </Typography>
                         </Box>
                     )}
@@ -548,7 +548,7 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                 <Menu
                     anchorEl={disableMenuAnchor}
                     open={Boolean(disableMenuAnchor)}
-                    onClose={() => setDisableMenuAnchor(null)}
+                    on关闭={() => setDisableMenuAnchor(null)}
                     closeAfterTransition={false}
                 >
                     <MenuItem onClick={() => handleDisableProtection(10)}>10 seconds</MenuItem>

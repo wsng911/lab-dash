@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Grid2 } from '@mui/material';
 import React from 'react';
 
-import { SystemMonitorWidget } from '../../base-items/widgets/SystemMonitorWidget/SystemMonitorWidget';
+import { System监控Widget } from '../../base-items/widgets/System监控Widget/System监控Widget';
 import { WidgetContainer } from '../../base-items/widgets/WidgetContainer';
 
 type Props = {
@@ -14,12 +14,12 @@ type Props = {
         temperatureUnit?: string;
         [key: string]: any;
     };
-    onDelete?: () => void;
-    onEdit?: () => void;
+    on删除?: () => void;
+    on编辑?: () => void;
     onDuplicate?: () => void;
 };
 
-export const SortableSystemMonitorWidget: React.FC<Props> = ({ id, editMode, isOverlay = false, config, onDelete, onEdit, onDuplicate }) => {
+export const SortableSystem监控Widget: React.FC<Props> = ({ id, editMode, isOverlay = false, config, on删除, on编辑, onDuplicate }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     return (
@@ -35,8 +35,8 @@ export const SortableSystemMonitorWidget: React.FC<Props> = ({ id, editMode, isO
                 visibility: isDragging ? 'hidden' : 'visible'
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
-                <SystemMonitorWidget config={config} editMode={editMode} />
+            <WidgetContainer editMode={editMode} id={id} on删除={on删除} on编辑={on编辑} onDuplicate={onDuplicate}>
+                <System监控Widget config={config} editMode={editMode} />
             </WidgetContainer>
         </Grid2>
     );

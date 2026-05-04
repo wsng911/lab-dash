@@ -61,7 +61,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
         showToast(message, 'info', duration);
     };
 
-    const handleClose = (toastId: string) => {
+    const handle关闭 = (toastId: string) => {
         setToasts(prev => prev.filter(toast => toast.id !== toastId));
     };
 
@@ -80,7 +80,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
                     key={toast.id}
                     open={true}
                     autoHideDuration={toast.duration}
-                    onClose={() => handleClose(toast.id)}
+                    on关闭={() => handle关闭(toast.id)}
                     TransitionComponent={SlideTransition}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     sx={{
@@ -97,7 +97,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
                     }}
                 >
                     <Alert
-                        onClose={() => handleClose(toast.id)}
+                        on关闭={() => handle关闭(toast.id)}
                         severity={toast.type}
                         variant='filled'
                         action={toast.action ? (
@@ -106,7 +106,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
                                 size='small'
                                 onClick={() => {
                                     toast.action!.onClick();
-                                    handleClose(toast.id);
+                                    handle关闭(toast.id);
                                 }}
                                 sx={{
                                     color: 'white',

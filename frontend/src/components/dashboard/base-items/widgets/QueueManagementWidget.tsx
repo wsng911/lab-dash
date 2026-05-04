@@ -1,4 +1,4 @@
-import { CheckCircle, Delete, Download, MoreVert, Pause, PlayArrow, Stop, Upload, Warning } from '@mui/icons-material';
+import { CheckCircle, 删除, Download, MoreVert, Pause, PlayArrow, Stop, Upload, Warning } from '@mui/icons-material';
 import { Box, CardContent, IconButton, LinearProgress, Menu, MenuItem, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -61,11 +61,11 @@ export type QueueItem = {
 };
 
 export type QueueManagementWidgetProps = {
-    serviceName: string; // 'Sonarr' or 'Radarr'
+    service名称: string; // 'Sonarr' or 'Radarr'
     isLoading: boolean;
     queueItems: QueueItem[];
     showLabel?: boolean;
-    onRemoveItem?: (itemId: string, removeFromClient: boolean, blocklist: boolean) => Promise<boolean>;
+    on移除Item?: (itemId: string, removeFromClient: boolean, blocklist: boolean) => Promise<boolean>;
     error?: string | null;
     connectionDetails?: {
         host: string;
@@ -108,7 +108,7 @@ const formatEta = (eta: number): string => {
 };
 
 // Get status icon based on queue item state
-const getStatusIcon = (state: string) => {
+const get状态Icon = (state: string) => {
     switch (state) {
     case 'downloading': return <Download sx={{ color: 'white' }} fontSize='small' />;
     case 'uploading':
@@ -131,7 +131,7 @@ const getStatusIcon = (state: string) => {
 };
 
 // Format status text for tooltip display
-const formatStatusText = (state: string): string => {
+const format状态Text = (state: string): string => {
     switch (state) {
     case 'downloading': return 'Downloading';
     case 'uploading': return 'Uploading';
@@ -155,12 +155,12 @@ const formatStatusText = (state: string): string => {
 
 interface QueueItemComponentProps {
     item: QueueItem;
-    serviceName: string;
+    service名称: string;
     isAdmin: boolean;
-    onRemove?: (itemId: string, removeFromClient: boolean, blocklist: boolean) => Promise<boolean>;
+    on移除?: (itemId: string, removeFromClient: boolean, blocklist: boolean) => Promise<boolean>;
 }
 
-const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceName, isAdmin, onRemove }) => {
+const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, service名称, isAdmin, on移除 }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -172,28 +172,28 @@ const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceNa
         setMenuOpen(true);
     };
 
-    const handleMenuClose = () => {
+    const handleMenu关闭 = () => {
         setMenuAnchorEl(null);
         setMenuOpen(false);
     };
 
-    const handleRemove = async (removeFromClient: boolean, blocklist: boolean) => {
-        if (onRemove) {
-            handleMenuClose();
+    const handle移除 = async (removeFromClient: boolean, blocklist: boolean) => {
+        if (on移除) {
+            handleMenu关闭();
 
             const actionText = blocklist ? 'blocklist and remove' : 'remove';
             const clientText = removeFromClient ? 'and remove from download client' : 'but keep in download client';
 
-            PopupManager.deleteConfirmation({
+            PopupManager.delete确认ation({
                 title: `${actionText.charAt(0).toUpperCase() + actionText.slice(1)}?`,
-                text: `This will ${actionText} the item from ${serviceName} ${clientText}.`,
+                text: `This will ${actionText} the item from ${service名称} ${clientText}.`,
                 confirmText: actionText.charAt(0).toUpperCase() + actionText.slice(1),
                 confirmAction: async () => {
                     setIsActionLoading(true);
                     try {
-                        await onRemove(item.id.toString(), removeFromClient, blocklist);
+                        await on移除(item.id.toString(), removeFromClient, blocklist);
                     } catch (error) {
-                        console.error(`Failed to remove ${serviceName} queue item:`, error);
+                        console.error(`Failed to remove ${service名称} queue item:`, error);
                     } finally {
                         setIsActionLoading(false);
                     }
@@ -203,7 +203,7 @@ const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceNa
     };
 
     // Show menu button only if admin and actions are available and not in edit mode
-    const showMenuButton = isAdmin && !editMode && onRemove;
+    const showMenuButton = isAdmin && !editMode && on移除;
 
     return (
         <Box sx={{
@@ -221,13 +221,13 @@ const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceNa
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <Tooltip
-                    title={formatStatusText(item.state)}
+                    title={format状态Text(item.state)}
                     placement='top'
                     enterDelay={500}
                     arrow
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {getStatusIcon(item.state)}
+                        {get状态Icon(item.state)}
                     </Box>
                 </Tooltip>
                 <Tooltip
@@ -275,28 +275,28 @@ const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceNa
                 <Menu
                     anchorEl={menuAnchorEl}
                     open={menuOpen}
-                    onClose={handleMenuClose}
+                    on关闭={handleMenu关闭}
                 >
                     <MenuItem
-                        onClick={() => handleRemove(true, false)}
+                        onClick={() => handle移除(true, false)}
                         sx={{ fontSize: '0.9rem', py: 1 }}
                     >
-                        <Delete fontSize='small' sx={{ mr: 1 }} />
-                        Remove from Queue
+                        <删除 fontSize='small' sx={{ mr: 1 }} />
+                        移除 from Queue
                     </MenuItem>
                     <MenuItem
-                        onClick={() => handleRemove(false, false)}
+                        onClick={() => handle移除(false, false)}
                         sx={{ fontSize: '0.9rem', py: 1 }}
                     >
-                        <Delete fontSize='small' sx={{ mr: 1 }} />
-                        Remove (Keep in Client)
+                        <删除 fontSize='small' sx={{ mr: 1 }} />
+                        移除 (Keep in Client)
                     </MenuItem>
                     <MenuItem
-                        onClick={() => handleRemove(true, true)}
+                        onClick={() => handle移除(true, true)}
                         sx={{ fontSize: '0.9rem', py: 1, color: theme.palette.error.main }}
                     >
-                        <Delete fontSize='small' sx={{ mr: 1 }} />
-                        Blocklist & Remove
+                        <删除 fontSize='small' sx={{ mr: 1 }} />
+                        Blocklist & 移除
                     </MenuItem>
                 </Menu>
             </Box>
@@ -335,11 +335,11 @@ const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceNa
 };
 
 export const QueueManagementWidget: React.FC<QueueManagementWidgetProps> = ({
-    serviceName,
+    service名称,
     isLoading,
     queueItems,
     showLabel,
-    onRemoveItem,
+    on移除Item,
     error,
     connectionDetails,
     statistics
@@ -367,14 +367,14 @@ export const QueueManagementWidget: React.FC<QueueManagementWidgetProps> = ({
     };
 
     const getServiceIcon = () => {
-        const iconName = serviceName.toLowerCase();
+        const icon名称 = service名称.toLowerCase();
         // Map service names to their actual icon filenames
         const iconMap: { [key: string]: string } = {
             'sonarr': 'sonarr.svg',
             'radarr': 'radarr-light.svg' // Using dark variant for better visibility
         };
 
-        const iconFile = iconMap[iconName] || `${iconName}.svg`;
+        const iconFile = iconMap[icon名称] || `${icon名称}.svg`;
         return `${BACKEND_URL}/icons/${iconFile}`;
     };
 
@@ -410,7 +410,7 @@ export const QueueManagementWidget: React.FC<QueueManagementWidgetProps> = ({
                         >
                             <img
                                 src={getServiceIcon()}
-                                alt={serviceName}
+                                alt={service名称}
                                 style={{
                                     width: '24px',
                                     height: '24px',
@@ -422,7 +422,7 @@ export const QueueManagementWidget: React.FC<QueueManagementWidgetProps> = ({
                                 }}
                             />
                             <Typography variant={isMobile ? 'subtitle1' : 'h6'} sx={{ color: 'white' }}>
-                                {serviceName}
+                                {service名称}
                             </Typography>
                         </Box>
                     </Box>
@@ -500,9 +500,9 @@ export const QueueManagementWidget: React.FC<QueueManagementWidgetProps> = ({
                                     <QueueItemComponent
                                         key={`${item.id}-${item.hash}`}
                                         item={item}
-                                        serviceName={serviceName}
+                                        service名称={service名称}
                                         isAdmin={isAdmin}
-                                        onRemove={onRemoveItem}
+                                        on移除={on移除Item}
                                     />
                                 ))}
                             </Box>
@@ -514,10 +514,10 @@ export const QueueManagementWidget: React.FC<QueueManagementWidgetProps> = ({
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
                                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                         <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', mb: 0.5 }}>
-                                            {serviceName === 'Sonarr' ? 'Total TV Shows:' : 'Total Movies:'}
+                                            {service名称 === 'Sonarr' ? 'Total TV Shows:' : 'Total Movies:'}
                                         </Typography>
                                         <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary' }}>
-                                            Monitored:
+                                            监控ed:
                                         </Typography>
                                     </Box>
 

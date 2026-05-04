@@ -36,9 +36,9 @@ const getBaseUrl = (req: Request): string => {
     
     // Clean the host to remove any protocol prefix
     let host = connectionInfo.host || 'localhost';
-    // Remove http:// or https:// if present
+    // 移除 http:// or https:// if present
     host = host.replace(/^https?:\/\//, '');
-    // Remove any trailing slashes
+    // 移除 any trailing slashes
     host = host.replace(/\/+$/, '');
     
     const port = connectionInfo.port || '9091';
@@ -109,16 +109,16 @@ async function getTransmissionSessionId(baseUrl: string, username?: string, pass
 async function authenticateTransmission(baseUrl: string, username?: string, password?: string): Promise<string | null> {
     try {
         // Handle encrypted password
-        let decryptedPassword = password;
+        let decrypted密码 = password;
         if (password && isEncrypted(password)) {
-            decryptedPassword = decrypt(password);
-            if (!decryptedPassword) {
+            decrypted密码 = decrypt(password);
+            if (!decrypted密码) {
                 console.error('Transmission password decryption failed');
                 return null;
             }
         }
 
-        return await getTransmissionSessionId(baseUrl, username, decryptedPassword);
+        return await getTransmissionSessionId(baseUrl, username, decrypted密码);
     } catch (error) {
         console.error('Transmission authentication error:', error);
         return null;
@@ -145,16 +145,16 @@ async function ensureValidSession(req: Request): Promise<string | null> {
     // If no session exists or session expired, create new one
     if (!session || session.expires < Date.now()) {
         // Treat empty strings as undefined for Transmission
-        const cleanUsername = credentials.username && credentials.username.trim() !== '' ? credentials.username : undefined;
-        const cleanPassword = credentials.password && credentials.password.trim() !== '' ? credentials.password : undefined;
+        const clean用户名 = credentials.username && credentials.username.trim() !== '' ? credentials.username : undefined;
+        const clean密码 = credentials.password && credentials.password.trim() !== '' ? credentials.password : undefined;
 
-        const sessionId = await authenticateTransmission(baseUrl, cleanUsername, cleanPassword);
+        const sessionId = await authenticateTransmission(baseUrl, clean用户名, clean密码);
         if (sessionId) {
             sessions[sessionKey] = {
                 sessionId,
                 expires: Date.now() + SESSION_LIFETIME,
-                username: cleanUsername,
-                password: cleanPassword
+                username: clean用户名,
+                password: clean密码
             };
             return sessionId;
         }
@@ -175,17 +175,17 @@ async function makeTransmissionRequest(
     sessionKey?: string
 ): Promise<any> {
     // Handle encrypted password
-    let decryptedPassword = password;
+    let decrypted密码 = password;
     if (password && isEncrypted(password)) {
-        decryptedPassword = decrypt(password);
-        if (!decryptedPassword) {
+        decrypted密码 = decrypt(password);
+        if (!decrypted密码) {
             console.error('Transmission password decryption failed');
-            decryptedPassword = undefined;
+            decrypted密码 = undefined;
         }
     }
 
-    const authHeader = username && decryptedPassword ? {
-        'Authorization': `Basic ${Buffer.from(`${username}:${decryptedPassword}`).toString('base64')}`
+    const authHeader = username && decrypted密码 ? {
+        'Authorization': `Basic ${Buffer.from(`${username}:${decrypted密码}`).toString('base64')}`
     } : {};
 
     try {
@@ -244,10 +244,10 @@ transmissionRoute.post('/login', async (req: Request, res: Response) => {
         const password = connectionInfo.password;
 
         // For Transmission, credentials are optional
-        let decryptedPassword = password;
+        let decrypted密码 = password;
         if (password && isEncrypted(password)) {
-            decryptedPassword = decrypt(password);
-            if (!decryptedPassword) {
+            decrypted密码 = decrypt(password);
+            if (!decrypted密码) {
                 res.status(400).json({
                     error: 'Failed to decrypt password. It may have been encrypted with a different key. Please update your credentials.'
                 });
@@ -255,7 +255,7 @@ transmissionRoute.post('/login', async (req: Request, res: Response) => {
             }
         }
 
-        const sessionId = await authenticateTransmission(baseUrl, username, decryptedPassword);
+        const sessionId = await authenticateTransmission(baseUrl, username, decrypted密码);
 
         if (sessionId) {
             // Store session
@@ -284,20 +284,20 @@ transmissionRoute.post('/encrypt-password', authenticateToken, async (req: Reque
         const { password } = req.body;
 
         if (!password) {
-            res.status(400).json({ error: 'Password is required' });
+            res.status(400).json({ error: '密码 is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(password)) {
-            res.status(200).json({ encryptedPassword: password });
+            res.status(200).json({ encrypted密码: password });
             return;
         }
 
-        const encryptedPassword = encrypt(password);
-        res.status(200).json({ encryptedPassword });
+        const encrypted密码 = encrypt(password);
+        res.status(200).json({ encrypted密码 });
     } catch (error) {
-        console.error('Password encryption error:', error);
+        console.error('密码 encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt password' });
     }
 });
@@ -546,7 +546,7 @@ transmissionRoute.post('/torrents/stop', authenticateToken, async (req: Request,
     }
 });
 
-// Delete torrent(s)
+// 删除 torrent(s)
 transmissionRoute.post('/torrents/delete', authenticateToken, async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);

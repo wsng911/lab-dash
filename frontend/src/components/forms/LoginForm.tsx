@@ -17,7 +17,7 @@ type FormValues = {
 export const LoginForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { setIsLoggedIn, setUsername, setIsAdmin, refreshDashboard } = useAppContext();
+    const { setIsLoggedIn, set用户名, setIsAdmin, refresh仪表盘 } = useAppContext();
 
     const formContext = useForm<FormValues>({
         defaultValues: {
@@ -26,12 +26,12 @@ export const LoginForm = () => {
         }
     });
 
-    const handleSubmit = async (data: FormValues) => {
+    const handle提交 = async (data: FormValues) => {
         try {
             const response = await DashApi.login(data.username, data.password);
 
             // Update auth state in context - do this in sequence to avoid race conditions
-            setUsername(data.username);
+            set用户名(data.username);
 
             // Get admin status directly from the response
             if (response.isAdmin !== undefined) {
@@ -42,7 +42,7 @@ export const LoginForm = () => {
             setIsLoggedIn(true);
 
             // Refresh dashboard to load admin-only items if user is admin
-            await refreshDashboard();
+            await refresh仪表盘();
 
             // Show success toast and navigate back to previous page or home
             ToastManager.success('Login successful!');
@@ -57,7 +57,7 @@ export const LoginForm = () => {
     };
 
     return (
-        <FormContainer onSuccess={handleSubmit} formContext={formContext}>
+        <FormContainer onSuccess={handle提交} formContext={formContext}>
             <Box sx={styles.vcenter} gap={3}>
                 <Box pt={2} textAlign={'center'}>
                     <Typography variant='h4'>Login</Typography>
@@ -66,11 +66,11 @@ export const LoginForm = () => {
                     <Box width={'100%'} sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <TextFieldElement
                             name='username'
-                            label='Username'
+                            label='用户名'
                             variant='outlined'
                             sx={{ width: { xs: '80%', md: '40%' } }}
                             required
-                            placeholder='Username'
+                            placeholder='用户名'
                             slotProps={{
                                 input: {
                                     startAdornment: (
@@ -87,11 +87,11 @@ export const LoginForm = () => {
                 <Box width={'100%'} sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <TextFieldElement
                         name='password'
-                        label='Password'
+                        label='密码'
                         variant='outlined'
                         sx={{ width: { xs: '80%', md: '40%' } }}
                         type='password'
-                        placeholder='Password'
+                        placeholder='密码'
                         required
                         slotProps={{
                             input: {

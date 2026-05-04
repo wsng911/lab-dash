@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 
 import { DashApi } from '../api/dash-api';
 
-export const useInternetStatus = () => {
-    const [internetStatus, setInternetStatus] = useState<'online' | 'offline' | 'checking'>('checking');
+export const useInternet状态 = () => {
+    const [internet状态, setInternet状态] = useState<'online' | 'offline' | 'checking'>('checking');
 
     const checkInternetConnectivity = async () => {
         try {
-            setInternetStatus('checking');
+            setInternet状态('checking');
             const status = await DashApi.checkInternetConnectivity();
-            setInternetStatus(status);
+            setInternet状态(status);
         } catch (error) {
             console.error('Error checking internet connectivity:', error);
-            setInternetStatus('offline');
+            setInternet状态('offline');
         }
     };
 
@@ -30,5 +30,5 @@ export const useInternetStatus = () => {
         };
     }, []);
 
-    return { internetStatus, checkInternetConnectivity };
+    return { internet状态, checkInternetConnectivity };
 };

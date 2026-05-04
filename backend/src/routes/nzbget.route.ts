@@ -35,9 +35,9 @@ const getBaseUrl = (req: Request): string => {
 
     // Clean the host to remove any protocol prefix
     let host = connectionInfo.host || 'localhost';
-    // Remove http:// or https:// if present
+    // 移除 http:// or https:// if present
     host = host.replace(/^https?:\/\//, '');
-    // Remove any trailing slashes
+    // 移除 any trailing slashes
     host = host.replace(/\/+$/, '');
 
     const port = connectionInfo.port || '6789';
@@ -62,17 +62,17 @@ function getCredentials(req: Request): { username?: string; password?: string } 
 async function testNZBGetConnection(baseUrl: string, username?: string, password?: string): Promise<boolean> {
     try {
         // Handle encrypted password
-        let decryptedPassword = password;
+        let decrypted密码 = password;
         if (password && isEncrypted(password)) {
-            decryptedPassword = decrypt(password);
-            if (!decryptedPassword) {
+            decrypted密码 = decrypt(password);
+            if (!decrypted密码) {
                 console.error('NZBGet password decryption failed');
                 return false;
             }
         }
 
-        const authHeader = username && decryptedPassword ? {
-            'Authorization': `Basic ${Buffer.from(`${username}:${decryptedPassword}`).toString('base64')}`
+        const authHeader = username && decrypted密码 ? {
+            'Authorization': `Basic ${Buffer.from(`${username}:${decrypted密码}`).toString('base64')}`
         } : {};
 
         const response = await axios.post(baseUrl, {
@@ -97,17 +97,17 @@ async function testNZBGetConnection(baseUrl: string, username?: string, password
 // Make JSON-RPC request to NZBGet
 async function makeNZBGetRequest(baseUrl: string, method: string, params?: any[], username?: string, password?: string): Promise<any> {
     // Handle encrypted password
-    let decryptedPassword = password;
+    let decrypted密码 = password;
     if (password && isEncrypted(password)) {
-        decryptedPassword = decrypt(password);
-        if (!decryptedPassword) {
+        decrypted密码 = decrypt(password);
+        if (!decrypted密码) {
             console.error('NZBGet password decryption failed');
-            decryptedPassword = undefined;
+            decrypted密码 = undefined;
         }
     }
 
-    const authHeader = username && decryptedPassword ? {
-        'Authorization': `Basic ${Buffer.from(`${username}:${decryptedPassword}`).toString('base64')}`
+    const authHeader = username && decrypted密码 ? {
+        'Authorization': `Basic ${Buffer.from(`${username}:${decrypted密码}`).toString('base64')}`
     } : {};
 
     const response = await axios.post(baseUrl, {
@@ -139,17 +139,17 @@ async function ensureValidSession(req: Request): Promise<{ username?: string; pa
 
     // If no session exists or session expired, create new one
     if (!session || session.expires < Date.now()) {
-        const cleanUsername = credentials.username && credentials.username.trim() !== '' ? credentials.username : undefined;
-        const cleanPassword = credentials.password && credentials.password.trim() !== '' ? credentials.password : undefined;
+        const clean用户名 = credentials.username && credentials.username.trim() !== '' ? credentials.username : undefined;
+        const clean密码 = credentials.password && credentials.password.trim() !== '' ? credentials.password : undefined;
 
-        const isValid = await testNZBGetConnection(baseUrl, cleanUsername, cleanPassword);
+        const isValid = await testNZBGetConnection(baseUrl, clean用户名, clean密码);
         if (isValid) {
             sessions[sessionKey] = {
-                username: cleanUsername || '',
-                password: cleanPassword || '',
+                username: clean用户名 || '',
+                password: clean密码 || '',
                 expires: Date.now() + SESSION_LIFETIME
             };
-            return { username: cleanUsername, password: cleanPassword };
+            return { username: clean用户名, password: clean密码 };
         }
         return null;
     }
@@ -168,10 +168,10 @@ nzbgetRoute.post('/login', async (req: Request, res: Response) => {
         const password = connectionInfo.password;
 
         // Handle encrypted password
-        let decryptedPassword = password;
+        let decrypted密码 = password;
         if (password && isEncrypted(password)) {
-            decryptedPassword = decrypt(password);
-            if (!decryptedPassword) {
+            decrypted密码 = decrypt(password);
+            if (!decrypted密码) {
                 res.status(400).json({
                     error: 'Failed to decrypt password. It may have been encrypted with a different key. Please update your credentials.'
                 });
@@ -179,7 +179,7 @@ nzbgetRoute.post('/login', async (req: Request, res: Response) => {
             }
         }
 
-        const isValid = await testNZBGetConnection(baseUrl, username, decryptedPassword);
+        const isValid = await testNZBGetConnection(baseUrl, username, decrypted密码);
 
         if (isValid) {
             // Store session
@@ -207,20 +207,20 @@ nzbgetRoute.post('/encrypt-password', authenticateToken, async (req: Request, re
         const { password } = req.body;
 
         if (!password) {
-            res.status(400).json({ error: 'Password is required' });
+            res.status(400).json({ error: '密码 is required' });
             return;
         }
 
         // Don't re-encrypt if already encrypted
         if (isEncrypted(password)) {
-            res.status(200).json({ encryptedPassword: password });
+            res.status(200).json({ encrypted密码: password });
             return;
         }
 
-        const encryptedPassword = encrypt(password);
-        res.status(200).json({ encryptedPassword });
+        const encrypted密码 = encrypt(password);
+        res.status(200).json({ encrypted密码 });
     } catch (error) {
-        console.error('Password encryption error:', error);
+        console.error('密码 encryption error:', error);
         res.status(500).json({ error: 'Failed to encrypt password' });
     }
 });
@@ -267,7 +267,7 @@ nzbgetRoute.get('/stats', async (req: Request, res: Response) => {
             const monthlyBytes = status.DownloadedSizeMB ? status.DownloadedSizeMB * 1024 * 1024 : 0;
 
             // Count downloads by status
-            const failedCount = history.filter((item: any) => item.Status === 'FAILURE' || item.Status === 'WARNING').length;
+            const failedCount = history.filter((item: any) => item.状态 === 'FAILURE' || item.状态 === 'WARNING').length;
 
             const stats = {
                 downloadSpeed: downloadSpeed,
@@ -346,24 +346,24 @@ nzbgetRoute.get('/downloads', async (req: Request, res: Response) => {
 
                 // Map NZBGet status to common format
                 let state = 'unknown';
-                if (item.Status === 'PAUSED') {
+                if (item.状态 === 'PAUSED') {
                     state = 'paused';
-                } else if (item.Status === 'DOWNLOADING') {
+                } else if (item.状态 === 'DOWNLOADING') {
                     state = 'downloading';
-                } else if (item.Status === 'QUEUED') {
+                } else if (item.状态 === 'QUEUED') {
                     state = 'queued';
-                } else if (item.Status === 'FETCHING') {
+                } else if (item.状态 === 'FETCHING') {
                     state = 'downloading';
                 }
 
                 // NZBGet typically downloads one item at a time
                 // Only show download speed for the first item in "DOWNLOADING" state
-                const isActiveDownload = index === 0 && (item.Status === 'DOWNLOADING' || item.Status === 'FETCHING');
+                const isActiveDownload = index === 0 && (item.状态 === 'DOWNLOADING' || item.状态 === 'FETCHING');
                 const downloadSpeed = isActiveDownload ? globalDownloadSpeed : 0;
 
                 return {
                     hash: String(item.NZBID), // Use NZBID as hash
-                    name: item.NZBName || 'Unknown',
+                    name: item.NZB名称 || 'Unknown',
                     state: state,
                     progress: Math.max(0, Math.min(1, progress)),
                     size: totalSize,
@@ -406,7 +406,7 @@ nzbgetRoute.post('/pause', async (req: Request, res: Response) => {
 
         if (nzbId) {
             // Pause specific download using editqueue with GroupPause action
-            // NZBGet editqueue method signature: editqueue(Command, Offset, EditText, IDList)
+            // NZBGet editqueue method signature: editqueue(Command, Offset, 编辑Text, IDList)
             // For GroupPause, we need: "GroupPause", 0, "", [nzbId]
             const idList = [parseInt(nzbId)];
             const result = await makeNZBGetRequest(baseUrl, 'editqueue', ['GroupPause', 0, '', idList], auth.username, auth.password);
@@ -444,7 +444,7 @@ nzbgetRoute.post('/resume', async (req: Request, res: Response) => {
 
         if (nzbId) {
             // Resume specific download using editqueue with GroupResume action
-            // NZBGet editqueue method signature: editqueue(Command, Offset, EditText, IDList)
+            // NZBGet editqueue method signature: editqueue(Command, Offset, 编辑Text, IDList)
             // For GroupResume, we need: "GroupResume", 0, "", [nzbId]
             const idList = [parseInt(nzbId)];
             const result = await makeNZBGetRequest(baseUrl, 'editqueue', ['GroupResume', 0, '', idList], auth.username, auth.password);
@@ -467,7 +467,7 @@ nzbgetRoute.post('/resume', async (req: Request, res: Response) => {
     }
 });
 
-// Delete download
+// 删除 download
 nzbgetRoute.delete('/delete/:nzbId', async (req: Request, res: Response) => {
     try {
         const baseUrl = getBaseUrl(req);
@@ -481,13 +481,13 @@ nzbgetRoute.delete('/delete/:nzbId', async (req: Request, res: Response) => {
         const { nzbId } = req.params;
         const deleteFiles = req.query.deleteFiles === 'true';
 
-        // Delete the download
+        // 删除 the download
         // historydelete removes from history and optionally from disk
         const nzbIdNum = typeof nzbId === 'string' ? parseInt(nzbId) : parseInt(nzbId[0]);
         await makeNZBGetRequest(
             baseUrl,
             'editqueue',
-            ['GroupDelete', 0, '', [nzbIdNum]],
+            ['Group删除', 0, '', [nzbIdNum]],
             auth.username,
             auth.password
         );

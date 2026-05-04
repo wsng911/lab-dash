@@ -5,7 +5,7 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 const MEDIA_SERVER_OPTIONS = [
     { id: 'jellyfin', label: 'Jellyfin' },
@@ -50,11 +50,11 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
             }
 
             // Set default display name if there's no existing name value (for new widgets)
-            const currentName = formContext.getValues('mediaServerName');
-            if (!currentName || currentName === '') {
-                const defaultName = watchedMediaServerType === 'plex' ? 'Plex' :
+            const current名称 = formContext.getValues('mediaServer名称');
+            if (!current名称 || current名称 === '') {
+                const default名称 = watchedMediaServerType === 'plex' ? 'Plex' :
                     watchedMediaServerType === 'emby' ? 'Emby' : 'Jellyfin';
-                formContext.setValue('mediaServerName', defaultName);
+                formContext.setValue('mediaServer名称', default名称);
             }
         }
     }, [watchedMediaServerType, formContext]);
@@ -82,9 +82,9 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                             formContext.setValue('mediaServerType', newType);
 
                             // Update display name based on selected type
-                            const displayName = newType === 'plex' ? 'Plex' :
+                            const display名称 = newType === 'plex' ? 'Plex' :
                                 newType === 'emby' ? 'Emby' : 'Jellyfin';
-                            formContext.setValue('mediaServerName', displayName);
+                            formContext.setValue('mediaServer名称', display名称);
                         }}
                         sx={{
                             flexDirection: 'row',
@@ -117,8 +117,8 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
 
             <Grid>
                 <TextFieldElement
-                    label='Display Name'
-                    name='mediaServerName'
+                    label='Display 名称'
+                    name='mediaServer名称'
                     fullWidth
                     sx={textFieldStyling}
                     slotProps={{
@@ -172,7 +172,7 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                     slotProps={{
                         inputLabel: { style: { color: theme.palette.text.primary } }
                     }}
-                    helperText='Generate in Jellyfin: Dashboard > API Keys'
+                    helperText='Generate in Jellyfin: 仪表盘 > API Keys'
                     rules={{
                         required: 'API Key is required',
                         validate: (value: string) => {

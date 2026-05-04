@@ -20,10 +20,10 @@ import shortid from 'shortid';
 import { SortableNzbget } from './sortable-items/widgets/SortableNzbget';
 import { SortableSabnzbd } from './sortable-items/widgets/SortableSabnzbd';
 import { useAppContext } from '../../context/useAppContext';
-import { DashboardItem, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE, TORRENT_CLIENT_TYPE } from '../../types';
-import { AddEditForm } from '../forms/AddEditForm/AddEditForm';
+import { 仪表盘Item, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE, TORRENT_CLIENT_TYPE } from '../../types';
+import { 添加编辑Form } from '../forms/添加编辑Form/添加编辑Form';
 import { CenteredModal } from '../modals/CenteredModal';
-import { ConfirmationOptions, PopupManager } from '../modals/PopupManager';
+import { 确认ationOptions, PopupManager } from '../modals/PopupManager';
 import { ToastManager } from '../toast/ToastManager';
 import { BlankAppShortcut } from './base-items/apps/BlankAppShortcut';
 import { BlankWidget } from './base-items/widgets/BlankWidget';
@@ -31,7 +31,7 @@ import { SortableAppShortcut } from './sortable-items/apps/SortableAppShortcut';
 import { SortableAdGuard } from './sortable-items/widgets/SortableAdGuard';
 import { SortableDateTimeWidget } from './sortable-items/widgets/SortableDateTime';
 import { SortableDeluge } from './sortable-items/widgets/SortableDeluge';
-import { SortableDiskMonitor } from './sortable-items/widgets/SortableDiskMonitor';
+import { SortableDisk监控 } from './sortable-items/widgets/SortableDisk监控';
 import { SortableDualWidget } from './sortable-items/widgets/SortableDualWidget';
 import { SortableGroupWidget } from './sortable-items/widgets/SortableGroupWidget';
 import { SortableMediaRequestManager } from './sortable-items/widgets/SortableMediaRequestManager';
@@ -41,7 +41,7 @@ import { SortablePihole } from './sortable-items/widgets/SortablePihole';
 import { SortableQBittorrent } from './sortable-items/widgets/SortableQBittorrent';
 import { SortableRadarr } from './sortable-items/widgets/SortableRadarr';
 import { SortableSonarr } from './sortable-items/widgets/SortableSonarr';
-import { SortableSystemMonitorWidget } from './sortable-items/widgets/SortableSystemMonitor';
+import { SortableSystem监控Widget } from './sortable-items/widgets/SortableSystem监控';
 import { SortableTransmission } from './sortable-items/widgets/SortableTransmission';
 import { SortableWeatherWidget } from './sortable-items/widgets/SortableWeather';
 import { theme } from '../../theme/theme';
@@ -63,7 +63,7 @@ const customCollisionDetection = (args: any) => {
     if (isAppShortcutType) {
 
         // Check ALL containers, not just groups, and apply generous detection to group-like containers
-        const allIntersections = args.droppableContainers.map((container: any) => {
+        const allIntersections = args.droppable容器.map((container: any) => {
             const activeRect = args.active.rect.current.translated || args.active.rect.current.initial;
             const containerRect = container.rect.current;
 
@@ -117,7 +117,7 @@ const customCollisionDetection = (args: any) => {
                     activeCenterY >= expandedRect.y &&
                     activeCenterY <= expandedRect.y + expandedRect.height;
 
-                // Create normalized rect objects for intersection calculation
+                // 创建 normalized rect objects for intersection calculation
                 const normalizedActiveRect = {
                     x: activeX,
                     y: activeY,
@@ -170,7 +170,7 @@ const customCollisionDetection = (args: any) => {
     // but exclude group-internal droppable containers to prevent interference
     if (isGroupWidgetType) {
         // Filter out group-internal containers that shouldn't be targets for group reordering
-        const filteredContainers = args.droppableContainers.filter((container: any) => {
+        const filtered容器 = args.droppable容器.filter((container: any) => {
             const containerId = container.id.toString();
             // Exclude group-internal droppable containers
             return !containerId.includes('group-droppable') &&
@@ -182,13 +182,13 @@ const customCollisionDetection = (args: any) => {
         // Use closestCenter with filtered containers for group widget reordering
         return closestCenter({
             ...args,
-            droppableContainers: filteredContainers
+            droppable容器: filtered容器
         });
     }
 
     // For all other widget types (non-app-shortcuts, non-group-widgets)
     // Filter out group-internal containers to ensure proper collision with group widgets
-    const filteredContainers = args.droppableContainers.filter((container: any) => {
+    const filtered容器 = args.droppable容器.filter((container: any) => {
         const containerId = container.id.toString();
         // Exclude group-internal droppable containers that shouldn't interfere with widget reordering
         return !containerId.includes('group-droppable') &&
@@ -200,7 +200,7 @@ const customCollisionDetection = (args: any) => {
     // Use closestCorners with filtered containers for better collision detection
     return closestCorners({
         ...args,
-        droppableContainers: filteredContainers
+        droppable容器: filtered容器
     });
 };
 
@@ -211,12 +211,12 @@ function getIntersectionArea(rect1: any, rect2: any) {
     return xOverlap * yOverlap;
 }
 
-export const DashboardGrid: React.FC = () => {
+export const 仪表盘Grid: React.FC = () => {
     const [activeId, setActiveId] = useState<string | null>(null);
     const [activeData, setActiveData] = useState<any>(null);
-    const [selectedItem, setSelectedItem] = useState<DashboardItem | null>(null);
-    const [openEditModal, setOpenEditModal] = useState(false);
-    const { dashboardLayout, setDashboardLayout, refreshDashboard, editMode, isAdmin, isLoggedIn, saveLayout } = useAppContext();
+    const [selectedItem, setSelectedItem] = useState<仪表盘Item | null>(null);
+    const [open编辑Modal, setOpen编辑Modal] = useState(false);
+    const { dashboardLayout, set仪表盘Layout, refresh仪表盘, editMode, isAdmin, isLoggedIn, saveLayout } = useAppContext();
     const isMed = useMediaQuery(theme.breakpoints.down('md'));
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [dragPlaceholder, setDragPlaceholder] = useState<{
@@ -237,19 +237,19 @@ export const DashboardGrid: React.FC = () => {
         }
     }, [dashboardLayout, isAdmin, isLoggedIn]);
 
-    const prevAuthStatus = useRef({ isLoggedIn, isAdmin });
+    const prevAuth状态 = useRef({ isLoggedIn, isAdmin });
 
     useEffect(() => {
         // Only refresh if login status or admin status has actually changed
-        if (prevAuthStatus.current.isLoggedIn !== isLoggedIn ||
-            prevAuthStatus.current.isAdmin !== isAdmin) {
+        if (prevAuth状态.current.isLoggedIn !== isLoggedIn ||
+            prevAuth状态.current.isAdmin !== isAdmin) {
 
-            refreshDashboard();
+            refresh仪表盘();
 
             // Update ref with current values
-            prevAuthStatus.current = { isLoggedIn, isAdmin };
+            prevAuth状态.current = { isLoggedIn, isAdmin };
         }
-    }, [isLoggedIn, isAdmin, refreshDashboard]);
+    }, [isLoggedIn, isAdmin, refresh仪表盘]);
 
     const isMobile = useMemo(() => {
         return (
@@ -397,7 +397,7 @@ export const DashboardGrid: React.FC = () => {
             }
             // Handle regular reordering
             else if (active.id !== over.id) {
-                setDashboardLayout((prev) => {
+                set仪表盘Layout((prev) => {
                     const oldIndex = prev.findIndex((item) => item.id === active.id);
                     const newIndex = prev.findIndex((item) => item.id === over.id);
 
@@ -438,33 +438,33 @@ export const DashboardGrid: React.FC = () => {
         dispatchDndKitEvent('inactive', {});
     };
 
-    const handleDelete = (id: string) => {
-        const itemToDelete = dashboardLayout.find(item => item.id === id);
-        const itemName = itemToDelete?.label || itemToDelete?.config?.displayName || 'Item';
+    const handle删除 = (id: string) => {
+        const itemTo删除 = dashboardLayout.find(item => item.id === id);
+        const item名称 = itemTo删除?.label || itemTo删除?.config?.display名称 || 'Item';
 
-        const options: ConfirmationOptions = {
-            title: 'Delete Item?',
+        const options: 确认ationOptions = {
+            title: '删除 Item?',
             confirmAction: async () => {
                 const updatedLayout = dashboardLayout.filter((item) => item.id !== id);
-                setDashboardLayout(updatedLayout);
+                set仪表盘Layout(updatedLayout);
                 saveLayout(updatedLayout);
 
                 // Show success toast
-                ToastManager.success(`${itemName} deleted successfully`);
+                ToastManager.success(`${item名称} deleted successfully`);
             }
         };
 
-        PopupManager.deleteConfirmation(options);
+        PopupManager.delete确认ation(options);
     };
 
-    const handleEdit = (item: DashboardItem) => {
+    const handle编辑 = (item: 仪表盘Item) => {
         setSelectedItem(item);
-        setOpenEditModal(true);
+        setOpen编辑Modal(true);
     };
 
-    const handleDuplicate = async (item: DashboardItem) => {
+    const handleDuplicate = async (item: 仪表盘Item) => {
         // Deep clone the item
-        const duplicatedItem: DashboardItem = JSON.parse(JSON.stringify(item));
+        const duplicatedItem: 仪表盘Item = JSON.parse(JSON.stringify(item));
 
         // Generate a new unique ID for the main item
         const newItemId = shortid.generate();
@@ -480,19 +480,19 @@ export const DashboardGrid: React.FC = () => {
             if (config._hasApiToken) {
                 preservedConfig._hasApiToken = true;
             }
-            if (config._hasPassword) {
-                preservedConfig._hasPassword = true;
+            if (config._has密码) {
+                preservedConfig._has密码 = true;
             }
 
             // Preserve AdGuard Home sensitive data flags
-            if (config._hasUsername) {
-                preservedConfig._hasUsername = true;
+            if (config._has用户名) {
+                preservedConfig._has用户名 = true;
             }
 
             return preservedConfig;
         };
 
-        // Add duplication metadata to help backend copy credentials
+        // 添加 duplication metadata to help backend copy credentials
         if (duplicatedItem.config) {
             duplicatedItem.config._duplicatedFrom = item.id;
         } else {
@@ -536,15 +536,15 @@ export const DashboardGrid: React.FC = () => {
         updatedLayout.splice(index + 1, 0, duplicatedItem);
 
         // Update the dashboard
-        setDashboardLayout(updatedLayout);
+        set仪表盘Layout(updatedLayout);
 
-        // Save layout and refresh config to ensure backend processing is complete
+        // 保存 layout and refresh config to ensure backend processing is complete
         await saveLayout(updatedLayout);
 
         // Refresh the dashboard to get the updated config with processed credentials
-        await refreshDashboard();
+        await refresh仪表盘();
 
-        // Add a longer delay to ensure config propagates to all widgets and backend processing is complete
+        // 添加 a longer delay to ensure config propagates to all widgets and backend processing is complete
         await new Promise(resolve => setTimeout(resolve, 500));
     };
 
@@ -629,8 +629,8 @@ export const DashboardGrid: React.FC = () => {
             id: item.id,
             editMode,
             config: item.config,
-            onDelete: () => handleDelete(item.id),
-            onEdit: () => handleEdit(item),
+            on删除: () => handle删除(item.id),
+            on编辑: () => handle编辑(item),
             onDuplicate: () => handleDuplicate(item),
             ...(isOverlay && { isOverlay })
         };
@@ -676,17 +676,17 @@ export const DashboardGrid: React.FC = () => {
     const renderItem = (item: any) => {
         switch (item.type) {
         case ITEM_TYPE.WEATHER_WIDGET:
-            return <SortableWeatherWidget key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)}/>;
+            return <SortableWeatherWidget key={item.id} id={item.id} editMode={editMode} config={item.config} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)}/>;
         case ITEM_TYPE.DATE_TIME_WIDGET:
-            return <SortableDateTimeWidget key={item.id} id={item.id} editMode={editMode} config={createDateTimeConfig(item.config)} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)}/>;
+            return <SortableDateTimeWidget key={item.id} id={item.id} editMode={editMode} config={createDateTimeConfig(item.config)} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)}/>;
         case ITEM_TYPE.SYSTEM_MONITOR_WIDGET:
-            return <SortableSystemMonitorWidget key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)}/>;
+            return <SortableSystem监控Widget key={item.id} id={item.id} editMode={editMode} config={item.config} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)}/>;
         case ITEM_TYPE.DISK_MONITOR_WIDGET:
-            return <SortableDiskMonitor key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
+            return <SortableDisk监控 key={item.id} id={item.id} editMode={editMode} config={item.config} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.PIHOLE_WIDGET:
-            return <SortablePihole key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)}/>;
+            return <SortablePihole key={item.id} id={item.id} editMode={editMode} config={item.config} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)}/>;
         case ITEM_TYPE.ADGUARD_WIDGET:
-            return <SortableAdGuard key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)}/>;
+            return <SortableAdGuard key={item.id} id={item.id} editMode={editMode} config={item.config} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)}/>;
         case ITEM_TYPE.DOWNLOAD_CLIENT:
             return renderDownloadClient(item);
         case ITEM_TYPE.TORRENT_CLIENT:
@@ -702,8 +702,8 @@ export const DashboardGrid: React.FC = () => {
                 id={item.id}
                 editMode={editMode}
                 config={dualWidgetConfig}
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleEdit(item)}
+                on删除={() => handle删除(item.id)}
+                on编辑={() => handle编辑(item)}
                 onDuplicate={() => handleDuplicate(item)}
             />;
         }
@@ -714,8 +714,8 @@ export const DashboardGrid: React.FC = () => {
                 editMode={editMode}
                 label={item.label}
                 config={item.config}
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleEdit(item)}
+                on删除={() => handle删除(item.id)}
+                on编辑={() => handle编辑(item)}
                 onDuplicate={() => handleDuplicate(item)}
             />;
         case ITEM_TYPE.MEDIA_SERVER_WIDGET:
@@ -724,8 +724,8 @@ export const DashboardGrid: React.FC = () => {
                 id={item.id}
                 editMode={editMode}
                 config={item.config}
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleEdit(item)}
+                on删除={() => handle删除(item.id)}
+                on编辑={() => handle编辑(item)}
                 onDuplicate={() => handleDuplicate(item)}
             />;
         case ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET:
@@ -734,8 +734,8 @@ export const DashboardGrid: React.FC = () => {
                 id={item.id}
                 editMode={editMode}
                 config={item.config}
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleEdit(item)}
+                on删除={() => handle删除(item.id)}
+                on编辑={() => handle编辑(item)}
                 onDuplicate={() => handleDuplicate(item)}
             />;
         case ITEM_TYPE.NOTES_WIDGET:
@@ -744,8 +744,8 @@ export const DashboardGrid: React.FC = () => {
                 id={item.id}
                 editMode={editMode}
                 config={item.config}
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleEdit(item)}
+                on删除={() => handle删除(item.id)}
+                on编辑={() => handle编辑(item)}
                 onDuplicate={() => handleDuplicate(item)}
             />;
         case ITEM_TYPE.SONARR_WIDGET:
@@ -754,8 +754,8 @@ export const DashboardGrid: React.FC = () => {
                 id={item.id}
                 editMode={editMode}
                 config={item.config}
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleEdit(item)}
+                on删除={() => handle删除(item.id)}
+                on编辑={() => handle编辑(item)}
                 onDuplicate={() => handleDuplicate(item)}
             />;
         case ITEM_TYPE.RADARR_WIDGET:
@@ -764,8 +764,8 @@ export const DashboardGrid: React.FC = () => {
                 id={item.id}
                 editMode={editMode}
                 config={item.config}
-                onDelete={() => handleDelete(item.id)}
-                onEdit={() => handleEdit(item)}
+                on删除={() => handle删除(item.id)}
+                on编辑={() => handle编辑(item)}
                 onDuplicate={() => handleDuplicate(item)}
             />;
         case ITEM_TYPE.APP_SHORTCUT:
@@ -775,21 +775,21 @@ export const DashboardGrid: React.FC = () => {
                     id={item.id}
                     url={item.url}
                     name={item.label}
-                    iconName={item.icon?.path || ''}
+                    icon名称={item.icon?.path || ''}
                     editMode={editMode}
-                    onDelete={() => handleDelete(item.id)}
-                    onEdit={() => handleEdit(item)}
+                    on删除={() => handle删除(item.id)}
+                    on编辑={() => handle编辑(item)}
                     onDuplicate={() => handleDuplicate(item)}
                     showLabel={item.showLabel}
                     config={item.config}
                 />
             );
         case ITEM_TYPE.BLANK_APP:
-            return <BlankAppShortcut key={item.id} id={item.id} editMode={editMode} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
+            return <BlankAppShortcut key={item.id} id={item.id} editMode={editMode} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.BLANK_ROW:
-            return <BlankWidget key={item.id} id={item.id} label={item.label} editMode={editMode} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} row/>;
+            return <BlankWidget key={item.id} id={item.id} label={item.label} editMode={editMode} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)} row/>;
         default:
-            return <BlankWidget key={item.id} id={item.id} label={item.label} editMode={editMode} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
+            return <BlankWidget key={item.id} id={item.id} label={item.label} editMode={editMode} on删除={() => handle删除(item.id)} on编辑={() => handle编辑(item)} onDuplicate={() => handleDuplicate(item)} />;
         }
     };
 
@@ -802,7 +802,7 @@ export const DashboardGrid: React.FC = () => {
         const healthCheckType = placeholder.item?.healthCheckType;
         const isWol = placeholder.item?.isWol;
 
-        // Create a more complete config object based on available item properties
+        // 创建 a more complete config object based on available item properties
         const config: any = {};
 
         if (healthUrl) {
@@ -812,8 +812,8 @@ export const DashboardGrid: React.FC = () => {
 
         if (isWol) {
             config.isWol = isWol;
-            config.macAddress = placeholder.item?.macAddress;
-            config.broadcastAddress = placeholder.item?.broadcastAddress;
+            config.mac添加ress = placeholder.item?.mac添加ress;
+            config.broadcast添加ress = placeholder.item?.broadcast添加ress;
             config.port = placeholder.item?.port;
         }
 
@@ -823,7 +823,7 @@ export const DashboardGrid: React.FC = () => {
                 id='preview-placeholder'
                 url={url}
                 name={name}
-                iconName={icon}
+                icon名称={icon}
                 editMode={false}
                 showLabel={true}
                 config={config}
@@ -880,7 +880,7 @@ export const DashboardGrid: React.FC = () => {
                                 id={activeId}
                                 url={activeData.originalItem?.url}
                                 name={activeData.originalItem?.name || 'App'}
-                                iconName={activeData.originalItem?.icon || ''}
+                                icon名称={activeData.originalItem?.icon || ''}
                                 editMode={editMode}
                                 isOverlay
                                 showLabel={true}
@@ -894,7 +894,7 @@ export const DashboardGrid: React.FC = () => {
                                     case ITEM_TYPE.WEATHER_WIDGET:
                                         return <SortableWeatherWidget key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay/>;
                                     case ITEM_TYPE.DATE_TIME_WIDGET: {
-                                        // Create a properly typed config for DateTimeWidget
+                                        // 创建 a properly typed config for DateTimeWidget
                                         const dateTimeConfig = {
                                             location: item.config?.location || null,
                                             timezone: item.config?.timezone || undefined
@@ -902,9 +902,9 @@ export const DashboardGrid: React.FC = () => {
                                         return <SortableDateTimeWidget key={item.id} id={item.id} editMode={editMode} config={dateTimeConfig} isOverlay/>;
                                     }
                                     case ITEM_TYPE.SYSTEM_MONITOR_WIDGET:
-                                        return <SortableSystemMonitorWidget key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay/>;
+                                        return <SortableSystem监控Widget key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay/>;
                                     case ITEM_TYPE.DISK_MONITOR_WIDGET:
-                                        return <SortableDiskMonitor key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
+                                        return <SortableDisk监控 key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.PIHOLE_WIDGET:
                                         return <SortablePihole key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay/>;
                                     case ITEM_TYPE.ADGUARD_WIDGET:
@@ -982,7 +982,7 @@ export const DashboardGrid: React.FC = () => {
                                                 id={item.id}
                                                 url={item.url}
                                                 name={item.label}
-                                                iconName={item.icon?.path || ''}
+                                                icon名称={item.icon?.path || ''}
                                                 editMode={editMode}
                                                 isOverlay
                                                 showLabel={item.showLabel}
@@ -1004,8 +1004,8 @@ export const DashboardGrid: React.FC = () => {
                 </DragOverlay>
             </DndContext>
 
-            <CenteredModal open={openEditModal} handleClose={() => setOpenEditModal(false)} title='Edit Item'>
-                <AddEditForm handleClose={() => setOpenEditModal(false)} existingItem={selectedItem}/>
+            <CenteredModal open={open编辑Modal} handle关闭={() => setOpen编辑Modal(false)} title='编辑 Item'>
+                <添加编辑Form handle关闭={() => setOpen编辑Modal(false)} existingItem={selectedItem}/>
             </CenteredModal>
         </>
     );

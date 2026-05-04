@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { StatusCodes } from 'http-status-codes';
+import { 状态Codes } from 'http-status-codes';
 import shortid from 'shortid';
 
 import { BACKEND_URL } from '../constants/constants';
-import { Config, DashboardItem, Icon, UploadImageResponse } from '../types';
+import { Config, 仪表盘Item, Icon, UploadImageResponse } from '../types';
 import { type BulkIconResponse, type BulkWidgetResponse, type CacheClearResponse, type CacheStatsResponse } from '../types/bulk-loading';
 import { GroupItem } from '../types/group';
 
@@ -91,7 +91,7 @@ export class DashApi {
         }
     }
 
-    // Create an axios instance interceptor
+    // 创建 an axios instance interceptor
     public static setupAxiosInterceptors(): void {
         // Set withCredentials globally for all API requests
         axios.defaults.withCredentials = true;
@@ -114,7 +114,7 @@ export class DashApi {
 
                 // Only handle 401 errors for our own auth system, not external services
                 // Check if this is a 401 from our backend API
-                const isOurBackendApi = originalRequest.url?.includes(BACKEND_URL);
+                const isOur返回endApi = originalRequest.url?.includes(BACKEND_URL);
 
                 // List of external service routes that proxy to other applications. These should NOT trigger a logout if they return 401/403
                 const isExternalServiceRoute = originalRequest.url?.includes('/api/pihole') ||
@@ -141,7 +141,7 @@ export class DashApi {
                 // 5. It's NOT from an auth route (to prevent infinite loops)
                 if (error.response?.status === 401 &&
                     !originalRequest._retry &&
-                    isOurBackendApi &&
+                    isOur返回endApi &&
                     !isExternalServiceRoute &&
                     !isAuthRoute) {
 
@@ -202,12 +202,12 @@ export class DashApi {
     }
 
     // Bulk load all icons used in the dashboard
-    public static async getAllActiveIcons(items: DashboardItem[]): Promise<{ [key: string]: string }> {
+    public static async getAllActiveIcons(items: 仪表盘Item[]): Promise<{ [key: string]: string }> {
         try {
             // Extract all icon paths from dashboard items
             const iconPaths = new Set<string>();
 
-            const extractIconPaths = (dashboardItems: DashboardItem[]) => {
+            const extractIconPaths = (dashboardItems: 仪表盘Item[]) => {
                 dashboardItems.forEach(item => {
                     // Extract icon from the main item
                     if (item.icon?.path) {
@@ -253,7 +253,7 @@ export class DashApi {
     }
 
     // Bulk load initial widget data for faster startup
-    public static async getBulkWidgetData(items: DashboardItem[]): Promise<{ [key: string]: any }> {
+    public static async getBulkWidgetData(items: 仪表盘Item[]): Promise<{ [key: string]: any }> {
         try {
             // Extract widget configurations that need initial data
             const widgetConfigs = items
@@ -299,7 +299,7 @@ export class DashApi {
                 withCredentials: true
             });
 
-            // Create a URL for the blob
+            // 创建 a URL for the blob
             const url = window.URL.createObjectURL(new Blob([response.data]));
 
             // Get the filename from headers if available, or use default
@@ -313,7 +313,7 @@ export class DashApi {
                 }
             }
 
-            // Create a link element to trigger the download
+            // 创建 a link element to trigger the download
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', filename);
@@ -366,7 +366,7 @@ export class DashApi {
         const res = await axios.get(`${BACKEND_URL}/api/system`, {
             params: networkInterface ? { networkInterface } : undefined
         });
-        if (res.status === StatusCodes.OK) {
+        if (res.status === 状态Codes.OK) {
             return res.data;
         }
         return null;
@@ -403,7 +403,7 @@ export class DashApi {
         }
     }
 
-    public static async getSonarrStatus(itemId: string): Promise<any> {
+    public static async getSonarr状态(itemId: string): Promise<any> {
         try {
             const res = await axios.get(`${BACKEND_URL}/api/sonarr/status`, {
                 params: { itemId },
@@ -429,7 +429,7 @@ export class DashApi {
         }
     }
 
-    public static async refreshSonarrMonitoredDownloads(itemId: string): Promise<any> {
+    public static async refreshSonarr监控edDownloads(itemId: string): Promise<any> {
         try {
             const res = await axios.post(`${BACKEND_URL}/api/sonarr/refresh-monitored-downloads`, {}, {
                 params: { itemId },
@@ -473,7 +473,7 @@ export class DashApi {
         }
     }
 
-    public static async getRadarrStatus(itemId: string): Promise<any> {
+    public static async getRadarr状态(itemId: string): Promise<any> {
         try {
             const res = await axios.get(`${BACKEND_URL}/api/radarr/status`, {
                 params: { itemId },
@@ -499,7 +499,7 @@ export class DashApi {
         }
     }
 
-    public static async refreshRadarrMonitoredDownloads(itemId: string): Promise<any> {
+    public static async refreshRadarr监控edDownloads(itemId: string): Promise<any> {
         try {
             const res = await axios.post(`${BACKEND_URL}/api/radarr/refresh-monitored-downloads`, {}, {
                 params: { itemId },
@@ -520,7 +520,7 @@ export class DashApi {
                     longitude
                 },
                 timeout: 8000, // 8 second timeout
-                signal: abortSignal // Add abort signal support
+                signal: abortSignal // 添加 abort signal support
             });
             return res.data;
         } catch (error: any) {
@@ -605,7 +605,7 @@ export class DashApi {
                 params: { url: '8.8.8.8', type: 'ping' },
                 // Don't send credentials for health checks to avoid auth issues
                 withCredentials: false,
-                // Add timeout to prevent long-running requests
+                // 添加 timeout to prevent long-running requests
                 timeout: 10000
             });
             return res.data.status;
@@ -615,7 +615,7 @@ export class DashApi {
         }
     }
 
-    public static async getIPAddresses(): Promise<{ wan: string | null; lan: string | null }> {
+    public static async getIP添加resses(): Promise<{ wan: string | null; lan: string | null }> {
         try {
             const res = await axios.get(`${BACKEND_URL}/api/health/ip`, {
                 withCredentials: false,
@@ -628,7 +628,7 @@ export class DashApi {
         }
     }
 
-    public static async uploadBackgroundImage(file: File): Promise<UploadImageResponse | null> {
+    public static async upload返回groundImage(file: File): Promise<UploadImageResponse | null> {
         try {
             const formData = new FormData();
             formData.append('file', file);
@@ -650,7 +650,7 @@ export class DashApi {
         }
     }
 
-    public static async cleanBackgroundImages(): Promise<boolean> {
+    public static async clean返回groundImages(): Promise<boolean> {
         try {
             await axios.post(`${BACKEND_URL}/api/system/clean-background`);
             return true;
@@ -751,7 +751,7 @@ export class DashApi {
                 data: { imagePath },
                 withCredentials: true
             });
-            return res.status === StatusCodes.OK;
+            return res.status === 状态Codes.OK;
         } catch (error) {
             console.error('Error deleting uploaded image:', error);
             return false;
@@ -770,7 +770,7 @@ export class DashApi {
         }
     }
 
-    // Add this after the existing methods in the DashApi class
+    // 添加 this after the existing methods in the DashApi class
     public static async checkIsAdmin(): Promise<boolean> {
         try {
             // Make a dedicated API call to check admin status
@@ -788,7 +788,7 @@ export class DashApi {
         try {
             const res = await axios.post(`${BACKEND_URL}/api/auth/refresh`, {}, {
                 withCredentials: true,
-                // Add a timeout to prevent hanging requests
+                // 添加 a timeout to prevent hanging requests
                 timeout: 5000
             });
 
@@ -872,7 +872,7 @@ export class DashApi {
      * @param password The password to encrypt
      * @returns The encrypted password or the original if encryption fails
      */
-    public static async encryptPassword(password: string): Promise<string> {
+    public static async encrypt密码(password: string): Promise<string> {
         if (!password) return '';
 
         try {
@@ -882,7 +882,7 @@ export class DashApi {
                 { withCredentials: true }
             );
 
-            return response.data.encryptedPassword;
+            return response.data.encrypted密码;
         } catch (error) {
             console.error('Failed to encrypt password:', error);
             return password; // Return the original password if encryption fails
@@ -930,8 +930,8 @@ export class DashApi {
 
     public static async qbittorrentStartTorrent(hash: string, itemId: string): Promise<boolean> {
         try {
-            // Create a URLSearchParams object for form data
-            const formData = new URLSearchParams();
+            // 创建 a URL搜索Params object for form data
+            const formData = new URL搜索Params();
             formData.append('hashes', hash);
 
             const response = await axios.post(
@@ -955,8 +955,8 @@ export class DashApi {
 
     public static async qbittorrentStopTorrent(hash: string, itemId: string): Promise<boolean> {
         try {
-            // Create a URLSearchParams object for form data
-            const formData = new URLSearchParams();
+            // 创建 a URL搜索Params object for form data
+            const formData = new URL搜索Params();
             formData.append('hashes', hash);
 
             const response = await axios.post(
@@ -978,10 +978,10 @@ export class DashApi {
         }
     }
 
-    public static async qbittorrentDeleteTorrent(hash: string, deleteFiles: boolean = false, itemId: string): Promise<boolean> {
+    public static async qbittorrent删除Torrent(hash: string, deleteFiles: boolean = false, itemId: string): Promise<boolean> {
         try {
-            // Create a URLSearchParams object for form data
-            const formData = new URLSearchParams();
+            // 创建 a URL搜索Params object for form data
+            const formData = new URL搜索Params();
             formData.append('hashes', hash);
             formData.append('deleteFiles', deleteFiles ? 'true' : 'false');
 
@@ -1093,7 +1093,7 @@ export class DashApi {
         }
     }
 
-    public static async delugeDeleteTorrent(hash: string, deleteFiles: boolean = false, itemId: string): Promise<boolean> {
+    public static async deluge删除Torrent(hash: string, deleteFiles: boolean = false, itemId: string): Promise<boolean> {
         try {
             await axios.post(`${BACKEND_URL}/api/deluge/torrents/delete`,
                 {
@@ -1203,7 +1203,7 @@ export class DashApi {
         }
     }
 
-    public static async transmissionDeleteTorrent(id: string, deleteFiles: boolean = false, itemId: string): Promise<boolean> {
+    public static async transmission删除Torrent(id: string, deleteFiles: boolean = false, itemId: string): Promise<boolean> {
         try {
             const response = await axios.post(
                 `${BACKEND_URL}/api/transmission/torrents/delete`,
@@ -1255,28 +1255,28 @@ export class DashApi {
             return null;
         };
 
-        // Search in main desktop layout
+        // 搜索 in main desktop layout
         let foundItem = searchInLayout(config.layout?.desktop || []);
         if (foundItem) {
             return this.determineRouteFromItem(foundItem);
         }
 
-        // Search in main mobile layout
+        // 搜索 in main mobile layout
         foundItem = searchInLayout(config.layout?.mobile || []);
         if (foundItem) {
             return this.determineRouteFromItem(foundItem);
         }
 
-        // Search in pages if they exist
+        // 搜索 in pages if they exist
         if (config.pages) {
             for (const page of config.pages) {
-                // Search in page desktop layout
+                // 搜索 in page desktop layout
                 foundItem = searchInLayout(page.layout?.desktop || []);
                 if (foundItem) {
                     return this.determineRouteFromItem(foundItem);
                 }
 
-                // Search in page mobile layout
+                // 搜索 in page mobile layout
                 foundItem = searchInLayout(page.layout?.mobile || []);
                 if (foundItem) {
                     return this.determineRouteFromItem(foundItem);
@@ -1330,28 +1330,28 @@ export class DashApi {
                 return null;
             };
 
-            // Search in main desktop layout
+            // 搜索 in main desktop layout
             let foundItem = searchInLayout(config.layout?.desktop || []);
             if (foundItem) {
                 return this.determineRouteFromItem(foundItem);
             }
 
-            // Search in main mobile layout
+            // 搜索 in main mobile layout
             foundItem = searchInLayout(config.layout?.mobile || []);
             if (foundItem) {
                 return this.determineRouteFromItem(foundItem);
             }
 
-            // Search in pages if they exist
+            // 搜索 in pages if they exist
             if (config.pages) {
                 for (const page of config.pages) {
-                    // Search in page desktop layout
+                    // 搜索 in page desktop layout
                     foundItem = searchInLayout(page.layout?.desktop || []);
                     if (foundItem) {
                         return this.determineRouteFromItem(foundItem);
                     }
 
-                    // Search in page mobile layout
+                    // 搜索 in page mobile layout
                     foundItem = searchInLayout(page.layout?.mobile || []);
                     if (foundItem) {
                         return this.determineRouteFromItem(foundItem);
@@ -1373,10 +1373,10 @@ export class DashApi {
         // Determine route based on security flags (since actual credentials are not sent to frontend)
         // If password flag exists (with or without apiToken flag), use v6
         // If only apiToken flag exists, use v5
-        const hasPassword = !!itemConfig._hasPassword;
+        const has密码 = !!itemConfig._has密码;
         const hasApiToken = !!itemConfig._hasApiToken;
 
-        if (hasPassword) {
+        if (has密码) {
             return { route: 'pihole/v6', isV6: true };
         } else if (hasApiToken) {
             return { route: 'pihole', isV6: false };
@@ -1441,7 +1441,7 @@ export class DashApi {
                 console.error('Pi-hole authentication failed:', error.response.data);
                 const errorMsg = error.response.data?.error || 'Authentication failed';
                 const err = new Error(errorMsg);
-                // Add response property so the component can check status code
+                // 添加 response property so the component can check status code
                 (err as any).response = error.response;
                 throw err;
             }
@@ -1454,7 +1454,7 @@ export class DashApi {
                 stack: error.stack
             });
 
-            // Add more specific error messages for common issues
+            // 添加 more specific error messages for common issues
             if (error.message?.includes('ECONNREFUSED')) {
                 throw new Error('Connection refused. Please check if Pi-hole is running at the specified host and port.');
             } else if (error.message?.includes('timeout')) {
@@ -1523,7 +1523,7 @@ export class DashApi {
                 console.error('Pi-hole authentication failed:', error.response.data);
                 const errorMsg = error.response.data?.error || 'Authentication failed';
                 const err = new Error(errorMsg);
-                // Add response property so the component can check status code
+                // 添加 response property so the component can check status code
                 (err as any).response = error.response;
                 throw err;
             }
@@ -1536,7 +1536,7 @@ export class DashApi {
                 stack: error.stack
             });
 
-            // Add more specific error messages for common issues
+            // 添加 more specific error messages for common issues
             if (error.message?.includes('ECONNREFUSED')) {
                 throw new Error('Connection refused. Please check if Pi-hole is running at the specified host and port.');
             } else if (error.message?.includes('timeout')) {
@@ -1563,7 +1563,7 @@ export class DashApi {
         }
     }
 
-    public static async encryptPiholePassword(password: string, itemId?: string): Promise<string> {
+    public static async encryptPihole密码(password: string, itemId?: string): Promise<string> {
         try {
             let route = 'pihole'; // Default to v5
 
@@ -1582,7 +1582,7 @@ export class DashApi {
                 { password },
                 { withCredentials: true }
             );
-            return res.data.encryptedPassword;
+            return res.data.encrypted密码;
         } catch (error) {
             console.error('Failed to encrypt Pi-hole password:', error);
             throw error;
@@ -1614,7 +1614,7 @@ export class DashApi {
             if (error.response?.data?.code) {
                 console.error(`Pi-hole disable error (${error.response.data.code}):`, error.response.data);
 
-                // Create a custom error that won't trigger global auth interceptors
+                // 创建 a custom error that won't trigger global auth interceptors
                 const piError = new Error(error.response.data.error || 'Failed to disable Pi-hole');
                 (piError as any).response = {
                     status: 400,  // Use 400 instead of 401 to avoid global auth interceptor
@@ -1656,7 +1656,7 @@ export class DashApi {
             if (error.response?.data?.code) {
                 console.error(`Pi-hole disable error (${error.response.data.code}):`, error.response.data);
 
-                // Create a custom error that won't trigger global auth interceptors
+                // 创建 a custom error that won't trigger global auth interceptors
                 const piError = new Error(error.response.data.error || 'Failed to disable Pi-hole');
                 (piError as any).response = {
                     status: 400,  // Use 400 instead of 401 to avoid global auth interceptor
@@ -1692,7 +1692,7 @@ export class DashApi {
             if (error.response?.data?.code) {
                 console.error(`Pi-hole enable error (${error.response.data.code}):`, error.response.data);
 
-                // Create a custom error that won't trigger global auth interceptors
+                // 创建 a custom error that won't trigger global auth interceptors
                 const piError = new Error(error.response.data.error || 'Failed to enable Pi-hole');
                 (piError as any).response = {
                     status: 400,  // Use 400 instead of 401 to avoid global auth interceptor
@@ -1728,7 +1728,7 @@ export class DashApi {
             if (error.response?.data?.code) {
                 console.error(`Pi-hole enable error (${error.response.data.code}):`, error.response.data);
 
-                // Create a custom error that won't trigger global auth interceptors
+                // 创建 a custom error that won't trigger global auth interceptors
                 const piError = new Error(error.response.data.error || 'Failed to enable Pi-hole');
                 (piError as any).response = {
                     status: 400,  // Use 400 instead of 401 to avoid global auth interceptor
@@ -1745,7 +1745,7 @@ export class DashApi {
         }
     }
 
-    public static async getPiholeBlockingStatusWithConfig(itemId: string, config: any): Promise<any> {
+    public static async getPiholeBlocking状态WithConfig(itemId: string, config: any): Promise<any> {
         try {
             if (!itemId) {
                 throw new Error('Item ID is required for Pi-hole blocking status');
@@ -1769,7 +1769,7 @@ export class DashApi {
         }
     }
 
-    public static async getPiholeBlockingStatus(itemId: string): Promise<any> {
+    public static async getPiholeBlocking状态(itemId: string): Promise<any> {
         try {
             if (!itemId) {
                 throw new Error('Item ID is required for Pi-hole blocking status');
@@ -1869,26 +1869,26 @@ export class DashApi {
         }
     }
 
-    public static async encryptAdGuardUsername(username: string): Promise<string> {
+    public static async encryptAdGuard用户名(username: string): Promise<string> {
         try {
             const res = await axios.post(`${BACKEND_URL}/api/adguard/encrypt-username`,
                 { username },
                 { withCredentials: true }
             );
-            return res.data.encryptedUsername;
+            return res.data.encrypted用户名;
         } catch (error) {
             console.error('Failed to encrypt AdGuard username:', error);
             throw error;
         }
     }
 
-    public static async encryptAdGuardPassword(password: string): Promise<string> {
+    public static async encryptAdGuard密码(password: string): Promise<string> {
         try {
             const res = await axios.post(`${BACKEND_URL}/api/adguard/encrypt-password`,
                 { password },
                 { withCredentials: true }
             );
-            return res.data.encryptedPassword;
+            return res.data.encrypted密码;
         } catch (error) {
             console.error('Failed to encrypt AdGuard password:', error);
             throw error;
@@ -1967,7 +1967,7 @@ export class DashApi {
         }
     }
 
-    public static async getAdGuardProtectionStatus(itemId: string): Promise<any> {
+    public static async getAdGuardProtection状态(itemId: string): Promise<any> {
         try {
             if (!itemId) {
                 throw new Error('Item ID is required for AdGuard Home protection status');
@@ -2071,7 +2071,7 @@ export class DashApi {
         }
     }
 
-    public static async sabnzbdDeleteDownload(itemId: string, nzoId: string, deleteFiles: boolean = false): Promise<boolean> {
+    public static async sabnzbd删除Download(itemId: string, nzoId: string, deleteFiles: boolean = false): Promise<boolean> {
         try {
             const res = await axios.delete(`${BACKEND_URL}/api/sabnzbd/delete/${nzoId}`, {
                 params: { itemId, deleteFiles: deleteFiles.toString() },
@@ -2084,14 +2084,14 @@ export class DashApi {
         }
     }
 
-    public static async encryptSabnzbdPassword(password: string): Promise<string> {
+    public static async encryptSabnzbd密码(password: string): Promise<string> {
         try {
             const res = await axios.post(
                 `${BACKEND_URL}/api/sabnzbd/encrypt-password`,
                 { password },
                 { withCredentials: true }
             );
-            return res.data.encryptedPassword;
+            return res.data.encrypted密码;
         } catch (error: any) {
             throw new Error(error.response?.data?.message || 'Failed to encrypt password');
         }
@@ -2185,7 +2185,7 @@ export class DashApi {
         }
     }
 
-    public static async nzbgetDeleteDownload(itemId: string, nzbId: string, deleteFiles: boolean = false): Promise<boolean> {
+    public static async nzbget删除Download(itemId: string, nzbId: string, deleteFiles: boolean = false): Promise<boolean> {
         try {
             const res = await axios.delete(`${BACKEND_URL}/api/nzbget/delete/${nzbId}`, {
                 params: { itemId, deleteFiles: deleteFiles.toString() },
@@ -2198,14 +2198,14 @@ export class DashApi {
         }
     }
 
-    public static async encryptNzbgetPassword(password: string): Promise<string> {
+    public static async encryptNzbget密码(password: string): Promise<string> {
         try {
             const res = await axios.post(
                 `${BACKEND_URL}/api/nzbget/encrypt-password`,
                 { password },
                 { withCredentials: true }
             );
-            return res.data.encryptedPassword;
+            return res.data.encrypted密码;
         } catch (error: any) {
             throw new Error(error.response?.data?.message || 'Failed to encrypt password');
         }
@@ -2243,7 +2243,7 @@ export class DashApi {
     }
 
     // Jellyseerr methods
-    public static async jellyseerrSearch(itemId: string, query: string): Promise<any> {
+    public static async jellyseerr搜索(itemId: string, query: string): Promise<any> {
         try {
             const res = await axios.get(`${BACKEND_URL}/api/jellyseerr/search`, {
                 params: { itemId, query },
@@ -2269,7 +2269,7 @@ export class DashApi {
         }
     }
 
-    public static async jellyseerrCreateRequest(itemId: string, mediaType: string, mediaId: string, seasons?: number[]): Promise<any> {
+    public static async jellyseerr创建Request(itemId: string, mediaType: string, mediaId: string, seasons?: number[]): Promise<any> {
         try {
             const res = await axios.post(`${BACKEND_URL}/api/jellyseerr/request`, {
                 mediaType,
@@ -2325,7 +2325,7 @@ export class DashApi {
         }
     }
 
-    public static async jellyseerrGetStatus(itemId: string): Promise<any> {
+    public static async jellyseerrGet状态(itemId: string): Promise<any> {
         try {
             const res = await axios.get(`${BACKEND_URL}/api/jellyseerr/status`, {
                 params: { itemId },

@@ -27,7 +27,7 @@ import {
     apiLimiter,
     authLimiter,
     healthLimiter,
-    systemMonitorLimiter,
+    system监控Limiter,
     timezoneApiLimiter,
     torrentApiLimiter,
     weatherApiLimiter
@@ -39,7 +39,7 @@ const router = Router();
 router.use('/config', configRoute);
 
 // System routes - use dedicated system monitor limiter
-router.use('/system', systemMonitorLimiter, systemRoute);
+router.use('/system', system监控Limiter, systemRoute);
 
 // Health check route
 router.use('/health', healthLimiter, healthRoute);

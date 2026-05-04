@@ -1,8 +1,8 @@
-import { DashboardGrid } from '../components/dashboard/DashboardGrid';
+import { 仪表盘Grid } from '../components/dashboard/仪表盘Grid';
 
-export const DashboardPage = () => {
+export const 仪表盘Page = () => {
     // This component just renders the dashboard grid
     return (
-        <DashboardGrid />
+        <仪表盘Grid />
     );
 };

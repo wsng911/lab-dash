@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { NextFunction, Request, Response, Router } from 'express';
 import fs from 'fs';
-import StatusCodes from 'http-status-codes';
+import 状态Codes from 'http-status-codes';
 import multer, { StorageEngine } from 'multer';
 import { promisify } from 'util';
 import wol from 'wol';
@@ -39,7 +39,7 @@ const upload: multer.Multer = multer({
         if (allowedTypes.includes(file.mimetype)) {
             cb(null, true);
         } else {
-            cb(new CustomError('Invalid file type. Only JPEG, PNG, and GIF are allowed.', StatusCodes.BAD_REQUEST));
+            cb(new CustomError('Invalid file type. Only JPEG, PNG, and GIF are allowed.', 状态Codes.BAD_REQUEST));
         }
     },
 });
@@ -53,23 +53,23 @@ systemRoute.get('/', async (req: Request, res: Response) => {
         if (response) {
             res.json(response);
         } else {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error fetching system info' });
+            res.status(状态Codes.INTERNAL_SERVER_ERROR).json({ message: 'Error fetching system info' });
         }
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Unexpected error', error });
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({ message: 'Unexpected error', error });
     }
 });
 
 systemRoute.post('/upload', upload.single('file'), (req: Request, res: Response, next: NextFunction) => {
     if (!req.file) {
-        res.status(StatusCodes.BAD_REQUEST).json({ message: 'No file uploaded' });
+        res.status(状态Codes.BAD_REQUEST).json({ message: 'No file uploaded' });
     }
 
     try {
-        // Remove all existing files except the current uploaded file
+        // 移除 all existing files except the current uploaded file
         removeExistingFiles(req.file?.filename);
 
-        res.status(StatusCodes.OK).json({
+        res.status(状态Codes.OK).json({
             message: 'File uploaded successfully',
             filePath: req.file?.originalname.trim().replaceAll(' ', '_'),
         });
@@ -90,15 +90,15 @@ systemRoute.post('/upload', upload.single('file'), (req: Request, res: Response,
 // Clean up background images (removes all files at root level in uploads directory)
 systemRoute.post('/clean-background', (req: Request, res: Response) => {
     try {
-        // Remove all files in the root of uploads directory
+        // 移除 all files in the root of uploads directory
         removeExistingFiles();
 
-        res.status(StatusCodes.OK).json({
-            message: 'Background images cleaned successfully'
+        res.status(状态Codes.OK).json({
+            message: '返回ground images cleaned successfully'
         });
     } catch (error) {
         console.error('Error cleaning background images:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: 'Error cleaning background images',
             error: (error as Error).message
         });
@@ -117,10 +117,10 @@ systemRoute.post('/update-container', [authenticateToken, requireAdmin], async (
         // Restart the container
         await execAsync(`docker restart ${containerId.trim()}`);
 
-        res.status(StatusCodes.OK).json({ message: 'Update initiated. Container will restart shortly.' });
+        res.status(状态Codes.OK).json({ message: 'Update initiated. Container will restart shortly.' });
     } catch (error) {
         console.error('Error updating container:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
             message: JSON.stringify(error),
             error: (error as Error).message
         });
@@ -134,7 +134,7 @@ systemRoute.post('/wol', (req: Request, res: Response) => {
             const { mac, ip, port } = req.body;
 
             if (!mac) {
-                res.status(StatusCodes.BAD_REQUEST).json({
+                res.status(状态Codes.BAD_REQUEST).json({
                     message: 'MAC address is required'
                 });
                 return;
@@ -143,7 +143,7 @@ systemRoute.post('/wol', (req: Request, res: Response) => {
             // Validate MAC address format
             const macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
             if (!macRegex.test(mac)) {
-                res.status(StatusCodes.BAD_REQUEST).json({
+                res.status(状态Codes.BAD_REQUEST).json({
                     message: 'Invalid MAC address format. Expected format: xx:xx:xx:xx:xx:xx or xx-xx-xx-xx-xx-xx'
                 });
                 return;
@@ -152,12 +152,12 @@ systemRoute.post('/wol', (req: Request, res: Response) => {
             // Set default options
             const options: { address?: string; port?: number } = {};
 
-            // Add optional parameters if provided and validate IP if present
+            // 添加 optional parameters if provided and validate IP if present
             if (ip) {
                 // Validate IP address format if provided
                 const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
                 if (!ipRegex.test(ip)) {
-                    res.status(StatusCodes.BAD_REQUEST).json({
+                    res.status(状态Codes.BAD_REQUEST).json({
                         message: 'Invalid IP address format. Expected format: xxx.xxx.xxx.xxx'
                     });
                     return;
@@ -169,7 +169,7 @@ systemRoute.post('/wol', (req: Request, res: Response) => {
                 // Validate port is a number and in valid range
                 const portNum = parseInt(port, 10);
                 if (isNaN(portNum) || portNum < 1 || portNum > 65535) {
-                    res.status(StatusCodes.BAD_REQUEST).json({
+                    res.status(状态Codes.BAD_REQUEST).json({
                         message: 'Invalid port. Port must be a number between 1 and 65535'
                     });
                     return;
@@ -192,12 +192,12 @@ systemRoute.post('/wol', (req: Request, res: Response) => {
                 }
             });
             console.log(`Wake-on-LAN packet sent to ${mac}`);
-            res.status(StatusCodes.OK).json({
+            res.status(状态Codes.OK).json({
                 message: 'Wake-on-LAN packet sent'
             });
         } catch (error) {
             console.error('Error sending Wake-on-LAN packet:', error);
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
                 message: 'Error sending Wake-on-LAN packet',
                 error: (error as Error).message
             });
@@ -208,7 +208,7 @@ systemRoute.post('/wol', (req: Request, res: Response) => {
     handleWol().catch(error => {
         console.error('Unhandled error in WOL endpoint:', error);
         if (!res.headersSent) {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            res.status(状态Codes.INTERNAL_SERVER_ERROR).json({
                 message: 'Internal server error during Wake-on-LAN',
                 error: error instanceof Error ? error.message : String(error)
             });

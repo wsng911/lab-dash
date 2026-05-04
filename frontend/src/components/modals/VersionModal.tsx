@@ -28,13 +28,13 @@ interface ReleaseInfo {
 
 interface VersionModalProps {
   open: boolean;
-  handleClose: () => void;
+  handle关闭: () => void;
 }
 
 const INITIAL_RELEASES_COUNT = 5;
 const LOAD_MORE_COUNT = 5;
 
-export const VersionModal = ({ open, handleClose }: VersionModalProps) => {
+export const VersionModal = ({ open, handle关闭 }: VersionModalProps) => {
     const [allReleases, setAllReleases] = useState<ReleaseInfo[]>([]);
     const [displayedCount, setDisplayedCount] = useState(INITIAL_RELEASES_COUNT);
     const [isLoading, setIsLoading] = useState(false);
@@ -73,19 +73,19 @@ export const VersionModal = ({ open, handleClose }: VersionModalProps) => {
         // Clean up the release notes
         let cleanedNotes = body;
 
-        // Remove any "**Full Changelog**" section at the end
+        // 移除 any "**Full Changelog**" section at the end
         const fullChangelogIndex = cleanedNotes.indexOf('**Full Changelog**');
         if (fullChangelogIndex > 0) {
             cleanedNotes = cleanedNotes.substring(0, fullChangelogIndex).trim();
         }
 
-        // Remove everything after "by @" including "by @" itself
+        // 移除 everything after "by @" including "by @" itself
         const byAuthorIndex = cleanedNotes.indexOf('by @');
         if (byAuthorIndex > 0) {
             cleanedNotes = cleanedNotes.substring(0, byAuthorIndex).trim();
         }
 
-        // Remove any compare links at the end
+        // 移除 any compare links at the end
         const compareIndex = cleanedNotes.indexOf('**Compare:');
         if (compareIndex > 0) {
             cleanedNotes = cleanedNotes.substring(0, compareIndex).trim();
@@ -177,7 +177,7 @@ export const VersionModal = ({ open, handleClose }: VersionModalProps) => {
     const hasMore = displayedCount < allReleases.length;
 
     return (
-        <CenteredModal open={open} handleClose={handleClose} title={getTitle()}>
+        <CenteredModal open={open} handle关闭={handle关闭} title={getTitle()}>
             <Box sx={{ p: 2, width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box', overflow: 'hidden' }}>
                 <Typography variant='h6' gutterBottom>
                     Current Version: {getAppVersion()}

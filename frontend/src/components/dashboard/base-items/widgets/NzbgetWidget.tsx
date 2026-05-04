@@ -7,7 +7,7 @@ type NzbgetWidgetConfig = {
     host?: string;
     port?: string;
     ssl?: boolean;
-    _hasPassword?: boolean; // Security flag instead of actual password
+    _has密码?: boolean; // Security flag instead of actual password
     refreshInterval?: number;
     maxDisplayedDownloads?: number;
     showLabel?: boolean;
@@ -30,7 +30,7 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
         password: ''
     });
 
-    // Add a counter for login attempts and a maximum number of attempts
+    // 添加 a counter for login attempts and a maximum number of attempts
     const loginAttemptsRef = useRef(0);
     const MAX_LOGIN_ATTEMPTS = 3;
 
@@ -55,7 +55,7 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
         setAuthError('');
 
         try {
-            if (!loginCredentials.host || !loginCredentials.port || !config?._hasPassword) {
+            if (!loginCredentials.host || !loginCredentials.port || !config?._has密码) {
                 // Increment attempt counter
                 loginAttemptsRef.current += 1;
 
@@ -191,7 +191,7 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
             const downloadsData = await DashApi.nzbgetGetDownloads(id || '');
 
             // Check if an empty array was returned due to decryption error
-            if (Array.isArray(downloadsData) && downloadsData.length === 0 && config?._hasPassword) {
+            if (Array.isArray(downloadsData) && downloadsData.length === 0 && config?._has密码) {
                 setDownloads([]);
                 return;
             }
@@ -206,7 +206,7 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
                 setLoginAttemptFailed(false);
             }
         }
-    }, [isAuthenticated, loginAttemptFailed, id, config?._hasPassword]);
+    }, [isAuthenticated, loginAttemptFailed, id, config?._has密码]);
 
     // Handle input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -222,7 +222,7 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
 
     // Auto-authenticate when config is available and not authenticated
     useEffect(() => {
-        if (config?._hasPassword && !isAuthenticated && !loginAttemptFailed) {
+        if (config?._has密码 && !isAuthenticated && !loginAttemptFailed) {
             handleLogin();
         }
     }, [config, handleLogin, isAuthenticated, loginAttemptFailed]);
@@ -285,9 +285,9 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
         }
     }, [id, fetchDownloads]);
 
-    const onDeleteDownload = useCallback(async (nzbId: string, deleteFiles: boolean): Promise<boolean> => {
+    const on删除Download = useCallback(async (nzbId: string, deleteFiles: boolean): Promise<boolean> => {
         try {
-            await DashApi.nzbgetDeleteDownload(id || '', nzbId, deleteFiles);
+            await DashApi.nzbget删除Download(id || '', nzbId, deleteFiles);
             // Refresh downloads list
             setTimeout(() => fetchDownloads(), 500);
             return true;
@@ -299,7 +299,7 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
 
     return (
         <DownloadClientWidget
-            clientName='NZBGet'
+            client名称='NZBGet'
             isLoading={isLoading}
             isAuthenticated={isAuthenticated}
             authError={authError}
@@ -311,7 +311,7 @@ export const NzbgetWidget = (props: { config?: NzbgetWidgetConfig; id?: string }
             showLabel={config?.showLabel !== false}
             onResumeTorrent={onResumeDownload}
             onPauseTorrent={onPauseDownload}
-            onDeleteTorrent={onDeleteDownload}
+            on删除Torrent={on删除Download}
         />
     );
 };

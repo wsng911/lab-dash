@@ -16,9 +16,9 @@ type PiholeWidgetConfig = {
     port?: string;
     ssl?: boolean;
     _hasApiToken?: boolean;
-    _hasPassword?: boolean;
+    _has密码?: boolean;
     showLabel?: boolean;
-    displayName?: string;
+    display名称?: string;
 };
 
 type PiholeStats = {
@@ -50,7 +50,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
     const [isConfigured, setIsConfigured] = useState(() => {
         // Initialize with a proper check of the config
         if (config) {
-            return !!config.host && (!!config._hasApiToken || !!config._hasPassword);
+            return !!config.host && (!!config._hasApiToken || !!config._has密码);
         }
         return false;
     });
@@ -61,9 +61,9 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         port: config?.port || '80',
         ssl: config?.ssl || false,
         _hasApiToken: config?._hasApiToken || false,
-        _hasPassword: config?._hasPassword || false,
+        _has密码: config?._has密码 || false,
         showLabel: config?.showLabel,
-        displayName: config?.displayName || 'Pi-hole'
+        display名称: config?.display名称 || 'Pi-hole'
     });
 
     // State for disable/enable blocking functionality
@@ -74,19 +74,19 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
     const [disableTimer, setDisableTimer] = useState<TimeoutId | null>(null);
     const [remainingTime, setRemainingTime] = useState<string>('');
 
-    // Add a state to track authentication failures
+    // 添加 a state to track authentication failures
     const [authFailed, setAuthFailed] = useState(false);
 
-    // Add a flag to identify if we're using Pi-hole v6
+    // 添加 a flag to identify if we're using Pi-hole v6
     const [isPiholeV6, setIsPiholeV6] = useState(false);
 
-    // Add a ref to store the refresh interval
+    // 添加 a ref to store the refresh interval
     const refreshIntervalRef = useRef<TimeoutId | null>(null);
 
-    // Add a ref to store the status check interval for Pi-hole v6
+    // 添加 a ref to store the status check interval for Pi-hole v6
     const statusCheckIntervalRef = useRef<TimeoutId | null>(null);
 
-    // Add a ref to track component mounted state to prevent updates after unmount
+    // 添加 a ref to track component mounted state to prevent updates after unmount
     const isMountedRef = useRef<boolean>(true);
 
     // Set isMounted on mount and clear on unmount
@@ -98,7 +98,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
             isFirstRender.current = false;
 
             // Force configuration validation on mount
-            const isValid = !!piholeConfig.host && (!!piholeConfig._hasApiToken || !!piholeConfig._hasPassword);
+            const isValid = !!piholeConfig.host && (!!piholeConfig._hasApiToken || !!piholeConfig._has密码);
             if (isValid !== isConfigured) {
                 setIsConfigured(isValid);
             }
@@ -110,7 +110,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 // Use a small timeout to ensure state updates have completed
                 setTimeout(() => {
                     if (isMountedRef.current && !error && !authFailed) {
-                        checkPiholeStatus();
+                        checkPihole状态();
                     }
                 }, 200);
             }
@@ -125,18 +125,18 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
     // Determine if we're using Pi-hole v6 based on authentication method
     useEffect(() => {
         // Using password-only auth indicates Pi-hole v6
-        const isV6 = !!piholeConfig._hasPassword && !piholeConfig._hasApiToken;
+        const isV6 = !!piholeConfig._has密码 && !piholeConfig._hasApiToken;
         setIsPiholeV6(isV6);
     }, [piholeConfig]);
 
     // Combined function to check both blocking status and stats in one operation
-    const checkPiholeStatus = useCallback(async () => {
+    const checkPihole状态 = useCallback(async () => {
         // Skip requests if the component is unmounted
         if (!isMountedRef.current) return;
 
         // Skip if not properly configured or authentication failed or existing error
         if (!isConfigured || !piholeConfig.host ||
-            (!piholeConfig._hasApiToken && !piholeConfig._hasPassword) || authFailed || error) {
+            (!piholeConfig._hasApiToken && !piholeConfig._has密码) || authFailed || error) {
             return;
         }
 
@@ -149,7 +149,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 }
 
                 // Use direct DashApi method to avoid stale frontend config during duplication
-                const blockingData = await DashApi.getPiholeBlockingStatus(id);
+                const blockingData = await DashApi.getPiholeBlocking状态(id);
 
                 // Update isBlocking state based on status
                 const newIsBlocking = blockingData.status === 'enabled';
@@ -227,11 +227,11 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                     return; // Exit early but don't set permanent error
                 } else if (statusError.message?.includes('Item not found in configuration')) {
                     // Handle "Item not found" errors - this might be a timing issue during duplication
-                    console.log('🔄 Pi-hole: Status check failed, retrying in 2s (duplication timing)');
+                    console.log('🔄 Pi-hole: 状态 check failed, retrying in 2s (duplication timing)');
                     // Schedule a retry after a short delay instead of setting permanent error
                     setTimeout(() => {
                         if (isMountedRef.current && !error && !authFailed) {
-                            checkPiholeStatus();
+                            checkPihole状态();
                         }
                     }, 2000); // Retry after 2 seconds
                     return; // Exit without setting error state
@@ -319,7 +319,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                     // Schedule a retry after a short delay instead of setting permanent error
                     setTimeout(() => {
                         if (isMountedRef.current && !error && !authFailed) {
-                            checkPiholeStatus();
+                            checkPihole状态();
                         }
                     }, 2000); // Retry after 2 seconds
                     return; // Exit without setting error state
@@ -367,7 +367,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
             }
 
             // Do an initial check
-            checkPiholeStatus();
+            checkPihole状态();
 
             // Determine the check interval based on state:
             let checkInterval = 30000; // Default: 30 seconds when enabled (reduced frequency)
@@ -397,7 +397,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 statusCheckIntervalRef.current = setTimeout(async () => {
                     // Double-check error and auth state before making the call
                     if (!error && !authFailed) {
-                        await checkPiholeStatus();
+                        await checkPihole状态();
                         // Schedule next check only if no errors occurred
                         if (!error && !authFailed) {
                             scheduleNextCheck();
@@ -422,7 +422,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 refreshIntervalRef.current = null;
             }
         };
-    }, [isConfigured, authFailed, isBlocking, disableEndTime, checkPiholeStatus, stats.domains_being_blocked, error]);
+    }, [isConfigured, authFailed, isBlocking, disableEndTime, checkPihole状态, stats.domains_being_blocked, error]);
 
     // Update config when props change
     useEffect(() => {
@@ -439,13 +439,13 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
             port: config.port !== undefined ? config.port : (piholeConfig.port || '80'),
             ssl: config.ssl || false,
             _hasApiToken: config._hasApiToken || false,
-            _hasPassword: config._hasPassword || false,
+            _has密码: config._has密码 || false,
             showLabel: config.showLabel,
-            displayName: config.displayName || 'Pi-hole'
+            display名称: config.display名称 || 'Pi-hole'
         };
 
         // Check if this is a valid configuration
-        const isValid = !!config.host && (!!config._hasApiToken || !!config._hasPassword);
+        const isValid = !!config.host && (!!config._hasApiToken || !!config._has密码);
 
         // If configured state doesn't match validity, update it
         if (isValid !== isConfigured) {
@@ -458,7 +458,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
             newConfig.port !== piholeConfig.port ||
             newConfig.ssl !== piholeConfig.ssl ||
             newConfig._hasApiToken !== piholeConfig._hasApiToken ||
-            newConfig._hasPassword !== piholeConfig._hasPassword;
+            newConfig._has密码 !== piholeConfig._has密码;
 
         if (configChanged) {
             // Update config
@@ -488,7 +488,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 // Small delay to ensure state updates are processed
                 setTimeout(() => {
                     if (isMountedRef.current) {
-                        checkPiholeStatus();
+                        checkPihole状态();
                     }
                 }, 200);
             }
@@ -497,7 +497,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
             setPiholeConfig(prev => ({
                 ...prev,
                 showLabel: config.showLabel,
-                displayName: config.displayName || 'Pi-hole'
+                display名称: config.display名称 || 'Pi-hole'
             }));
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -536,10 +536,10 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
             if (isMountedRef.current) {
                 // For Pi-hole v6, we should check status again as the timer might have expired
                 if (isPiholeV6) {
-                    checkPiholeStatus();
+                    checkPihole状态();
                 } else {
                     // For v5, just trigger a refresh as we can't check status separately
-                    setTimeout(() => checkPiholeStatus(), 500);
+                    setTimeout(() => checkPihole状态(), 500);
                 }
             }
             return;
@@ -555,7 +555,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         if (newRemainingTime !== remainingTime) {
             setRemainingTime(newRemainingTime);
         }
-    }, [disableEndTime, stats.timer, isPiholeV6, remainingTime, checkPiholeStatus]);
+    }, [disableEndTime, stats.timer, isPiholeV6, remainingTime, checkPihole状态]);
 
     // Update remaining time every second when a timed disable is active
     useEffect(() => {
@@ -591,7 +591,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
 
     // Handle disable blocking with timeout
     const handleDisableBlocking = async (seconds: number | null) => {
-        if (!isConfigured || (!piholeConfig._hasApiToken && !piholeConfig._hasPassword)) return;
+        if (!isConfigured || (!piholeConfig._hasApiToken && !piholeConfig._has密码)) return;
 
         setIsDisablingBlocking(true);
         setDisableMenuAnchor(null);
@@ -643,7 +643,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
 
                 // For Pi-hole v6, trigger an immediate status check
                 if (isPiholeV6) {
-                    checkPiholeStatus();
+                    checkPihole状态();
                 } else {
                     // For Pi-hole v5, handle the local timer
                     if (seconds !== null) {
@@ -738,7 +738,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
 
             setIsLoading(false);
             // Fetch updated stats after enabling
-            await checkPiholeStatus();
+            await checkPihole状态();
         } catch (err: any) {
             // On error, revert UI state
             setIsBlocking(false);
@@ -774,7 +774,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         } finally {
             setIsDisablingBlocking(false);
         }
-    }, [piholeConfig, checkPiholeStatus, disableTimer, isDisablingBlocking]);
+    }, [piholeConfig, checkPihole状态, disableTimer, isDisablingBlocking]);
 
     // Clean up disable timer on unmount
     useEffect(() => {
@@ -811,7 +811,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         }
 
         // Recheck configuration
-        const isValid = !!piholeConfig.host && (!!piholeConfig._hasApiToken || !!piholeConfig._hasPassword);
+        const isValid = !!piholeConfig.host && (!!piholeConfig._hasApiToken || !!piholeConfig._has密码);
         setIsConfigured(isValid);
 
         // Reset stats to initial state
@@ -821,7 +821,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         setIsLoading(true);
 
         // Perform an immediate check with the combined function
-        setTimeout(() => checkPiholeStatus(), 100);
+        setTimeout(() => checkPihole状态(), 100);
     };
 
     // Handle menu open
@@ -830,7 +830,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
     };
 
     // Handle menu close
-    const handleDisableMenuClose = () => {
+    const handleDisableMenu关闭 = () => {
         setDisableMenuAnchor(null);
     };
 
@@ -839,7 +839,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         return remainingTime;
     };
 
-    // Create base URL for Pi-hole admin panel
+    // 创建 base URL for Pi-hole admin panel
     const getBaseUrl = () => {
         if (!piholeConfig.host) return '';
 
@@ -867,7 +867,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         if (!baseUrl) return;
 
         // For v6, direct links won't work without authentication, so just open the main admin page
-        const isV6 = !!piholeConfig._hasPassword && !piholeConfig._hasApiToken;
+        const isV6 = !!piholeConfig._has密码 && !piholeConfig._hasApiToken;
         if (isV6) {
             window.open(`${baseUrl}/queries`, '_blank');
             return;
@@ -882,7 +882,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         const baseUrl = getBaseUrl();
         if (!baseUrl) return;
 
-        const isV6 = !!piholeConfig._hasPassword && !piholeConfig._hasApiToken;
+        const isV6 = !!piholeConfig._has密码 && !piholeConfig._hasApiToken;
         if (isV6) {
             window.open(`${baseUrl}/queries?upstream=blocklist`, '_blank');
             return;
@@ -897,7 +897,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         const baseUrl = getBaseUrl();
         if (!baseUrl) return;
 
-        const isV6 = !!piholeConfig._hasPassword && !piholeConfig._hasApiToken;
+        const isV6 = !!piholeConfig._has密码 && !piholeConfig._hasApiToken;
         if (isV6) {
             window.open(`${baseUrl}/network`, '_blank');
             return;
@@ -913,7 +913,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
         const baseUrl = getBaseUrl();
         if (!baseUrl) return;
 
-        const isV6 = !!piholeConfig._hasPassword && !piholeConfig._hasApiToken;
+        const isV6 = !!piholeConfig._has密码 && !piholeConfig._hasApiToken;
         if (isV6) {
             window.open(`${baseUrl}/groups-lists`, '_blank');
             return;
@@ -1033,7 +1033,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                                 }}
                             />
                             <Typography variant='h6' sx={{ mb: 0, fontSize: '1rem', ml: 0.5 }}>
-                                {piholeConfig.displayName}
+                                {piholeConfig.display名称}
                             </Typography>
                         </Box>
                     )}
@@ -1050,7 +1050,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                             height: 25,
                             fontSize: '0.7rem',
                             color: 'white',
-                            minWidth: '80px', // Add fixed minimum width to prevent size changes
+                            minWidth: '80px', // 添加 fixed minimum width to prevent size changes
                             '&:hover': {
                                 backgroundColor: 'rgba(255, 255, 255, 0.1)'
                             },
@@ -1065,7 +1065,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 <Menu
                     anchorEl={disableMenuAnchor}
                     open={Boolean(disableMenuAnchor)}
-                    onClose={handleDisableMenuClose}
+                    on关闭={handleDisableMenu关闭}
                     closeAfterTransition={false}
                 >
                     <MenuItem onClick={() => handleDisableBlocking(10)}>10 seconds</MenuItem>
@@ -1210,7 +1210,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 </Grid>
             </Grid>
 
-            {/* Status indicator - only show when not in edit mode and blocking is disabled */}
+            {/* 状态 indicator - only show when not in edit mode and blocking is disabled */}
             {!editMode && !isBlocking && (
                 <Box sx={{ mt: 0.2, textAlign: 'center' }}>
                     <Typography variant='caption' color='white' sx={{ fontSize: '0.6rem' }}>

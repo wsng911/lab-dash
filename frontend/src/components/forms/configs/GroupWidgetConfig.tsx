@@ -3,7 +3,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { CheckboxElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { theme } from '../../../theme/theme';
-import { FormValues } from '../AddEditForm/types';
+import { FormValues } from '../添加编辑Form/types';
 
 interface GroupWidgetConfigProps {
     formContext: UseFormReturn<FormValues>;
@@ -21,8 +21,8 @@ export const GroupWidgetConfig = ({ formContext }: GroupWidgetConfigProps) => {
         <>
             <Grid>
                 <TextFieldElement
-                    name='shortcutName'
-                    label='Group Name'
+                    name='shortcut名称'
+                    label='Group 名称'
                     required
                     fullWidth
                     rules={{
@@ -70,7 +70,7 @@ export const GroupWidgetConfig = ({ formContext }: GroupWidgetConfigProps) => {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 12, md: 12 }}>
                     <CheckboxElement
-                        label='Show Name'
+                        label='Show 名称'
                         name='showLabel'
                         sx={{
                             ml: 1,
